@@ -11,10 +11,23 @@ import UIKit
 
 class FilterNavigator: UIView
 {
-    let filterCategories = Set<String>(CIFilter.filterNamesInCategories(nil).flatMap
-    {
-        CIFilter(name: $0)?.attributes[kCIAttributeFilterCategories] as! [String]
-    }).filter({$0 != kCICategoryBuiltIn}).sort()
+    let filterCategories =
+    [
+        kCICategoryDistortionEffect,
+        kCICategoryGeometryAdjustment,
+        kCICategoryCompositeOperation,
+        kCICategoryHalftoneEffect,
+        kCICategoryColorAdjustment,
+        kCICategoryColorEffect,
+        kCICategoryTransition,
+        kCICategoryTileEffect,
+        kCICategoryGenerator,
+        kCICategoryReduction,
+        kCICategoryGradient,
+        kCICategoryStylize,
+        kCICategoryBlur,
+        kCICategoryHighDynamicRange
+    ].sort()
     
     let segmentedControl = UISegmentedControl(items: [FilterNavigatorMode.Grouped.rawValue, FilterNavigatorMode.Flat.rawValue])
     
@@ -39,6 +52,8 @@ class FilterNavigator: UIView
             tableView.reloadData()
         }
     }
+    
+    weak var delegate: FilterNavigatorDelegate?
     
     override init(frame: CGRect)
     {
@@ -82,18 +97,26 @@ class FilterNavigator: UIView
     }
 }
 
-// MARK: Filter Navigator Modes
 
-enum FilterNavigatorMode: String
-{
-    case Grouped
-    case Flat
-}
-
-// MARK: UITableViewDelegate
+// MARK: UITableViewDelegate extension
 
 extension FilterNavigator: UITableViewDelegate
 {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        let filterName: String
+        
+        switch mode
+        {
+        case .Grouped:
+            filterName =  CIFilter.filterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
+        case .Flat:
+            filterName = CIFilter.filterNamesInCategories(nil).sort()[indexPath.row]
+        }
+        
+        delegate?.filterNavigator(self, didSelectFilterName: filterName)
+    }
+    
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
         switch mode
@@ -121,7 +144,7 @@ extension FilterNavigator: UITableViewDelegate
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: UITableViewDataSource extension
 
 extension FilterNavigator: UITableViewDataSource
 {
@@ -132,7 +155,7 @@ extension FilterNavigator: UITableViewDataSource
         case .Grouped:
             return filterCategories.count
         case .Flat:
-            return 1 // return CIFilter.filterNamesInCategories(nil).count
+            return 1
         }
     }
     
@@ -166,5 +189,20 @@ extension FilterNavigator: UITableViewDataSource
         
         return cell
     }
+}
+
+// MARK: Filter Navigator Modes
+
+enum FilterNavigatorMode: String
+{
+    case Grouped
+    case Flat
+}
+
+// MARK: FilterNavigatorDelegate
+
+protocol FilterNavigatorDelegate: class
+{
+    func filterNavigator(filterNavigator: FilterNavigator, didSelectFilterName: String)
 }
 

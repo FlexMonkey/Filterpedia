@@ -13,6 +13,9 @@
 		3E9A72121C325E5600CAD516 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72111C325E5600CAD516 /* Assets.xcassets */; };
 		3E9A72151C325E5600CAD516 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72131C325E5600CAD516 /* LaunchScreen.storyboard */; };
 		3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A721D1C32662B00CAD516 /* FilterNavigator.swift */; };
+		3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A721F1C329CFE00CAD516 /* FilterDetail.swift */; };
+		3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A72211C32FCF000CAD516 /* LabelledSlider.swift */; };
+		3E9A72241C33146000CAD516 /* VectorSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A72231C33146000CAD516 /* VectorSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		3E9A72141C325E5600CAD516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E9A72161C325E5600CAD516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E9A721D1C32662B00CAD516 /* FilterNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterNavigator.swift; path = components/FilterNavigator.swift; sourceTree = "<group>"; };
+		3E9A721F1C329CFE00CAD516 /* FilterDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterDetail.swift; path = components/FilterDetail.swift; sourceTree = "<group>"; };
+		3E9A72211C32FCF000CAD516 /* LabelledSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LabelledSlider.swift; path = components/LabelledSlider.swift; sourceTree = "<group>"; };
+		3E9A72231C33146000CAD516 /* VectorSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VectorSlider.swift; path = components/VectorSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,9 @@
 			isa = PBXGroup;
 			children = (
 				3E9A721D1C32662B00CAD516 /* FilterNavigator.swift */,
+				3E9A721F1C329CFE00CAD516 /* FilterDetail.swift */,
+				3E9A72211C32FCF000CAD516 /* LabelledSlider.swift */,
+				3E9A72231C33146000CAD516 /* VectorSlider.swift */,
 			);
 			name = components;
 			sourceTree = "<group>";
@@ -148,7 +157,10 @@
 			files = (
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
 				3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */,
+				3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */,
+				3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */,
 				3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */,
+				3E9A72241C33146000CAD516 /* VectorSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

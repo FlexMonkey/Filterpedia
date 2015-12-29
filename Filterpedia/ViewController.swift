@@ -10,14 +10,17 @@ import UIKit
 
 class ViewController: UIViewController
 {
-
     let filterNavigator = FilterNavigator()
+    let filterDetail = FilterDetail()
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
        
         view.addSubview(filterNavigator)
+        view.addSubview(filterDetail)
+        
+        filterNavigator.delegate = self
     }
 
     override func viewDidLayoutSubviews()
@@ -26,8 +29,18 @@ class ViewController: UIViewController
             y: topLayoutGuide.length,
             width: 300,
             height: view.frame.height - topLayoutGuide.length).insetBy(dx: 5, dy: 5)
+        
+        filterDetail.frame = CGRect(x: 300,
+            y: topLayoutGuide.length,
+            width: view.frame.width - 300,
+            height: view.frame.height - topLayoutGuide.length).insetBy(dx: 5, dy: 5)
     }
-
-
 }
 
+extension ViewController: FilterNavigatorDelegate
+{
+    func filterNavigator(filterNavigator: FilterNavigator, didSelectFilterName: String)
+    {
+        filterDetail.filterName = didSelectFilterName
+    }
+}
