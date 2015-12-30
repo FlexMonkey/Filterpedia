@@ -129,10 +129,9 @@ extension FilterDetail: UITableViewDataSource
         
         if let attributes = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
-            cell.attributes = attributes
+            cell.detail = (inputKey: inputKey, attributes: attributes)
         }
         
-        cell.inputKey = inputKey
         cell.delegate = self
         
         return cell

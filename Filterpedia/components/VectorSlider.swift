@@ -36,29 +36,61 @@ class VectorSlider: UIControl
     {
         didSet
         {
-            stackView.arrangedSubviews.forEach
+            if (vector?.count ?? 0) != oldValue?.count
             {
-                $0.removeFromSuperview()
+                rebuildUI()
             }
-          
+            
             guard let vector = vector else
             {
                 return
             }
-            
-            let sliderMax = vector.sliderMax
 
-            for i in 0 ..< vector.count
+            for (index, slider) in stackView.arrangedSubviews.enumerate() where slider is UISlider
             {
-                let slider = UISlider()
-                
-                slider.maximumValue = Float(sliderMax)
-                slider.value = Float(vector.valueAtIndex(i))
-                
-                stackView.addArrangedSubview(slider)
+                if let slider = slider as? UISlider
+                {
+                    slider.value = Float(vector.valueAtIndex(index))
+                }
             }
-     
         }
+    }
+    
+    func rebuildUI()
+    {
+        stackView.arrangedSubviews.forEach
+        {
+            $0.removeFromSuperview()
+        }
+        
+        guard let vector = vector else
+        {
+            return
+        }
+   
+        let sliderMax = vector.sliderMax
+        
+        for _ in 0 ..< vector.count
+        {
+            let slider = UISlider()
+          
+             slider.maximumValue = Float(sliderMax)
+            slider.addTarget(self, action: "sliderChangeHandler", forControlEvents: UIControlEvents.ValueChanged)
+            
+            stackView.addArrangedSubview(slider)
+        }
+    }
+    
+    func sliderChangeHandler()
+    {
+        let values = stackView.arrangedSubviews
+            .filter({ $0 is UISlider })
+            .map({ CGFloat(($0 as! UISlider).value) })
+        
+        vector = CIVector(values: values,
+            count: values.count)
+        
+        sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
     
     override func layoutSubviews()

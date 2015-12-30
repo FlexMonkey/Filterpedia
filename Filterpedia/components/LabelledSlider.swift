@@ -41,26 +41,7 @@ class LabelledSlider: UIControl
             slider.value = value
         }
     }
-    
-//    var parameter: AnyObject?
-//        {
-//        didSet
-//        {
-//            guard let parameter = parameter else
-//            {
-//                label.text = ""
-//                return
-//            }
-//            
-//            label.text = parameter.name
-//            valueLabel.text = String(format: "%.2f", parameter.value)
-//            
-//            slider.minimumValue = parameter.min
-//            slider.maximumValue = parameter.max
-//            slider.value = parameter.value
-//        }
-//    }
-    
+
     override init(frame: CGRect)
     {
         super.init(frame: frame)

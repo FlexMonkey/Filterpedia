@@ -36,13 +36,25 @@ class FilterInputItemRenderer: UITableViewCell
         return stackView
     }()
     
-    var inputKey: String?
-    
-    var attributes: [String : AnyObject] = ["": ""]
+    var detail: (inputKey: String, attributes: [String : AnyObject]) = ("", ["": ""])
     {
         didSet
         {
-            titleLabel.text = (attributes[kCIAttributeDisplayName] as? String ?? "") + ": " + (attributes[kCIAttributeClass] as? String ?? "")
+            inputKey = detail.inputKey
+            attributes = detail.attributes
+        }
+    }
+    
+    private(set) var inputKey: String = ""
+    
+    private(set) var attributes: [String : AnyObject] = ["": ""]
+    {
+        didSet
+        {
+            let displayName = attributes[kCIAttributeDisplayName] as? String ?? ""
+            let className = attributes[kCIAttributeClass] as? String ?? ""
+            
+            titleLabel.text = "\(displayName) (\(inputKey): \(className))"
             
             descriptionLabel.text = attributes[kCIAttributeDescription] as? String ?? "[No description]"
             
@@ -77,6 +89,7 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.addArrangedSubview(vectorSlider)
         
         slider.addTarget(self, action: "sliderChangeHandler", forControlEvents: UIControlEvents.ValueChanged)
+        vectorSlider.addTarget(self, action: "vectorSliderChangeHandler", forControlEvents: UIControlEvents.ValueChanged)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -89,6 +102,23 @@ class FilterInputItemRenderer: UITableViewCell
     func sliderChangeHandler()
     {
         value = slider.value
+    }
+    
+    func vectorSliderChangeHandler()
+    {
+        guard let attributeType = attributes[kCIAttributeClass] as? String, vector = vectorSlider.vector else
+        {
+            return
+        }
+        
+        if attributeType == "CIColor"
+        {
+            value = CIColor(red: vector.X, green: vector.Y, blue: vector.Z, alpha: vector.W)
+        }
+        else
+        {
+            value = vector
+        }
     }
     
     func updateForAttribute()
