@@ -18,6 +18,8 @@
 		3E9A72241C33146000CAD516 /* VectorSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A72231C33146000CAD516 /* VectorSlider.swift */; };
 		3E9A72281C33A8AB00CAD516 /* monalisa.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72261C33A8AB00CAD516 /* monalisa.jpg */; };
 		3E9A72291C33A8AB00CAD516 /* sunflower.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72271C33A8AB00CAD516 /* sunflower.jpg */; };
+		3E9A722B1C33A8F500CAD516 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A722A1C33A8F500CAD516 /* Assets.swift */; };
+		3E9A722D1C33AAED00CAD516 /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A722C1C33AAED00CAD516 /* FilterInputItemRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		3E9A72231C33146000CAD516 /* VectorSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VectorSlider.swift; path = components/VectorSlider.swift; sourceTree = "<group>"; };
 		3E9A72261C33A8AB00CAD516 /* monalisa.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = monalisa.jpg; path = assets/monalisa.jpg; sourceTree = "<group>"; };
 		3E9A72271C33A8AB00CAD516 /* sunflower.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sunflower.jpg; path = assets/sunflower.jpg; sourceTree = "<group>"; };
+		3E9A722A1C33A8F500CAD516 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		3E9A722C1C33AAED00CAD516 /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterInputItemRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 				3E9A721F1C329CFE00CAD516 /* FilterDetail.swift */,
 				3E9A72211C32FCF000CAD516 /* LabelledSlider.swift */,
 				3E9A72231C33146000CAD516 /* VectorSlider.swift */,
+				3E9A722C1C33AAED00CAD516 /* FilterInputItemRenderer.swift */,
 			);
 			name = components;
 			sourceTree = "<group>";
@@ -94,6 +99,7 @@
 			children = (
 				3E9A72261C33A8AB00CAD516 /* monalisa.jpg */,
 				3E9A72271C33A8AB00CAD516 /* sunflower.jpg */,
+				3E9A722A1C33A8F500CAD516 /* Assets.swift */,
 			);
 			name = asssets;
 			sourceTree = "<group>";
@@ -172,8 +178,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
+				3E9A722B1C33A8F500CAD516 /* Assets.swift in Sources */,
 				3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */,
 				3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */,
+				3E9A722D1C33AAED00CAD516 /* FilterInputItemRenderer.swift in Sources */,
 				3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */,
 				3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */,
 				3E9A72241C33146000CAD516 /* VectorSlider.swift in Sources */,

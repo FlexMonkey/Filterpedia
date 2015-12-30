@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GLKit
 
 class FilterDetail: UIView
 {
@@ -21,6 +22,17 @@ class FilterDetail: UIView
         return tableView
     }()
     
+    lazy var ciContext: CIContext =
+    {
+        [unowned self] in
+        
+        return CIContext(EAGLContext: self.eaglContext,
+            options: [kCIContextWorkingColorSpace: NSNull()])
+    }()
+    
+    let eaglContext = EAGLContext(API: .OpenGLES2)
+    let imageView = GLKView()
+    
     var filterName: String?
     {
         didSet
@@ -29,7 +41,7 @@ class FilterDetail: UIView
         }
     }
     
-    var currentFilter: CIFilter?
+    private var currentFilter: CIFilter?
     
     override init(frame: CGRect)
     {
@@ -38,7 +50,13 @@ class FilterDetail: UIView
         tableView.dataSource = self
         tableView.delegate = self
         
+        imageView.context = eaglContext
+        imageView.delegate = self
+        imageView.layer.borderColor = UIColor.grayColor().CGColor
+        imageView.layer.borderWidth = 1
+        
         addSubview(tableView)
+        addSubview(imageView)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -57,31 +75,24 @@ class FilterDetail: UIView
         currentFilter = filter
         tableView.reloadData()
         
-//        print(CIFilter.localizedDescriptionForFilterName(filterName!))
-        
-//        let attributes = filter.attributes
-//        
-//        let displayName = attributes[kCIAttributeFilterDisplayName]
-//        
-//        print(displayName)
-//        
-//        let inputs = filter.inputKeys
-//        
-//        for input in inputs
-//        {
-//            let xxx = attributes[input]
-//            
-//            print(input )
-//            print(xxx)
-//        }
+        imageView.setNeedsDisplay(); print("xxxxx")
     }
     
     override func layoutSubviews()
     {
+        let halfWidth = frame.width * 0.5
+        let thirdHeight = frame.height * 0.333
+        let twoThirdHeight = frame.height * 0.666
+        
+        imageView.frame = CGRect(x: halfWidth - thirdHeight,
+            y: 0,
+            width: twoThirdHeight,
+            height: twoThirdHeight)
+        
         tableView.frame = CGRect(x: 0,
-            y: frame.height * 0.666,
+            y: twoThirdHeight,
             width: frame.width,
-            height: frame.height * 0.333)
+            height: thirdHeight)
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
     }
@@ -123,121 +134,25 @@ extension FilterDetail: UITableViewDataSource
     }
 }
 
-// MARK: Filter input item renderer
-
-class FilterInputItemRenderer: UITableViewCell
+// MARK: GLKViewDelegate extension
+extension FilterDetail: GLKViewDelegate
 {
-    let slider = LabelledSlider()
-    let imagesSegmentedControl = UISegmentedControl(items: ["Sunflower", "Landscape", "Night"])
-    
-    let titleLabel = UILabel()
-    
-    let descriptionLabel: UILabel =
+    func glkView(view: GLKView, drawInRect rect: CGRect)
     {
-        let label = UILabel()
-        
-        label.numberOfLines = 2
-        label.font = UIFont.italicSystemFontOfSize(12)
-        
-        return label
-    }()
-    
-    let stackView: UIStackView =
-    {
-        let stackView = UIStackView()
-        
-        stackView.axis = UILayoutConstraintAxis.Vertical
-        
-        return stackView
-    }()
-    
-    let vectorSlider = VectorSlider()
-    
-    var attributes: [String : AnyObject] = ["": ""]
-    {
-        didSet
+        print("glkView drawInRect")
+        guard let currentFilter = currentFilter else
         {
-            titleLabel.text = (attributes[kCIAttributeDisplayName] as? String ?? "") + ": " + (attributes[kCIAttributeClass] as? String ?? "")
-            
-            descriptionLabel.text = attributes[kCIAttributeDescription] as? String ?? "[No description]"
-            
-            slider.min = attributes[kCIAttributeSliderMin] as? Float ?? 0
-            slider.max = attributes[kCIAttributeSliderMax] as? Float ?? 1
-            slider.value = attributes[kCIAttributeDefault] as? Float ?? 0
-        
-            updateForAttribute()
-        }
-    }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?)
-    {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        contentView.addSubview(stackView)
-        
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(descriptionLabel)
-        stackView.addArrangedSubview(slider)
-        stackView.addArrangedSubview(imagesSegmentedControl)
-        stackView.addArrangedSubview(vectorSlider)
-    }
-
-    required init?(coder aDecoder: NSCoder)
-    {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func updateForAttribute()
-    {
-        guard let attributeType = attributes[kCIAttributeClass] as? String else
-        {
-            // clear UI
             return
         }
         
-        switch attributeType // CIColor
-        {
-        case "NSNumber":
-            slider.hidden = false
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = true
-            
-        case "CIImage":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = false
-            vectorSlider.hidden = true
-            
-        case "CIVector":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = false
-            
-            // CIAttributeType = CIAttributeTypePosition - use max value of image extent
-            // CIAttributeType = CIAttributeTypeOffset; - use max value of 1
-            
-            vectorSlider.vector = attributes[kCIAttributeDefault] as? CIVector
-            
-        case "CIColor":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = false
-            
-            if let color = attributes[kCIAttributeDefault] as? CIColor
-            {
-                vectorSlider.vector = CIVector(x: color.red, y: color.green, z: color.blue, w: color.alpha)
-            }
-            
-        default:
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = true
-            
-        }
-    }
-    
-    override func layoutSubviews()
-    {
-        stackView.frame = contentView.bounds.insetBy(dx: 5, dy: 5)
+        currentFilter.setValue(assets.first!.ciImage, forKey: kCIInputImageKey)
         
+        let outputImage = currentFilter.outputImage!
+        
+        ciContext.drawImage(outputImage,
+            inRect: CGRect(x: 0, y: 0,
+                width: imageView.drawableWidth,
+                height: imageView.drawableHeight),
+            fromRect: CGRect(x: 0, y: 0, width: 640, height: 640))
     }
 }
