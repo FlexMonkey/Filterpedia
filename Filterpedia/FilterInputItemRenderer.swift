@@ -223,7 +223,7 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.frame = contentView.bounds.insetBy(dx: 5, dy: 5)
         
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: 0, y: contentView.bounds.height))
+        path.moveToPoint(CGPoint(x: 5, y: contentView.bounds.height))
         path.addLineToPoint(CGPoint(x: contentView.bounds.width, y: contentView.bounds.height))
         
         shapeLayer.path = path.CGPath

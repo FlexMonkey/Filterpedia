@@ -11,6 +11,19 @@ import GLKit
 
 class FilterDetail: UIView
 {
+    let eaglContext = EAGLContext(API: .OpenGLES2)
+    
+    let shapeLayer: CAShapeLayer =
+    {
+        let layer = CAShapeLayer()
+        
+        layer.strokeColor = UIColor.lightGrayColor().CGColor
+        layer.fillColor = nil
+        layer.lineWidth = 0.5
+        
+        return layer
+    }()
+    
     let tableView: UITableView =
     {
         let tableView = UITableView(frame: CGRectZero,
@@ -22,6 +35,24 @@ class FilterDetail: UIView
         return tableView
     }()
     
+    lazy var imageView: GLKView =
+    {
+        [unowned self] in
+        
+        let imageView = GLKView()
+        
+        imageView.layer.borderColor = UIColor.grayColor().CGColor
+        imageView.layer.borderWidth = 1
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        imageView.layer.shadowOpacity = 0.75
+        imageView.layer.shadowRadius = 5
+        
+        imageView.context = self.eaglContext
+        imageView.delegate = self
+        
+        return imageView
+    }()
+    
     lazy var ciContext: CIContext =
     {
         [unowned self] in
@@ -30,9 +61,6 @@ class FilterDetail: UIView
             options: [kCIContextWorkingColorSpace: NSNull()])
     }()
 
-    let eaglContext = EAGLContext(API: .OpenGLES2)
-    let imageView = GLKView()
-    
     var filterName: String?
     {
         didSet
@@ -50,14 +78,11 @@ class FilterDetail: UIView
         
         tableView.dataSource = self
         tableView.delegate = self
-        
-        imageView.context = eaglContext
-        imageView.delegate = self
-        imageView.layer.borderColor = UIColor.grayColor().CGColor
-        imageView.layer.borderWidth = 1
-        
+ 
         addSubview(tableView)
         addSubview(imageView)
+        
+        layer.addSublayer(shapeLayer)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -96,6 +121,12 @@ class FilterDetail: UIView
             height: thirdHeight)
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
+        let path = UIBezierPath()
+        path.moveToPoint(CGPoint(x: 0, y: 0))
+        path.addLineToPoint(CGPoint(x: 0, y: frame.height))
+        
+        shapeLayer.path = path.CGPath
     }
 }
 
