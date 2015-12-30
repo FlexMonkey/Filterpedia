@@ -97,7 +97,7 @@ class FilterDetail: UIView
             print("clear UI")
             return
         }
-        
+  
         currentFilter = filter
         tableView.reloadData()
         
@@ -161,6 +161,11 @@ extension FilterDetail: UITableViewDataSource
             if (attributes[kCIAttributeClass] as? String) == "CIImage" && filterParameterValues[inputKey] == nil
             {
                 filterParameterValues[inputKey] = assets.first!.ciImage
+            }
+            
+            if inputKey == "inputMessage" && filterParameterValues["inputMessage"] == nil
+            {
+                filterParameterValues["inputMessage"] = "hello".dataUsingEncoding(NSASCIIStringEncoding)
             }
             
             cell.detail = (inputKey: inputKey,
