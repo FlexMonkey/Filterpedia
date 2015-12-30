@@ -80,6 +80,7 @@ class LabelledSlider: UIControl
     
     func sliderChangeHandler()
     {
+        value = slider.value
 
         sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }

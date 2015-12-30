@@ -37,11 +37,14 @@ class FilterDetail: UIView
     {
         didSet
         {
+            filterParameterValues = [String: AnyObject]()
+            
             updateFromFilterName()
         }
     }
     
     private var currentFilter: CIFilter?
+    private var filterParameterValues = [String: AnyObject]()
     
     override init(frame: CGRect)
     {
@@ -75,7 +78,7 @@ class FilterDetail: UIView
         currentFilter = filter
         tableView.reloadData()
         
-        imageView.setNeedsDisplay(); print("xxxxx")
+        imageView.setNeedsDisplay()
     }
     
     override func layoutSubviews()
@@ -127,25 +130,47 @@ extension FilterDetail: UITableViewDataSource
         if let attributes = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
             cell.attributes = attributes
-        
         }
+        
+        cell.inputKey = inputKey
+        cell.delegate = self
         
         return cell
     }
 }
 
+// MARK: FilterInputItemRendererDelegate extension
+
+extension FilterDetail: FilterInputItemRendererDelegate
+{
+    func filterInputItemRenderer(filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    {
+        if let key = forKey, value = didChangeValue
+        {
+            filterParameterValues[key] = value
+            
+            imageView.setNeedsDisplay()
+        }
+    }
+}
+
 // MARK: GLKViewDelegate extension
+
 extension FilterDetail: GLKViewDelegate
 {
     func glkView(view: GLKView, drawInRect rect: CGRect)
     {
-        print("glkView drawInRect")
         guard let currentFilter = currentFilter else
         {
             return
         }
         
         currentFilter.setValue(assets.first!.ciImage, forKey: kCIInputImageKey)
+        
+        for (key, value) in filterParameterValues
+        {
+            currentFilter.setValue(value, forKey: key)
+        }
         
         let outputImage = currentFilter.outputImage!
         

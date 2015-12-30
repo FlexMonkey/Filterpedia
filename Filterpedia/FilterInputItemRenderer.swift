@@ -12,6 +12,7 @@ import UIKit
 class FilterInputItemRenderer: UITableViewCell
 {
     let slider = LabelledSlider()
+    let vectorSlider = VectorSlider()
     let imagesSegmentedControl = UISegmentedControl(items: assetLabels)
     
     let titleLabel = UILabel()
@@ -35,10 +36,10 @@ class FilterInputItemRenderer: UITableViewCell
         return stackView
     }()
     
-    let vectorSlider = VectorSlider()
+    var inputKey: String?
     
     var attributes: [String : AnyObject] = ["": ""]
-        {
+    {
         didSet
         {
             titleLabel.text = (attributes[kCIAttributeDisplayName] as? String ?? "") + ": " + (attributes[kCIAttributeClass] as? String ?? "")
@@ -53,6 +54,16 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
     
+    weak var delegate: FilterInputItemRendererDelegate?
+
+    private(set) var value: AnyObject?
+    {
+        didSet
+        {
+            delegate?.filterInputItemRenderer(self, didChangeValue: value, forKey: inputKey)
+        }
+    }
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?)
     {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -64,11 +75,20 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.addArrangedSubview(slider)
         stackView.addArrangedSubview(imagesSegmentedControl)
         stackView.addArrangedSubview(vectorSlider)
+        
+        slider.addTarget(self, action: "sliderChangeHandler", forControlEvents: UIControlEvents.ValueChanged)
     }
     
     required init?(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Change handlers
+    
+    func sliderChangeHandler()
+    {
+        value = slider.value
     }
     
     func updateForAttribute()
@@ -124,4 +144,11 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.frame = contentView.bounds.insetBy(dx: 5, dy: 5)
         
     }
+}
+
+// MARK: FilterInputItemRendererDelegate
+
+protocol FilterInputItemRendererDelegate: class
+{
+    func filterInputItemRenderer(filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
 }
