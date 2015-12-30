@@ -37,8 +37,6 @@ class FilterDetail: UIView
     {
         didSet
         {
-            // filterParameterValues = [String: AnyObject]()
-            
             updateFromFilterName()
         }
     }
@@ -129,6 +127,11 @@ extension FilterDetail: UITableViewDataSource
         
         if let attributes = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
+            if (attributes[kCIAttributeClass] as? String) == "CIImage" && filterParameterValues[inputKey] == nil
+            {
+                filterParameterValues[inputKey] = assets.first!.ciImage
+            }
+            
             cell.detail = (inputKey: inputKey,
                 attributes: attributes,
                 filterParameterValues: filterParameterValues)
@@ -152,6 +155,11 @@ extension FilterDetail: FilterInputItemRendererDelegate
             
             imageView.setNeedsDisplay()
         }
+    }
+    
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    {
+        return false
     }
 }
 

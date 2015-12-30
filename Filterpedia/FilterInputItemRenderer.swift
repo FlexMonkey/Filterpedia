@@ -60,6 +60,7 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
    
+    private var title: String = ""
     private var filterParameterValues: [String: AnyObject] = ["": ""]
     
     private(set) var attributes: [String : AnyObject] = ["": ""]
@@ -68,6 +69,8 @@ class FilterInputItemRenderer: UITableViewCell
         {
             let displayName = attributes[kCIAttributeDisplayName] as? String ?? ""
             let className = attributes[kCIAttributeClass] as? String ?? ""
+            
+            title = "\(displayName) (\(inputKey): \(className))"
             
             titleLabel.text = "\(displayName) (\(inputKey): \(className))"
             
@@ -82,6 +85,11 @@ class FilterInputItemRenderer: UITableViewCell
         didSet
         {
             delegate?.filterInputItemRenderer(self, didChangeValue: value, forKey: inputKey)
+            
+            if let value = value
+            {
+                titleLabel.text = title + " = \(value)"
+            }
         }
     }
     
@@ -156,7 +164,6 @@ class FilterInputItemRenderer: UITableViewCell
     {
         guard let attributeType = attributes[kCIAttributeClass] as? String else
         {
-            // clear UI
             return
         }
         
@@ -171,12 +178,16 @@ class FilterInputItemRenderer: UITableViewCell
             slider.max = attributes[kCIAttributeSliderMax] as? Float ?? 1
             slider.value = filterParameterValues[inputKey] as? Float ?? attributes[kCIAttributeDefault] as? Float ?? 0
             
+            sliderChangeHandler()
+            
         case "CIImage":
             slider.hidden = true
             imagesSegmentedControl.hidden = false
             vectorSlider.hidden = true
             
-            imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage ==  filterParameterValues[inputKey] as? CIImage}) ?? -1
+            imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage ==  filterParameterValues[inputKey] as? CIImage}) ?? 0
+            
+            imagesSegmentedControlChangeHandler()
             
         case "CIVector":
             slider.hidden = true
@@ -184,6 +195,8 @@ class FilterInputItemRenderer: UITableViewCell
             vectorSlider.hidden = false
            
             vectorSlider.vector = filterParameterValues[inputKey] as? CIVector ?? attributes[kCIAttributeDefault] as? CIVector
+            
+            vectorSliderChangeHandler()
             
         case "CIColor":
             slider.hidden = true
@@ -194,6 +207,8 @@ class FilterInputItemRenderer: UITableViewCell
             {
                 vectorSlider.vector = CIVector(x: color.red, y: color.green, z: color.blue, w: color.alpha)
             }
+            
+            vectorSliderChangeHandler()
             
         default:
             slider.hidden = true
