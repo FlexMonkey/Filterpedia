@@ -50,17 +50,18 @@ class FilterInputItemRenderer: UITableViewCell
     weak var delegate: FilterInputItemRendererDelegate?
     private(set) var inputKey: String = ""
     
-    var detail: (inputKey: String, attributes: [String : AnyObject]) = ("", ["": ""])
+    var detail: (inputKey: String, attributes: [String : AnyObject], filterParameterValues: [String: AnyObject]) = ("", ["": ""], ["": ""])
     {
         didSet
         {
+            filterParameterValues = detail.filterParameterValues
             inputKey = detail.inputKey
             attributes = detail.attributes
-            
-            imagesSegmentedControl.selectedSegmentIndex = 0
         }
     }
    
+    private var filterParameterValues: [String: AnyObject] = ["": ""]
+    
     private(set) var attributes: [String : AnyObject] = ["": ""]
     {
         didSet
@@ -97,9 +98,7 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.addArrangedSubview(slider)
         stackView.addArrangedSubview(imagesSegmentedControl)
         stackView.addArrangedSubview(vectorSlider)
-        
-        imagesSegmentedControl.selectedSegmentIndex = 0
-        
+      
         slider.addTarget(self,
             action: "sliderChangeHandler",
             forControlEvents: UIControlEvents.ValueChanged)
@@ -170,26 +169,28 @@ class FilterInputItemRenderer: UITableViewCell
             
             slider.min = attributes[kCIAttributeSliderMin] as? Float ?? 0
             slider.max = attributes[kCIAttributeSliderMax] as? Float ?? 1
-            slider.value = attributes[kCIAttributeDefault] as? Float ?? 0
+            slider.value = filterParameterValues[inputKey] as? Float ?? attributes[kCIAttributeDefault] as? Float ?? 0
             
         case "CIImage":
             slider.hidden = true
             imagesSegmentedControl.hidden = false
             vectorSlider.hidden = true
             
+            imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage ==  filterParameterValues[inputKey] as? CIImage}) ?? -1
+            
         case "CIVector":
             slider.hidden = true
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
            
-            vectorSlider.vector = attributes[kCIAttributeDefault] as? CIVector
+            vectorSlider.vector = filterParameterValues[inputKey] as? CIVector ?? attributes[kCIAttributeDefault] as? CIVector
             
         case "CIColor":
             slider.hidden = true
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
             
-            if let color = attributes[kCIAttributeDefault] as? CIColor
+            if let color = filterParameterValues[inputKey] as? CIColor ?? attributes[kCIAttributeDefault] as? CIColor
             {
                 vectorSlider.vector = CIVector(x: color.red, y: color.green, z: color.blue, w: color.alpha)
             }

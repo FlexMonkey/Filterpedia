@@ -37,14 +37,14 @@ class FilterDetail: UIView
     {
         didSet
         {
-            filterParameterValues = [String: AnyObject]()
+            // filterParameterValues = [String: AnyObject]()
             
             updateFromFilterName()
         }
     }
     
     private var currentFilter: CIFilter?
-    private var filterParameterValues = [String: AnyObject]()
+    private var filterParameterValues: [String: AnyObject] = [kCIInputImageKey: assets.first!.ciImage]
     
     override init(frame: CGRect)
     {
@@ -129,7 +129,9 @@ extension FilterDetail: UITableViewDataSource
         
         if let attributes = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
-            cell.detail = (inputKey: inputKey, attributes: attributes)
+            cell.detail = (inputKey: inputKey,
+                attributes: attributes,
+                filterParameterValues: filterParameterValues)
         }
         
         cell.delegate = self
@@ -163,12 +165,7 @@ extension FilterDetail: GLKViewDelegate
         {
             return
         }
-        
-        if currentFilter.inputKeys.contains(kCIInputImageKey) && filterParameterValues[kCIInputImageKey] == nil
-        {
-            currentFilter.setValue(assets.first!.ciImage, forKey: kCIInputImageKey)
-        }
-        
+
         for (key, value) in filterParameterValues where currentFilter.inputKeys.contains(key)
         {
             currentFilter.setValue(value, forKey: key)
