@@ -29,7 +29,7 @@ class FilterDetail: UIView
         return CIContext(EAGLContext: self.eaglContext,
             options: [kCIContextWorkingColorSpace: NSNull()])
     }()
-    
+
     let eaglContext = EAGLContext(API: .OpenGLES2)
     let imageView = GLKView()
     
@@ -107,7 +107,7 @@ extension FilterDetail: UITableViewDelegate
 {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        return 80
+        return 85
     }
 }
 
@@ -164,9 +164,12 @@ extension FilterDetail: GLKViewDelegate
             return
         }
         
-        currentFilter.setValue(assets.first!.ciImage, forKey: kCIInputImageKey)
+        if currentFilter.inputKeys.contains(kCIInputImageKey) && filterParameterValues[kCIInputImageKey] == nil
+        {
+            currentFilter.setValue(assets.first!.ciImage, forKey: kCIInputImageKey)
+        }
         
-        for (key, value) in filterParameterValues
+        for (key, value) in filterParameterValues where currentFilter.inputKeys.contains(key)
         {
             currentFilter.setValue(value, forKey: key)
         }

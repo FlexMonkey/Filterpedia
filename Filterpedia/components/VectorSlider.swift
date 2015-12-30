@@ -74,7 +74,7 @@ class VectorSlider: UIControl
         {
             let slider = UISlider()
           
-             slider.maximumValue = Float(sliderMax)
+            slider.maximumValue = Float(sliderMax)
             slider.addTarget(self, action: "sliderChangeHandler", forControlEvents: UIControlEvents.ValueChanged)
             
             stackView.addArrangedSubview(slider)
