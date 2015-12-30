@@ -59,21 +59,21 @@ class FilterDetail: UIView
         
 //        print(CIFilter.localizedDescriptionForFilterName(filterName!))
         
-        let attributes = filter.attributes
-        
-        let displayName = attributes[kCIAttributeFilterDisplayName]
-        
-        print(displayName)
-        
-        let inputs = filter.inputKeys
-        
-        for input in inputs
-        {
-            let xxx = attributes[input]
-            
-            print(input )
-            print(xxx)
-        }
+//        let attributes = filter.attributes
+//        
+//        let displayName = attributes[kCIAttributeFilterDisplayName]
+//        
+//        print(displayName)
+//        
+//        let inputs = filter.inputKeys
+//        
+//        for input in inputs
+//        {
+//            let xxx = attributes[input]
+//            
+//            print(input )
+//            print(xxx)
+//        }
     }
     
     override func layoutSubviews()

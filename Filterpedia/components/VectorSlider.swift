@@ -46,15 +46,18 @@ class VectorSlider: UIControl
                 return
             }
             
-            
+            let sliderMax = vector.sliderMax
+
             for i in 0 ..< vector.count
             {
                 let slider = UISlider()
                 
+                slider.maximumValue = Float(sliderMax)
                 slider.value = Float(vector.valueAtIndex(i))
                 
                 stackView.addArrangedSubview(slider)
             }
+     
         }
     }
     
@@ -62,5 +65,28 @@ class VectorSlider: UIControl
     {
         stackView.frame = bounds
         stackView.spacing = 5
+    }
+}
+
+
+extension CIVector
+{
+    /// If the maximum of any of the vector's values is greater than one,
+    /// return double that, otherwise, return 1.
+    ///
+    /// `CIVector(x: 10, y: 12, z: 9, w: 11).sliderMax` = 24
+    /// `CIVector(x: 0, y: 1, z: 1, w: 0).sliderMax` = 1
+    
+    var sliderMax: CGFloat
+    {
+        var maxValue: CGFloat = 1
+        
+        for i in 0 ..< self.count
+        {
+            maxValue = max(maxValue,
+                self.valueAtIndex(i) > 1 ? self.valueAtIndex(i) * 2 : 1)
+        }
+        
+        return maxValue
     }
 }
