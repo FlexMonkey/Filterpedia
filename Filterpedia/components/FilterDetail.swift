@@ -94,8 +94,18 @@ class FilterDetail: UIView
     {
         guard let filter = CIFilter(name: filterName ?? "") else
         {
-            print("clear UI")
             return
+        }
+        
+        let attributes = filter.attributes
+
+        for inputKey in filter.inputKeys
+        {
+            if let attribute = attributes[inputKey]?[kCIAttributeClass]
+                where attribute == "CIImage" && filterParameterValues[inputKey] == nil
+            {
+                filterParameterValues[inputKey] = assets.first!.ciImage
+            }
         }
   
         currentFilter = filter
@@ -158,16 +168,6 @@ extension FilterDetail: UITableViewDataSource
         
         if let attributes = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
-            if (attributes[kCIAttributeClass] as? String) == "CIImage" && filterParameterValues[inputKey] == nil
-            {
-                filterParameterValues[inputKey] = assets.first!.ciImage
-            }
-            
-            if inputKey == "inputMessage" && filterParameterValues["inputMessage"] == nil
-            {
-                filterParameterValues["inputMessage"] = "hello".dataUsingEncoding(NSASCIIStringEncoding)
-            }
-            
             cell.detail = (inputKey: inputKey,
                 attributes: attributes,
                 filterParameterValues: filterParameterValues)

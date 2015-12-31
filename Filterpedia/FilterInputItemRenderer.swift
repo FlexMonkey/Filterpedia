@@ -176,7 +176,7 @@ class FilterInputItemRenderer: UITableViewCell
             
             slider.min = attributes[kCIAttributeSliderMin] as? Float ?? 0
             slider.max = attributes[kCIAttributeSliderMax] as? Float ?? 1
-            slider.value = filterParameterValues[inputKey] as? Float ?? attributes[kCIAttributeDefault] as? Float ?? 0
+            slider.value = filterParameterValues[inputKey] as? Float ?? attributes[kCIAttributeDefault] as? Float ?? attributes[kCIAttributeSliderMin] as? Float ?? 0
             
             sliderChangeHandler()
             

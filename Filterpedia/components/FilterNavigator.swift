@@ -29,6 +29,12 @@ class FilterNavigator: UIView
         kCICategoryHighDynamicRange
     ].sort()
     
+    /// Filterpedia doesn't support code generators
+    let exclusions = ["CIQRCodeGenerator",
+        "CIPDF417BarcodeGenerator",
+        "CICode128BarcodeGenerator",
+        "CIAztecCodeGenerator"]
+    
     let segmentedControl = UISegmentedControl(items: [FilterNavigatorMode.Grouped.rawValue, FilterNavigatorMode.Flat.rawValue])
     
     let tableView: UITableView =
@@ -109,9 +115,9 @@ extension FilterNavigator: UITableViewDelegate
         switch mode
         {
         case .Grouped:
-            filterName =  CIFilter.filterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
+            filterName = supportedFilterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
         case .Flat:
-            filterName = CIFilter.filterNamesInCategories(nil).sort()[indexPath.row]
+            filterName = supportedFilterNamesInCategories(nil).sort()[indexPath.row]
         }
         
         delegate?.filterNavigator(self, didSelectFilterName: filterName)
@@ -142,6 +148,22 @@ extension FilterNavigator: UITableViewDelegate
         
         return cell
     }
+    
+    func supportedFilterNamesInCategory(category: String?) -> [String]
+    {
+        return CIFilter.filterNamesInCategory(category).filter
+        {
+            !exclusions.contains($0)
+        }
+    }
+    
+    func supportedFilterNamesInCategories(categories: [String]?) -> [String]
+    {
+        return CIFilter.filterNamesInCategories(categories).filter
+        {
+            !exclusions.contains($0)
+        }
+    }
 }
 
 // MARK: UITableViewDataSource extension
@@ -164,9 +186,9 @@ extension FilterNavigator: UITableViewDataSource
         switch mode
         {
         case .Grouped:
-            return CIFilter.filterNamesInCategory(filterCategories[section]).count
+            return supportedFilterNamesInCategory(filterCategories[section]).count
         case .Flat:
-            return CIFilter.filterNamesInCategories(nil).count
+            return supportedFilterNamesInCategories(nil).count
         }
     }
     
@@ -180,9 +202,9 @@ extension FilterNavigator: UITableViewDataSource
         switch mode
         {
         case .Grouped:
-            filterName =  CIFilter.filterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
+            filterName =  supportedFilterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
         case .Flat:
-            filterName = CIFilter.filterNamesInCategories(nil).sort()[indexPath.row]
+            filterName = supportedFilterNamesInCategories(nil).sort()[indexPath.row]
         }
         
         cell.textLabel?.text = CIFilter.localizedNameForFilterName(filterName)
