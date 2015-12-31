@@ -251,10 +251,30 @@ extension FilterDetail: GLKViewDelegate
         
         let outputImage = currentFilter.outputImage!
         
-        ciContext.drawImage(outputImage,
-            inRect: CGRect(x: 0, y: 0,
-                width: imageView.drawableWidth,
-                height: imageView.drawableHeight),
-            fromRect: CGRect(x: 0, y: 0, width: 640, height: 640))
+        // if a filter's output image is smaller than 640x640 (e.g. circular wrap or lenticular 
+        // halo, composite the output over a black background)
+        if outputImage.extent.width < 640 || outputImage.extent.height < 640
+        {
+            let black = CIFilter(name: "CIConstantColorGenerator",
+                withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.blackColor())])!
+            let composite = CIFilter(name: "CISourceAtopCompositing",
+                withInputParameters: [kCIInputBackgroundImageKey: black.outputImage!])!
+            
+            composite.setValue(outputImage, forKey: kCIInputImageKey)
+            
+            ciContext.drawImage(composite.outputImage!,
+                inRect: CGRect(x: 0, y: 0,
+                    width: imageView.drawableWidth,
+                    height: imageView.drawableHeight),
+                fromRect: CGRect(x: 0, y: 0, width: 640, height: 640))
+        }
+        else
+        {
+            ciContext.drawImage(outputImage,
+                inRect: CGRect(x: 0, y: 0,
+                    width: imageView.drawableWidth,
+                    height: imageView.drawableHeight),
+                fromRect: CGRect(x: 0, y: 0, width: 640, height: 640))
+        }
     }
 }
