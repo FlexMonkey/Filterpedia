@@ -252,7 +252,7 @@ extension FilterDetail: GLKViewDelegate
         let outputImage = currentFilter.outputImage!
         
         // if a filter's output image is smaller than 640x640 (e.g. circular wrap or lenticular 
-        // halo, composite the output over a black background)
+        // halo), composite the output over a black background)
         if outputImage.extent.width < 640 || outputImage.extent.height < 640
         {
             let black = CIFilter(name: "CIConstantColorGenerator",

@@ -46,6 +46,8 @@ class LabelledSlider: UIControl
     {
         super.init(frame: frame)
 
+        minValueLabel.textAlignment = .Right
+        
         addSubview(minValueLabel)
         addSubview(maxValueLabel)
         
@@ -68,7 +70,7 @@ class LabelledSlider: UIControl
     
     override func layoutSubviews()
     {
-        let valueLabelWidth: CGFloat = 60
+        let valueLabelWidth: CGFloat = 75
         
         minValueLabel.frame = CGRect(x: 0,
             y: 0,
@@ -80,9 +82,9 @@ class LabelledSlider: UIControl
             width: valueLabelWidth,
             height: frame.height)
         
-        slider.frame = CGRect(x: valueLabelWidth,
+        slider.frame = CGRect(x: valueLabelWidth + 5,
             y: 0,
-            width: frame.width - valueLabelWidth - valueLabelWidth,
+            width: frame.width - valueLabelWidth - valueLabelWidth - 10,
             height: frame.height)
     }
     
