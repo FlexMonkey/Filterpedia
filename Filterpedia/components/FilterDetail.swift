@@ -70,6 +70,8 @@ class FilterDetail: UIView
     }
     
     private var currentFilter: CIFilter?
+    
+    /// User defined filter parameter values
     private var filterParameterValues: [String: AnyObject] = [kCIInputImageKey: assets.first!.ciImage]
     
     override init(frame: CGRect)
@@ -97,21 +99,53 @@ class FilterDetail: UIView
             return
         }
         
-        let attributes = filter.attributes
-
-        for inputKey in filter.inputKeys
-        {
-            if let attribute = attributes[inputKey]?[kCIAttributeClass]
-                where attribute == "CIImage" && filterParameterValues[inputKey] == nil
-            {
-                filterParameterValues[inputKey] = assets.first!.ciImage
-            }
-        }
-  
         currentFilter = filter
+        fixFilterParameterValues()
+        
         tableView.reloadData()
         
         imageView.setNeedsDisplay()
+    }
+    
+    /// Assign a default image if required and ensure existing
+    /// filterParameterValues won't break the new filter.
+    func fixFilterParameterValues()
+    {
+        guard let currentFilter = currentFilter else
+        {
+            return
+        }
+        
+        let attributes = currentFilter.attributes
+        
+        for inputKey in currentFilter.inputKeys
+        {
+            if let attribute = attributes[inputKey] as? [String : AnyObject]
+            {
+                // default image
+                if let className = attribute[kCIAttributeClass] as? String
+                    where className == "CIImage" && filterParameterValues[inputKey] == nil
+                {
+                    filterParameterValues[inputKey] = assets.first!.ciImage
+                }
+                
+                // ensure previous values don't exceed kCIAttributeSliderMax for this filter
+                if let maxValue = attribute[kCIAttributeSliderMax] as? Float,
+                    filterParameterValue = filterParameterValues[inputKey] as? Float
+                    where filterParameterValue > maxValue
+                {
+                    filterParameterValues[inputKey] = maxValue
+                }
+                
+                // ensure vector is correct length
+                if let defaultVector = attribute[kCIAttributeDefault] as? CIVector,
+                    filterParameterValue = filterParameterValues[inputKey] as? CIVector
+                    where defaultVector.count != filterParameterValue.count
+                {
+                    filterParameterValues[inputKey] = defaultVector
+                }
+            }
+        }
     }
     
     override func layoutSubviews()
@@ -166,10 +200,10 @@ extension FilterDetail: UITableViewDataSource
  
         let inputKey = currentFilter?.inputKeys[indexPath.row] ?? ""
         
-        if let attributes = currentFilter?.attributes[inputKey] as? [String : AnyObject]
+        if let attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
             cell.detail = (inputKey: inputKey,
-                attributes: attributes,
+                attribute: attribute,
                 filterParameterValues: filterParameterValues)
         }
         

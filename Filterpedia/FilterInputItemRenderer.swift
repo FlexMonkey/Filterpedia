@@ -50,31 +50,31 @@ class FilterInputItemRenderer: UITableViewCell
     weak var delegate: FilterInputItemRendererDelegate?
     private(set) var inputKey: String = ""
     
-    var detail: (inputKey: String, attributes: [String : AnyObject], filterParameterValues: [String: AnyObject]) = ("", ["": ""], ["": ""])
+    var detail: (inputKey: String, attribute: [String : AnyObject], filterParameterValues: [String: AnyObject]) = ("", [String: AnyObject](), [String: AnyObject]())
     {
         didSet
         {
             filterParameterValues = detail.filterParameterValues
             inputKey = detail.inputKey
-            attributes = detail.attributes
+            attribute = detail.attribute
         }
     }
    
     private var title: String = ""
-    private var filterParameterValues: [String: AnyObject] = ["": ""]
+    private var filterParameterValues = [String: AnyObject]()
     
-    private(set) var attributes: [String : AnyObject] = ["": ""]
+    private(set) var attribute = [String : AnyObject]()
     {
         didSet
         {
-            let displayName = attributes[kCIAttributeDisplayName] as? String ?? ""
-            let className = attributes[kCIAttributeClass] as? String ?? ""
+            let displayName = attribute[kCIAttributeDisplayName] as? String ?? ""
+            let className = attribute[kCIAttributeClass] as? String ?? ""
             
             title = "\(displayName) (\(inputKey): \(className))"
             
             titleLabel.text = "\(displayName) (\(inputKey): \(className))"
             
-            descriptionLabel.text = attributes[kCIAttributeDescription] as? String ?? "[No description]"
+            descriptionLabel.text = attribute[kCIAttributeDescription] as? String ?? "[No description]"
         
             updateForAttribute()
         }
@@ -134,7 +134,7 @@ class FilterInputItemRenderer: UITableViewCell
     
     func vectorSliderChangeHandler()
     {
-        guard let attributeType = attributes[kCIAttributeClass] as? String,
+        guard let attributeType = attribute[kCIAttributeClass] as? String,
             vector = vectorSlider.vector else
         {
             return
@@ -162,7 +162,7 @@ class FilterInputItemRenderer: UITableViewCell
     
     func updateForAttribute()
     {
-        guard let attributeType = attributes[kCIAttributeClass] as? String else
+        guard let attributeType = attribute[kCIAttributeClass] as? String else
         {
             return
         }
@@ -174,9 +174,11 @@ class FilterInputItemRenderer: UITableViewCell
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = true
             
-            slider.min = attributes[kCIAttributeSliderMin] as? Float ?? 0
-            slider.max = attributes[kCIAttributeSliderMax] as? Float ?? 1
-            slider.value = filterParameterValues[inputKey] as? Float ?? attributes[kCIAttributeDefault] as? Float ?? attributes[kCIAttributeSliderMin] as? Float ?? 0
+            slider.min = attribute[kCIAttributeSliderMin] as? Float ?? 0
+            slider.max = attribute[kCIAttributeSliderMax] as? Float ?? 1
+            slider.value = filterParameterValues[inputKey] as? Float ??
+                attribute[kCIAttributeDefault] as? Float ??
+                attribute[kCIAttributeSliderMin] as? Float ?? 0
             
             sliderChangeHandler()
             
@@ -194,7 +196,7 @@ class FilterInputItemRenderer: UITableViewCell
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
            
-            vectorSlider.vector = filterParameterValues[inputKey] as? CIVector ?? attributes[kCIAttributeDefault] as? CIVector
+            vectorSlider.vector = filterParameterValues[inputKey] as? CIVector ?? attribute[kCIAttributeDefault] as? CIVector
             
             vectorSliderChangeHandler()
             
@@ -203,7 +205,7 @@ class FilterInputItemRenderer: UITableViewCell
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
             
-            if let color = filterParameterValues[inputKey] as? CIColor ?? attributes[kCIAttributeDefault] as? CIColor
+            if let color = filterParameterValues[inputKey] as? CIColor ?? attribute[kCIAttributeDefault] as? CIColor
             {
                 vectorSlider.vector = CIVector(x: color.red, y: color.green, z: color.blue, w: color.alpha)
             }

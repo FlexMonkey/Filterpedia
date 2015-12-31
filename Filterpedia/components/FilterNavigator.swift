@@ -29,11 +29,13 @@ class FilterNavigator: UIView
         kCICategoryHighDynamicRange
     ].sort()
     
-    /// Filterpedia doesn't support code generators
+    /// Filterpedia doesn't support code generators, color cube filters
     let exclusions = ["CIQRCodeGenerator",
         "CIPDF417BarcodeGenerator",
         "CICode128BarcodeGenerator",
-        "CIAztecCodeGenerator"]
+        "CIAztecCodeGenerator",
+        "CIColorCubeWithColorSpace",
+        "CIColorCube"]
     
     let segmentedControl = UISegmentedControl(items: [FilterNavigatorMode.Grouped.rawValue, FilterNavigatorMode.Flat.rawValue])
     
@@ -202,7 +204,7 @@ extension FilterNavigator: UITableViewDataSource
         switch mode
         {
         case .Grouped:
-            filterName =  supportedFilterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
+            filterName = supportedFilterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
         case .Flat:
             filterName = supportedFilterNamesInCategories(nil).sort()[indexPath.row]
         }
