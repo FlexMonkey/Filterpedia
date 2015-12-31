@@ -22,6 +22,7 @@
 		3E9A722D1C33AAED00CAD516 /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A722C1C33AAED00CAD516 /* FilterInputItemRenderer.swift */; };
 		3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A722E1C350E6A00CAD516 /* stop.jpg */; };
 		3E9A72351C35101A00CAD516 /* vegas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72341C35101A00CAD516 /* vegas.jpg */; };
+		3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72361C35250100CAD516 /* screenshot.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		3E9A722C1C33AAED00CAD516 /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterInputItemRenderer.swift; sourceTree = "<group>"; };
 		3E9A722E1C350E6A00CAD516 /* stop.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = stop.jpg; path = assets/stop.jpg; sourceTree = "<group>"; };
 		3E9A72341C35101A00CAD516 /* vegas.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = vegas.jpg; path = assets/vegas.jpg; sourceTree = "<group>"; };
+		3E9A72361C35250100CAD516 /* screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = screenshot.jpg; path = assets/screenshot.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 		3E9A72251C33A7B100CAD516 /* asssets */ = {
 			isa = PBXGroup;
 			children = (
+				3E9A72361C35250100CAD516 /* screenshot.jpg */,
 				3E9A72341C35101A00CAD516 /* vegas.jpg */,
 				3E9A722E1C350E6A00CAD516 /* stop.jpg */,
 				3E9A72261C33A8AB00CAD516 /* monalisa.jpg */,
@@ -169,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */,
+				3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */,
 				3E9A72151C325E5600CAD516 /* LaunchScreen.storyboard in Resources */,
 				3E9A72121C325E5600CAD516 /* Assets.xcassets in Resources */,
 				3E9A72101C325E5600CAD516 /* Main.storyboard in Resources */,
