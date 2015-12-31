@@ -23,6 +23,8 @@ import GLKit
 
 class FilterDetail: UIView
 {
+    let rect640x640 = CGRect(x: 0, y: 0, width: 640, height: 640)
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     let eaglContext = EAGLContext(API: .OpenGLES2)
     
     let shapeLayer: CAShapeLayer =
@@ -73,6 +75,28 @@ class FilterDetail: UIView
             options: [kCIContextWorkingColorSpace: NSNull()])
     }()
 
+    var finalImage: CGImageRef?
+
+    /// Whether the user has changed the filter whilst it's
+    /// running in the background.
+    var pending = false
+    
+    /// Whether a filter is currently running in the background
+    var busy = false
+    {
+        didSet
+        {
+            if busy
+            {
+                activityIndicator.startAnimating()
+            }
+            else
+            {
+                activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
     var filterName: String?
     {
         didSet
@@ -96,6 +120,8 @@ class FilterDetail: UIView
         addSubview(tableView)
         addSubview(imageView)
         
+        imageView.addSubview(activityIndicator)
+        
         layer.addSublayer(shapeLayer)
     }
     
@@ -116,7 +142,7 @@ class FilterDetail: UIView
         
         tableView.reloadData()
         
-        imageView.setNeedsDisplay()
+        applyFilter()
     }
     
     /// Assign a default image if required and ensure existing
@@ -159,6 +185,64 @@ class FilterDetail: UIView
             }
         }
     }
+
+    func applyFilter()
+    {
+        guard !busy else
+        {
+            pending = true
+            return
+        }
+        
+        busy = true
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
+        {
+            guard let currentFilter = self.currentFilter else
+            {
+                return
+            }
+            
+            for (key, value) in self.filterParameterValues where currentFilter.inputKeys.contains(key)
+            {
+                currentFilter.setValue(value, forKey: key)
+            }
+            
+            let outputImage = currentFilter.outputImage!
+            
+            // if a filter's output image is smaller than 640x640 (e.g. circular wrap or lenticular
+            // halo), composite the output over a black background)
+            if outputImage.extent.width < 640 || outputImage.extent.height < 640
+            {
+                let black = CIFilter(name: "CIConstantColorGenerator",
+                    withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.blackColor())])!
+                let composite = CIFilter(name: "CISourceAtopCompositing",
+                    withInputParameters: [kCIInputBackgroundImageKey: black.outputImage!])!
+                
+                composite.setValue(outputImage, forKey: kCIInputImageKey)
+                
+               self.finalImage = self.ciContext.createCGImage(composite.outputImage!,
+                    fromRect: self.rect640x640)
+            }
+            else
+            {
+                self.finalImage = self.ciContext.createCGImage(outputImage,
+                    fromRect: self.rect640x640)
+            }
+            
+            dispatch_async(dispatch_get_main_queue())
+            {
+                self.imageView.setNeedsDisplay()
+                self.busy = false
+                
+                if self.pending
+                {
+                    self.pending = false
+                    self.applyFilter()
+                }
+            }
+        }
+    }
     
     override func layoutSubviews()
     {
@@ -177,6 +261,8 @@ class FilterDetail: UIView
             height: thirdHeight)
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
+        activityIndicator.frame = imageView.bounds
         
         let path = UIBezierPath()
         path.moveToPoint(CGPoint(x: 0, y: 0))
@@ -235,7 +321,7 @@ extension FilterDetail: FilterInputItemRendererDelegate
         {
             filterParameterValues[key] = value
             
-            imageView.setNeedsDisplay()
+            applyFilter()
         }
     }
     
@@ -251,42 +337,15 @@ extension FilterDetail: GLKViewDelegate
 {
     func glkView(view: GLKView, drawInRect rect: CGRect)
     {
-        guard let currentFilter = currentFilter else
+        guard let finalImage = finalImage else
         {
             return
         }
 
-        for (key, value) in filterParameterValues where currentFilter.inputKeys.contains(key)
-        {
-            currentFilter.setValue(value, forKey: key)
-        }
-        
-        let outputImage = currentFilter.outputImage!
-        
-        // if a filter's output image is smaller than 640x640 (e.g. circular wrap or lenticular 
-        // halo), composite the output over a black background)
-        if outputImage.extent.width < 640 || outputImage.extent.height < 640
-        {
-            let black = CIFilter(name: "CIConstantColorGenerator",
-                withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.blackColor())])!
-            let composite = CIFilter(name: "CISourceAtopCompositing",
-                withInputParameters: [kCIInputBackgroundImageKey: black.outputImage!])!
-            
-            composite.setValue(outputImage, forKey: kCIInputImageKey)
-            
-            ciContext.drawImage(composite.outputImage!,
-                inRect: CGRect(x: 0, y: 0,
-                    width: imageView.drawableWidth,
-                    height: imageView.drawableHeight),
-                fromRect: CGRect(x: 0, y: 0, width: 640, height: 640))
-        }
-        else
-        {
-            ciContext.drawImage(outputImage,
-                inRect: CGRect(x: 0, y: 0,
-                    width: imageView.drawableWidth,
-                    height: imageView.drawableHeight),
-                fromRect: CGRect(x: 0, y: 0, width: 640, height: 640))
-        }
+        ciContext.drawImage(CIImage(CGImage: finalImage),
+            inRect: CGRect(x: 0, y: 0,
+                width: imageView.drawableWidth,
+                height: imageView.drawableHeight),
+            fromRect: rect640x640)
     }
 }
