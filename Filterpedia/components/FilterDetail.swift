@@ -27,6 +27,8 @@ class FilterDetail: UIView
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     let eaglContext = EAGLContext(API: .OpenGLES2)
     
+    let compositeOverBlackFilter = CompositeOverBlackFilter()
+    
     let shapeLayer: CAShapeLayer =
     {
         let layer = CAShapeLayer()
@@ -214,14 +216,10 @@ class FilterDetail: UIView
             // halo), composite the output over a black background)
             if outputImage.extent.width < 640 || outputImage.extent.height < 640
             {
-                let black = CIFilter(name: "CIConstantColorGenerator",
-                    withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.blackColor())])!
-                let composite = CIFilter(name: "CISourceAtopCompositing",
-                    withInputParameters: [kCIInputBackgroundImageKey: black.outputImage!])!
+                self.compositeOverBlackFilter.setValue(outputImage,
+                    forKey: kCIInputImageKey)
                 
-                composite.setValue(outputImage, forKey: kCIInputImageKey)
-                
-               self.finalImage = self.ciContext.createCGImage(composite.outputImage!,
+                self.finalImage = self.ciContext.createCGImage(self.compositeOverBlackFilter.outputImage!,
                     fromRect: self.rect640x640)
             }
             else
