@@ -211,11 +211,26 @@ class FilterDetail: UIView
             }
             
             let outputImage = currentFilter.outputImage!
-            
-            // if a filter's output image is smaller than 640x640 (e.g. circular wrap or lenticular
-            // halo), composite the output over a black background)
-            if outputImage.extent.width < 640 || outputImage.extent.height < 640
+
+            if outputImage.extent.width == 1 || outputImage.extent.height == 1
             {
+                // if a filter's output image height or width is 1,
+                // (e.g. a reduction filter) stretch to 640x640
+                
+                let stretch = CIFilter(name: "CIStretchCrop",
+                    withInputParameters: ["inputSize": CIVector(x: 640, y: 640),
+                        "inputCropAmount": 0,
+                        "inputCenterStretchAmount": 1,
+                        kCIInputImageKey: outputImage])!
+                
+                self.finalImage = self.ciContext.createCGImage(stretch.outputImage!,
+                    fromRect: self.rect640x640)
+            }
+            else if outputImage.extent.width < 640 || outputImage.extent.height < 640
+            {
+                // if a filter's output image is smaller than 640x640 (e.g. circular wrap or lenticular
+                // halo), composite the output over a black background)
+                
                 self.compositeOverBlackFilter.setValue(outputImage,
                     forKey: kCIInputImageKey)
                 
