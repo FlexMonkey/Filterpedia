@@ -199,7 +199,7 @@ class FilterInputItemRenderer: UITableViewCell
             imagesSegmentedControl.hidden = false
             vectorSlider.hidden = true
             
-            imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage ==  filterParameterValues[inputKey] as? CIImage}) ?? 0
+            imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage == filterParameterValues[inputKey] as? CIImage}) ?? 0
             
             imagesSegmentedControlChangeHandler()
             
@@ -207,8 +207,11 @@ class FilterInputItemRenderer: UITableViewCell
             slider.hidden = true
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
-           
-            vectorSlider.vector = filterParameterValues[inputKey] as? CIVector ?? attribute[kCIAttributeDefault] as? CIVector
+         
+            let max: CGFloat? = (attribute[kCIAttributeType] as? String == kCIAttributeTypePosition) ? 640 : nil
+            let vector = filterParameterValues[inputKey] as? CIVector ?? attribute[kCIAttributeDefault] as? CIVector
+            
+            vectorSlider.vectorWithMaximumValue = (vector, max)
             
             vectorSliderChangeHandler()
             
@@ -219,7 +222,8 @@ class FilterInputItemRenderer: UITableViewCell
             
             if let color = filterParameterValues[inputKey] as? CIColor ?? attribute[kCIAttributeDefault] as? CIColor
             {
-                vectorSlider.vector = CIVector(x: color.red, y: color.green, z: color.blue, w: color.alpha)
+                let colorVector = CIVector(x: color.red, y: color.green, z: color.blue, w: color.alpha)
+                vectorSlider.vectorWithMaximumValue = (colorVector, nil)
             }
             
             vectorSliderChangeHandler()

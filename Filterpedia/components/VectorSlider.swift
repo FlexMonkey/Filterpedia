@@ -22,6 +22,8 @@ import UIKit
 
 class VectorSlider: UIControl
 {
+    var maximumValue: CGFloat?
+    
     let stackView: UIStackView =
     {
         let stackView = UIStackView()
@@ -44,7 +46,16 @@ class VectorSlider: UIControl
         fatalError("init(coder:) has not been implemented")
     }
     
-    var vector: CIVector?
+    var vectorWithMaximumValue: (vector: CIVector?, maximumValue: CGFloat?)?
+    {
+        didSet
+        {
+            maximumValue = vectorWithMaximumValue?.maximumValue
+            vector = vectorWithMaximumValue?.vector
+        }
+    }
+    
+    private(set) var vector: CIVector?
     {
         didSet
         {
@@ -80,7 +91,7 @@ class VectorSlider: UIControl
             return
         }
    
-        let sliderMax = vector.sliderMax
+        let sliderMax = maximumValue ?? vector.sliderMax
         
         for _ in 0 ..< vector.count
         {
