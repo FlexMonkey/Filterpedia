@@ -211,7 +211,7 @@ class FilterDetail: UIView
             }
             
             let outputImage = currentFilter.outputImage!
-
+            
             if outputImage.extent.width == 1 || outputImage.extent.height == 1
             {
                 // if a filter's output image height or width is 1,

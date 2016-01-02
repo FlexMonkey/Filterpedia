@@ -41,13 +41,15 @@ class FilterNavigator: UIView
         kCICategoryHighDynamicRange
     ].sort()
     
-    /// Filterpedia doesn't support code generators, color cube filters
+    /// Filterpedia doesn't support code generators, color cube filters, filters that require NSValue
     let exclusions = ["CIQRCodeGenerator",
         "CIPDF417BarcodeGenerator",
         "CICode128BarcodeGenerator",
         "CIAztecCodeGenerator",
         "CIColorCubeWithColorSpace",
-        "CIColorCube"]
+        "CIColorCube",
+        "CIAffineTransform",
+        "CICrop"] // to do: fix CICrop!
     
     let segmentedControl = UISegmentedControl(items: [FilterNavigatorMode.Grouped.rawValue, FilterNavigatorMode.Flat.rawValue])
     
