@@ -49,6 +49,8 @@ class FilterNavigator: UIView
         "CIColorCubeWithColorSpace",
         "CIColorCube",
         "CIAffineTransform",
+        "CIAffineClamp",
+        "CIAffineTile",
         "CICrop"] // to do: fix CICrop!
     
     let segmentedControl = UISegmentedControl(items: [FilterNavigatorMode.Grouped.rawValue, FilterNavigatorMode.Flat.rawValue])
