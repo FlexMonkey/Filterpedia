@@ -36,6 +36,7 @@ class FilterNavigator: UIView
         kCICategoryGenerator,
         kCICategoryReduction,
         kCICategoryGradient,
+        kCICategorySharpen, 
         kCICategoryStylize,
         kCICategoryBlur,
         kCICategoryHighDynamicRange
