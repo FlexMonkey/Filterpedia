@@ -25,21 +25,20 @@ class FilterNavigator: UIView
 {
     let filterCategories =
     [
-        kCICategoryDistortionEffect,
-        kCICategoryGeometryAdjustment,
-        kCICategoryCompositeOperation,
-        kCICategoryHalftoneEffect,
+        kCICategoryBlur,
         kCICategoryColorAdjustment,
         kCICategoryColorEffect,
-        kCICategoryTransition,
-        kCICategoryTileEffect,
+        kCICategoryCompositeOperation,
+        kCICategoryDistortionEffect,
         kCICategoryGenerator,
-        kCICategoryReduction,
+        kCICategoryGeometryAdjustment,
         kCICategoryGradient,
-        kCICategorySharpen, 
+        kCICategoryHalftoneEffect,
+        kCICategoryReduction,
+        kCICategorySharpen,
         kCICategoryStylize,
-        kCICategoryBlur,
-        kCICategoryHighDynamicRange
+        kCICategoryTileEffect,
+        kCICategoryTransition
     ].sort()
     
     /// Filterpedia doesn't support code generators, color cube filters, filters that require NSValue
