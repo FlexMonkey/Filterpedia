@@ -19,13 +19,11 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import UIKit
-import GLKit
 
 class FilterDetail: UIView
 {
     let rect640x640 = CGRect(x: 0, y: 0, width: 640, height: 640)
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    let eaglContext = EAGLContext(API: .OpenGLES2)
     
     let compositeOverBlackFilter = CompositeOverBlackFilter()
     
@@ -51,20 +49,18 @@ class FilterDetail: UIView
         return tableView
     }()
     
-    lazy var imageView: GLKView =
+    lazy var imageView: ImageView =
     {
         [unowned self] in
         
-        let imageView = GLKView()
+        let imageView = ImageView()
         
         imageView.layer.borderColor = UIColor.grayColor().CGColor
         imageView.layer.borderWidth = 1
         imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
         imageView.layer.shadowOpacity = 0.75
         imageView.layer.shadowRadius = 5
-        
-        imageView.context = self.eaglContext
-        imageView.delegate = self
+
         
         return imageView
     }()
@@ -73,11 +69,9 @@ class FilterDetail: UIView
     {
         [unowned self] in
         
-        return CIContext(EAGLContext: self.eaglContext,
+        return CIContext(EAGLContext: self.imageView.eaglContext,
             options: [kCIContextWorkingColorSpace: NSNull()])
     }()
-
-    var finalImage: CGImageRef?
 
     /// Whether the user has changed the filter whilst it's
     /// running in the background.
@@ -211,6 +205,7 @@ class FilterDetail: UIView
             }
             
             let outputImage = currentFilter.outputImage!
+            let finalImage: CGImageRef
             
             if outputImage.extent.width == 1 || outputImage.extent.height == 1
             {
@@ -223,7 +218,7 @@ class FilterDetail: UIView
                         "inputCenterStretchAmount": 1,
                         kCIInputImageKey: outputImage])!
                 
-                self.finalImage = self.ciContext.createCGImage(stretch.outputImage!,
+                finalImage = self.ciContext.createCGImage(stretch.outputImage!,
                     fromRect: self.rect640x640)
             }
             else if outputImage.extent.width < 640 || outputImage.extent.height < 640
@@ -234,18 +229,18 @@ class FilterDetail: UIView
                 self.compositeOverBlackFilter.setValue(outputImage,
                     forKey: kCIInputImageKey)
                 
-                self.finalImage = self.ciContext.createCGImage(self.compositeOverBlackFilter.outputImage!,
+                finalImage = self.ciContext.createCGImage(self.compositeOverBlackFilter.outputImage!,
                     fromRect: self.rect640x640)
             }
             else
             {
-                self.finalImage = self.ciContext.createCGImage(outputImage,
+                finalImage = self.ciContext.createCGImage(outputImage,
                     fromRect: self.rect640x640)
             }
             
             dispatch_async(dispatch_get_main_queue())
             {
-                self.imageView.setNeedsDisplay()
+                self.imageView.image = CIImage(CGImage: finalImage)
                 self.busy = false
                 
                 if self.pending
@@ -309,9 +304,8 @@ extension FilterDetail: UITableViewDataSource
         let cell = tableView.dequeueReusableCellWithIdentifier("FilterInputItemRenderer",
             forIndexPath: indexPath) as! FilterInputItemRenderer
  
-        let inputKey = currentFilter?.inputKeys[indexPath.row] ?? ""
-        
-        if let attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
+        if let inputKey = currentFilter?.inputKeys[indexPath.row],
+            attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
             cell.detail = (inputKey: inputKey,
                 attribute: attribute,
@@ -341,24 +335,5 @@ extension FilterDetail: FilterInputItemRendererDelegate
     func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
     {
         return false
-    }
-}
-
-// MARK: GLKViewDelegate extension
-
-extension FilterDetail: GLKViewDelegate
-{
-    func glkView(view: GLKView, drawInRect rect: CGRect)
-    {
-        guard let finalImage = finalImage else
-        {
-            return
-        }
-
-        ciContext.drawImage(CIImage(CGImage: finalImage),
-            inRect: CGRect(x: 0, y: 0,
-                width: imageView.drawableWidth,
-                height: imageView.drawableHeight),
-            fromRect: rect640x640)
     }
 }
