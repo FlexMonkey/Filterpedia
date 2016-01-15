@@ -185,7 +185,7 @@ class FilterInputItemRenderer: UITableViewCell
             slider.hidden = false
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = true
-            
+     
             slider.min = attribute[kCIAttributeSliderMin] as? Float ?? 0
             slider.max = attribute[kCIAttributeSliderMax] as? Float ?? 1
             slider.value = filterParameterValues[inputKey] as? Float ??

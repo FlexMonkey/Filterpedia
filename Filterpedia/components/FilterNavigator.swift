@@ -25,6 +25,7 @@ class FilterNavigator: UIView
 {
     let filterCategories =
     [
+        CategoryCustomFilters,
         kCICategoryBlur,
         kCICategoryColorAdjustment,
         kCICategoryColorEffect,
@@ -38,8 +39,8 @@ class FilterNavigator: UIView
         kCICategorySharpen,
         kCICategoryStylize,
         kCICategoryTileEffect,
-        kCICategoryTransition
-    ].sort()
+        kCICategoryTransition,
+    ].sort{ CIFilter.localizedNameForCategory($0) < CIFilter.localizedNameForCategory($1)}
     
     /// Filterpedia doesn't support code generators, color cube filters, filters that require NSValue
     let exclusions = ["CIQRCodeGenerator",
@@ -82,6 +83,8 @@ class FilterNavigator: UIView
     override init(frame: CGRect)
     {
         super.init(frame: frame)
+        
+        CustomFiltersVendor.registerFilters()
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -225,7 +228,7 @@ extension FilterNavigator: UITableViewDataSource
             filterName = supportedFilterNamesInCategories(nil).sort()[indexPath.row]
         }
         
-        cell.textLabel?.text = CIFilter.localizedNameForFilterName(filterName)
+        cell.textLabel?.text = CIFilter.localizedNameForFilterName(filterName) ?? (CIFilter(name: filterName)?.attributes[kCIAttributeFilterDisplayName] as? String) ?? filterName
         
         return cell
     }
