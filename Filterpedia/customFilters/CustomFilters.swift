@@ -33,6 +33,16 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                     kCICategoryNonSquarePixels,
                     kCICategoryInterlaced]
             ])
+        
+        CIFilter.registerFilterName("VignetteNoirFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters,
+                    kCICategoryVideo,
+                    kCICategoryStillImage,
+                    kCICategoryNonSquarePixels,
+                    kCICategoryInterlaced]
+            ])
     }
     
     @objc func filterWithName(name: String) -> CIFilter?
@@ -44,6 +54,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
 
         case "CRTFilter":
             return CRTFilter()
+            
+        case "VignetteNoirFilter":
+            return VignetteNoirFilter()
             
         default:
             return nil
@@ -90,7 +103,7 @@ class ThresholdFilter: CIFilter
         "}"
     )
     
-    override var outputImage : CIImage!
+    override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
             thresholdKernel = thresholdKernel else
@@ -102,6 +115,85 @@ class ThresholdFilter: CIFilter
         let arguments = [inputImage, inputThreshold]
         
         return thresholdKernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
+
+// MARK: VignetteNoir
+
+class VignetteNoirFilter: CIFilter
+{
+    var inputImage: CIImage?
+    var inputRadius: CGFloat = 1
+    var inputIntensity: CGFloat = 2
+    var inputEdgeBrightness: CGFloat = -0.3
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Vignette Noir Filter",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputIntensity": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Intensity",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 10,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputEdgeBrightness": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: -0.3,
+                kCIAttributeDisplayName: "Edge Brightness",
+                kCIAttributeMin: -1,
+                kCIAttributeSliderMin: -1,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override func setDefaults()
+    {
+        inputRadius = 1
+        inputIntensity = 2
+        inputEdgeBrightness = -0.3
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let mask = CIImage(color: CIColor(red: 1, green: 1, blue: 1))
+            .imageByCroppingToRect(inputImage.extent)
+            .imageByApplyingFilter("CIVignette", withInputParameters: [
+                kCIInputRadiusKey: inputRadius,
+                kCIInputIntensityKey: inputIntensity])
+        
+        let noir = inputImage
+            .imageByApplyingFilter("CIPhotoEffectNoir",withInputParameters: nil)
+            .imageByApplyingFilter("CIColorControls", withInputParameters: [
+                kCIInputBrightnessKey: inputEdgeBrightness])
+        
+        let blendWithMaskFilter = CIFilter(name: "CIBlendWithMask", withInputParameters: [
+            kCIInputImageKey: inputImage,
+            kCIInputBackgroundImageKey: noir,
+            kCIInputMaskImageKey: mask])
+        
+        return blendWithMaskFilter?.outputImage
     }
 }
 
@@ -208,7 +300,7 @@ class CRTFilter: CIFilter
         )
         
         
-        override var outputImage : CIImage!
+        override var outputImage: CIImage!
         {
             if let inputImage = inputImage,
                 crtColorKernel = crtColorKernel
