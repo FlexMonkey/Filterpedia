@@ -65,6 +65,16 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                     kCICategoryNonSquarePixels,
                     kCICategoryInterlaced]
             ])
+        
+        CIFilter.registerFilterName("VintageVignette",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters,
+                    kCICategoryVideo,
+                    kCICategoryStillImage,
+                    kCICategoryNonSquarePixels,
+                    kCICategoryInterlaced]
+            ])
     }
     
     @objc func filterWithName(name: String) -> CIFilter?
@@ -83,13 +93,96 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "MercurializeFilter":
             return MercurializeFilter()
             
+        case "VintageVignette":
+            return VintageVignette()
+            
         default:
             return nil
         }
     }
 }
 
+// MARK: Vintage vignette
+
+/// This is the VintageVignette filter from my book, Core Image for Swift,
+/// and is an example of a very simple composite custom filter.
+class VintageVignette: CIFilter
+{
+    var inputImage : CIImage?
+    
+    var inputVignetteIntensity: CGFloat = 1
+    var inputVignetteRadius: CGFloat = 1
+    var inputSepiaToneIntensity: CGFloat = 1
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Vintage Vignette",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputVignetteIntensity": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Vignette Intensity",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputVignetteRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Vignette Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputSepiaToneIntensity": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Sepia Tone Intensity",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override func setDefaults()
+    {
+        inputVignetteIntensity = 1
+        inputVignetteRadius = 1
+        inputSepiaToneIntensity = 1
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let finalImage = inputImage
+            .imageByApplyingFilter("CIVignette",
+                withInputParameters: [
+                    kCIInputIntensityKey: inputVignetteIntensity,
+                    kCIInputRadiusKey: inputVignetteRadius])
+            .imageByApplyingFilter("CISepiaTone",
+                withInputParameters: [
+                    kCIInputIntensityKey: inputSepiaToneIntensity])
+        
+        return finalImage
+    }
+    
+}
+
 // MARK: Threshold
+
 class ThresholdFilter: CIFilter
 {
     var inputImage : CIImage?
