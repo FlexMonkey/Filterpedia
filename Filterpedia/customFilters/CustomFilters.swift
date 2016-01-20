@@ -29,51 +29,43 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         CIFilter.registerFilterName("ThresholdFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters,
-                    kCICategoryVideo,
-                    kCICategoryStillImage,
-                    kCICategoryNonSquarePixels,
-                    kCICategoryInterlaced]
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
         CIFilter.registerFilterName("CRTFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters,
-                    kCICategoryVideo,
-                    kCICategoryStillImage,
-                    kCICategoryNonSquarePixels,
-                    kCICategoryInterlaced]
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
         CIFilter.registerFilterName("VignetteNoirFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters,
-                    kCICategoryVideo,
-                    kCICategoryStillImage,
-                    kCICategoryNonSquarePixels,
-                    kCICategoryInterlaced]
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
         CIFilter.registerFilterName("MercurializeFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters,
-                    kCICategoryVideo,
-                    kCICategoryStillImage,
-                    kCICategoryNonSquarePixels,
-                    kCICategoryInterlaced]
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
         CIFilter.registerFilterName("VintageVignette",
             constructor: CustomFiltersVendor(),
             classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters,
-                    kCICategoryVideo,
-                    kCICategoryStillImage,
-                    kCICategoryNonSquarePixels,
-                    kCICategoryInterlaced]
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("RGBChannelCompositing",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("RGBChannelGaussianBlur",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
     }
     
@@ -95,6 +87,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "VintageVignette":
             return VintageVignette()
+            
+        case "RGBChannelCompositing":
+            return RGBChannelCompositing()
+            
+        case "RGBChannelGaussianBlur":
+            return RGBChannelGaussianBlur()
             
         default:
             return nil
