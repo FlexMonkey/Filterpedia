@@ -128,9 +128,20 @@ class FilterDetail: UIView
     
     func updateFromFilterName()
     {
-        guard let filter = CIFilter(name: filterName ?? "") else
+        guard let filterName = filterName, filter = CIFilter(name: filterName) else
         {
             return
+        }
+        
+        imageView.subviews
+            .filter({ $0 is FilterAttributesDisplayable})
+            .forEach({ $0.removeFromSuperview() })
+        
+        if let widget = OverlayWidgets.getOverlayWidgetForFilter(filterName) as? UIView
+        {
+            imageView.addSubview(widget)
+            
+            widget.frame = imageView.bounds
         }
         
         currentFilter = filter
@@ -190,15 +201,19 @@ class FilterDetail: UIView
             return
         }
         
+        guard let currentFilter = self.currentFilter else
+        {
+            return
+        }
+        
         busy = true
+        
+        imageView.subviews
+            .filter({ $0 is FilterAttributesDisplayable})
+            .forEach({ ($0 as? FilterAttributesDisplayable)?.setFilter(currentFilter) })
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
         {
-            guard let currentFilter = self.currentFilter else
-            {
-                return
-            }
-            
             for (key, value) in self.filterParameterValues where currentFilter.inputKeys.contains(key)
             {
                 currentFilter.setValue(value, forKey: key)

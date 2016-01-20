@@ -11,6 +11,8 @@
 		3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */; };
 		3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */; };
 		3E1E3E981C4F8D5D00EEF0D8 /* shutter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */; };
+		3E1E3E9B1C4FA01200EEF0D8 /* OverlayWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9A1C4FA01200EEF0D8 /* OverlayWidgets.swift */; };
+		3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */; };
 		3E5928521C4D080D004BFA07 /* sunset.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E5928511C4D080D004BFA07 /* sunset.jpg */; };
 		3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */; };
 		3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */; };
@@ -37,6 +39,8 @@
 		3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MercurializeFilter.swift; path = customFilters/MercurializeFilter.swift; sourceTree = "<group>"; };
 		3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RGBChannelCompositing.swift; path = customFilters/RGBChannelCompositing.swift; sourceTree = "<group>"; };
 		3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = shutter.jpg; path = assets/shutter.jpg; sourceTree = "<group>"; };
+		3E1E3E9A1C4FA01200EEF0D8 /* OverlayWidgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OverlayWidgets.swift; path = overlayWidgets/OverlayWidgets.swift; sourceTree = "<group>"; };
+		3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = overlayWidgets/Extensions.swift; sourceTree = "<group>"; };
 		3E5928511C4D080D004BFA07 /* sunset.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sunset.jpg; path = assets/sunset.jpg; sourceTree = "<group>"; };
 		3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompositeOverBlackFilter.swift; path = components/CompositeOverBlackFilter.swift; sourceTree = "<group>"; };
 		3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterInputItemRenderer.swift; path = components/FilterInputItemRenderer.swift; sourceTree = "<group>"; };
@@ -81,6 +85,15 @@
 			name = customFilters;
 			sourceTree = "<group>";
 		};
+		3E1E3E991C4F9FB000EEF0D8 /* overlayWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				3E1E3E9A1C4FA01200EEF0D8 /* OverlayWidgets.swift */,
+				3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */,
+			);
+			name = overlayWidgets;
+			sourceTree = "<group>";
+		};
 		3E9A71FE1C325E5600CAD516 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +113,7 @@
 		3E9A72091C325E5600CAD516 /* Filterpedia */ = {
 			isa = PBXGroup;
 			children = (
+				3E1E3E991C4F9FB000EEF0D8 /* overlayWidgets */,
 				3E0F65001C48BA0500852420 /* customFilters */,
 				3E9A72251C33A7B100CAD516 /* asssets */,
 				3E9A721C1C32660700CAD516 /* components */,
@@ -228,9 +242,11 @@
 				3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */,
 				3E0F65021C48BA2000852420 /* CustomFilters.swift in Sources */,
 				3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */,
+				3E1E3E9B1C4FA01200EEF0D8 /* OverlayWidgets.swift in Sources */,
 				3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */,
 				3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */,
 				3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */,
+				3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */,
 				3E9A72241C33146000CAD516 /* VectorSlider.swift in Sources */,
 				3E74E7D91C36D61000F0BCCF /* Assets.swift in Sources */,
 			);

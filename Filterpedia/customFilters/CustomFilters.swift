@@ -67,6 +67,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("RGBChannelToneCurve",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -93,6 +99,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "RGBChannelGaussianBlur":
             return RGBChannelGaussianBlur()
+
+        case "RGBChannelToneCurve":
+            return RGBChannelToneCurve()
             
         default:
             return nil
