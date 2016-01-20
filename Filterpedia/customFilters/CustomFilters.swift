@@ -77,7 +77,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             ])
     }
     
-    @objc func filterWithName(name: String) -> CIFilter?
+    func filterWithName(name: String) -> CIFilter?
     {
         switch name
         {
@@ -114,44 +114,44 @@ class VintageVignette: CIFilter
     var inputVignetteRadius: CGFloat = 1
     var inputSepiaToneIntensity: CGFloat = 1
     
-    override var attributes: [String : AnyObject]
-    {
-        return [
-            kCIAttributeFilterDisplayName: "Vintage Vignette",
-            
-            "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
-            
-            "inputVignetteIntensity": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 1,
-                kCIAttributeDisplayName: "Vignette Intensity",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 2,
-                kCIAttributeType: kCIAttributeTypeScalar],
-            
-            "inputVignetteRadius": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 1,
-                kCIAttributeDisplayName: "Vignette Radius",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 2,
-                kCIAttributeType: kCIAttributeTypeScalar],
-            
-            "inputSepiaToneIntensity": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 1,
-                kCIAttributeDisplayName: "Sepia Tone Intensity",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
-                kCIAttributeType: kCIAttributeTypeScalar]
-        ]
-    }
+override var attributes: [String : AnyObject]
+{
+    return [
+        kCIAttributeFilterDisplayName: "Vintage Vignette",
+        
+        "inputImage": [kCIAttributeIdentity: 0,
+            kCIAttributeClass: "CIImage",
+            kCIAttributeDisplayName: "Image",
+            kCIAttributeType: kCIAttributeTypeImage],
+        
+        "inputVignetteIntensity": [kCIAttributeIdentity: 0,
+            kCIAttributeClass: "NSNumber",
+            kCIAttributeDefault: 1,
+            kCIAttributeDisplayName: "Vignette Intensity",
+            kCIAttributeMin: 0,
+            kCIAttributeSliderMin: 0,
+            kCIAttributeSliderMax: 2,
+            kCIAttributeType: kCIAttributeTypeScalar],
+        
+        "inputVignetteRadius": [kCIAttributeIdentity: 0,
+            kCIAttributeClass: "NSNumber",
+            kCIAttributeDefault: 1,
+            kCIAttributeDisplayName: "Vignette Radius",
+            kCIAttributeMin: 0,
+            kCIAttributeSliderMin: 0,
+            kCIAttributeSliderMax: 2,
+            kCIAttributeType: kCIAttributeTypeScalar],
+        
+        "inputSepiaToneIntensity": [kCIAttributeIdentity: 0,
+            kCIAttributeClass: "NSNumber",
+            kCIAttributeDefault: 1,
+            kCIAttributeDisplayName: "Sepia Tone Intensity",
+            kCIAttributeMin: 0,
+            kCIAttributeSliderMin: 0,
+            kCIAttributeSliderMax: 1,
+            kCIAttributeType: kCIAttributeTypeScalar]
+    ]
+}
     
     override func setDefaults()
     {
@@ -214,10 +214,10 @@ class ThresholdFilter: CIFilter
     
     let thresholdKernel = CIColorKernel(string:
         "kernel vec4 thresholdFilter(__sample image, float threshold)" +
-            "{" +
-            "   float luma = (image.r * 0.2126) + (image.g * 0.7152) + (image.b * 0.0722);" +
-            
-            "   return (luma > threshold) ? vec4(1.0, 1.0, 1.0, 1.0) : vec4(0.0, 0.0, 0.0, 0.0);" +
+        "{" +
+        "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+        
+        "   return (luma > threshold) ? vec4(1.0, 1.0, 1.0, 1.0) : vec4(0.0, 0.0, 0.0, 0.0);" +
         "}"
     )
     
