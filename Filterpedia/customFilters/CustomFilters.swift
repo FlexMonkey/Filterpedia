@@ -73,6 +73,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("PseudoColorFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -103,9 +109,103 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "RGBChannelToneCurve":
             return RGBChannelToneCurve()
             
+        case "PseudoColorFilter":
+            return PseudoColorFilter()
+            
         default:
             return nil
         }
+    }
+}
+
+// MARK: PseudoColor
+
+/// This filter isn't dissimilar to Core Image's own False Color filter
+/// but it accepts five input colors and uses mix() to transition
+/// between them based on an image's luminance
+
+class PseudoColorFilter: CIFilter
+{
+    var inputImage: CIImage?
+    
+    var inputColor0 = CIColor(red: 1, green: 0, blue: 0)
+    var inputColor1 = CIColor(red: 0, green: 0, blue: 0)
+    var inputColor2 = CIColor(red: 0, green: 1, blue: 0)
+    var inputColor3 = CIColor(red: 1, green: 1, blue: 1)
+    var inputColor4 = CIColor(red: 0, green: 0, blue: 1)
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Pseudo Color Filter",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputColor0": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color One",
+                kCIAttributeDefault: CIColor(red: 1, green: 0, blue: 0),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor1": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Two",
+                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 0),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor2": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Three",
+                kCIAttributeDefault: CIColor(red: 0, green: 1, blue: 0),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor3": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Four",
+                kCIAttributeDefault: CIColor(red: 1, green: 1, blue: 1),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor4": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Five",
+                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 1),
+                kCIAttributeType: kCIAttributeTypeColor]
+        ]
+    }
+    
+    let pseudoColorKernel = CIColorKernel(string:
+        "kernel vec4 thresholdFilter(__sample image, vec4 inputColor0, vec4 inputColor1, vec4 inputColor2, vec4 inputColor3, vec4 inputColor4) \n" +
+            "{ \n" +
+            "   vec4 luma = vec4(dot(image.rgb, vec3(0.2126, 0.7152, 0.0722))); \n" +
+            
+            "   if (luma.x < 0.25) \n" +
+            "   { return mix(inputColor0, inputColor1, luma * 4.0); } \n" +
+            
+            "   else if (luma.x >= 0.25 && luma.x < 0.5) \n" +
+            "   { return mix(inputColor1, inputColor2, (luma - 0.25) * 4.0); } \n" +
+            
+            "   else if (luma.x >= 0.5 && luma.x < 0.75) \n" +
+            "   { return mix(inputColor2, inputColor3, (luma - 0.5) * 4.0) ; } \n" +
+            
+            "   return mix(inputColor3, inputColor4, (luma - 0.75) * 4.0) ; \n" +
+        "}"
+    )
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            pseudoColorKernel = pseudoColorKernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, inputColor0, inputColor1, inputColor2, inputColor3, inputColor4]
+        
+        return pseudoColorKernel.applyWithExtent(extent, arguments: arguments)
     }
 }
 
@@ -113,6 +213,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
 
 /// This is the VintageVignette filter from my book, Core Image for Swift,
 /// and is an example of a very simple composite custom filter.
+
 class VintageVignette: CIFilter
 {
     var inputImage : CIImage?
@@ -322,162 +423,6 @@ class VignetteNoirFilter: CIFilter
     }
 }
 
-// MARK: Cathode ray Tube Simulation
-
-class CRTFilter: CIFilter
-{
-    var inputImage : CIImage?
-    var inputPixelWidth: CGFloat = 8
-    var inputPixelHeight: CGFloat = 12
-    var inputBend: CGFloat = 3.2
-    
-    override var attributes: [String : AnyObject]
-    {
-        return [
-            kCIAttributeFilterDisplayName: "CRT Filter",
-            "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
-            "inputPixelWidth": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 8,
-                kCIAttributeDisplayName: "Pixel Width",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 20,
-                kCIAttributeType: kCIAttributeTypeScalar],
-            "inputPixelHeight": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 12,
-                kCIAttributeDisplayName: "Pixel Height",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 20,
-                kCIAttributeType: kCIAttributeTypeScalar],
-            "inputBend": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 3.2,
-                kCIAttributeDisplayName: "Bend",
-                kCIAttributeMin: 0.5,
-                kCIAttributeSliderMin: 0.5,
-                kCIAttributeSliderMax: 10,
-                kCIAttributeType: kCIAttributeTypeScalar]
-        ]
-    }
-    
-    let crtWarpFilter = CRTWarpFilter()
-    let crtColorFilter = CRTColorFilter()
-    
-    let vignette = CIFilter(name: "CIVignette",
-        withInputParameters: [
-            kCIInputIntensityKey: 1.5,
-            kCIInputRadiusKey: 2])!
-    
-    override func setDefaults()
-    {
-        inputPixelWidth = 8
-        inputPixelHeight = 12
-        inputBend = 3.2
-    }
-    
-    override var outputImage: CIImage!
-    {
-        guard let inputImage = inputImage else
-        {
-            return nil
-        }
-        
-        crtColorFilter.pixelHeight = inputPixelHeight
-        crtColorFilter.pixelWidth = inputPixelWidth
-        crtWarpFilter.bend =  inputBend
-        
-        crtColorFilter.inputImage = inputImage
-        vignette.setValue(crtColorFilter.outputImage,
-            forKey: kCIInputImageKey)
-        crtWarpFilter.inputImage = vignette.outputImage!
-        
-        return crtWarpFilter.outputImage
-    }
-    
-    class CRTColorFilter: CIFilter
-    {
-        var inputImage : CIImage?
-        
-        var pixelWidth: CGFloat = 8.0
-        var pixelHeight: CGFloat = 12.0
-        
-        let crtColorKernel = CIColorKernel(string:
-            "kernel vec4 crtColor(__sample image, float pixelWidth, float pixelHeight) \n" +
-            "{ \n" +
-            
-            "   int columnIndex = int(mod(samplerCoord(image).x / pixelWidth, 3.0)); \n" +
-            "   int rowIndex = int(mod(samplerCoord(image).y, pixelHeight)); \n" +
-            
-            "   float scanlineMultiplier = (rowIndex == 0 || rowIndex == 1) ? 0.3 : 1.0;" +
-            
-            "   float red = (columnIndex == 0) ? image.r : image.r * ((columnIndex == 2) ? 0.3 : 0.2); " +
-            "   float green = (columnIndex == 1) ? image.g : image.g * ((columnIndex == 2) ? 0.3 : 0.2); " +
-            "   float blue = (columnIndex == 2) ? image.b : image.b * 0.2; " +
-            
-            "   return vec4(red * scanlineMultiplier, green * scanlineMultiplier, blue * scanlineMultiplier, 1.0); \n" +
-            "}"
-        )
-        
-        
-        override var outputImage: CIImage!
-        {
-            if let inputImage = inputImage,
-                crtColorKernel = crtColorKernel
-            {
-                let dod = inputImage.extent
-                let args = [inputImage, pixelWidth, pixelHeight]
-                return crtColorKernel.applyWithExtent(dod, arguments: args)
-            }
-            return nil
-        }
-    }
-    
-    class CRTWarpFilter: CIFilter
-    {
-        var inputImage : CIImage?
-        var bend: CGFloat = 3.2
-        
-        let crtWarpKernel = CIWarpKernel(string:
-            "kernel vec2 crtWarp(vec2 extent, float bend)" +
-            "{" +
-            "   vec2 coord = ((destCoord() / extent) - 0.5) * 2.0;" +
-            
-            "   coord.x *= 1.0 + pow((abs(coord.y) / bend), 2.0);" +
-            "   coord.y *= 1.0 + pow((abs(coord.x) / bend), 2.0);" +
-            
-            "   coord  = ((coord / 2.0) + 0.5) * extent;" +
-            
-            "   return coord;" +
-            "}"
-        )
-        
-        override var outputImage : CIImage!
-        {
-            if let inputImage = inputImage,
-                crtWarpKernel = crtWarpKernel
-            {
-                let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend]
-                let extent = inputImage.extent.insetBy(dx: -1, dy: -1)
-                
-                return crtWarpKernel.applyWithExtent(extent,
-                    roiCallback:
-                    {
-                        (index, rect) in
-                        return rect
-                    },
-                    inputImage: inputImage,
-                    arguments: arguments)
-            }
-            return nil
-        }
-    }
-}
 
 
 
