@@ -30,7 +30,7 @@ class RGBChannelCompositing: CIFilter
     var inputBlueImage : CIImage?
     
     let rgbChannelCompositingKernel = CIColorKernel(string:
-        "kernel vec4 thresholdFilter(__sample red, __sample green, __sample blue)" +
+        "kernel vec4 rgbChannelCompositing(__sample red, __sample green, __sample blue)" +
         "{" +
         "   return vec4(red.r, green.g, blue.b, 1.0);" +
         "}"
@@ -43,17 +43,17 @@ class RGBChannelCompositing: CIFilter
             
             "inputRedImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
+                kCIAttributeDisplayName: "Red Image",
                 kCIAttributeType: kCIAttributeTypeImage],
             
             "inputGreenImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
+                kCIAttributeDisplayName: "Green Image",
                 kCIAttributeType: kCIAttributeTypeImage],
             
             "inputBlueImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
+                kCIAttributeDisplayName: "Blue Image",
                 kCIAttributeType: kCIAttributeTypeImage]
         ]
     }
