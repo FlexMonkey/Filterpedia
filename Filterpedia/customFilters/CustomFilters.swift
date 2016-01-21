@@ -79,6 +79,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("KuwaharaFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -111,6 +117,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "PseudoColorFilter":
             return PseudoColorFilter()
+            
+        case "KuwaharaFilter":
+            return KuwaharaFilter()
             
         default:
             return nil
