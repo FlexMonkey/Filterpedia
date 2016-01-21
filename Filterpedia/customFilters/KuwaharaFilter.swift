@@ -42,7 +42,7 @@ class KuwaharaFilter: CIFilter
     let kuwaharaKernel = CIKernel(string:
         "kernel vec4 kuwahara(sampler image, float r) \n" +
         "{" +
-        "   vec2 d = destCoord(); \n" +
+        "   vec2 d = destCoord();" +
             
         "   int radius = int(r); " +
         "   float n = float((radius + 1) * (radius + 1)); " +
@@ -62,30 +62,22 @@ class KuwaharaFilter: CIFilter
         "       { " +
         "           vec3 color = sample(image, samplerTransform(image, d + vec2(x,y))).rgb; \n" +
         
-        "           if (x <=0 && y <= 0) " +
-        "           { " +
-        "               means[0] += color; " +
-        "               stdDevs[0] += color * color; " +
-        "           } " +
-            
-        "           if (x >=0 && y <= 0) " +
-        "           { " +
-        "               means[1] += color; " +
-        "               stdDevs[1] += color * color; " +
-        "           } " +
-            
-        "           if (x <=0 && y >= 0) " +
-        "           { " +
-        "               means[2] += color; " +
-        "               stdDevs[2] += color * color; " +
-        "           } " +
-            
-        "           if (x >=0 && y >= 0) " +
-        "           { " +
-        "               means[3] += color; " +
-        "               stdDevs[3] += color * color; " +
-        "           } " +
-            
+        "           vec3 colorA = vec3(float(x <= 0 && y <= 0)) * color; " +
+        "           means[0] += colorA; " +
+        "           stdDevs[0] += colorA * colorA; " +
+
+        "           vec3 colorB = vec3(float(x >= 0 && y <= 0)) * color; " +
+        "           means[1] +=  colorB; " +
+        "           stdDevs[1] += colorB * colorB; " +
+
+        "           vec3 colorC = vec3(float(x <= 0 && y >= 0)) * color; " +
+        "           means[2] += colorC; " +
+        "           stdDevs[2] += colorC * colorC; " +
+
+        "           vec3 colorD = vec3(float(x >= 0 && y >= 0)) * color; " +
+        "           means[3] += colorD; " +
+        "           stdDevs[3] += colorD * colorD; " +
+
         "       } " +
         "   } " +
         
