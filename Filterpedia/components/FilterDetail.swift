@@ -214,6 +214,8 @@ class FilterDetail: UIView
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
         {
+            let startTime = CFAbsoluteTimeGetCurrent()
+            
             for (key, value) in self.filterParameterValues where currentFilter.inputKeys.contains(key)
             {
                 currentFilter.setValue(value, forKey: key)
@@ -252,6 +254,9 @@ class FilterDetail: UIView
                 finalImage = self.ciContext.createCGImage(outputImage,
                     fromRect: self.rect640x640)
             }
+            
+            let endTime = (CFAbsoluteTimeGetCurrent() - startTime)
+            print(self.filterName, "execution time", endTime)
             
             dispatch_async(dispatch_get_main_queue())
             {

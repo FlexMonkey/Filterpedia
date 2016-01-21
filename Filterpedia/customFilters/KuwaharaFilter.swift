@@ -90,12 +90,9 @@ class KuwaharaFilter: CIFilter
         "       stdDevs[j] = abs(stdDevs[j] / n - means[j] * means[j]); \n" +
 
         "       float sigma2 = stdDevs[j].r + stdDevs[j].g + stdDevs[j].b; \n" +
-        
-        "       if (sigma2 < minSigma2) \n" +
-        "       { " +
-        "           minSigma2 = sigma2; \n" +
-        "           returnColor = means[j]; \n" +
-        "       } " +
+
+        "       returnColor = (sigma2 < minSigma2) ? means[j] : returnColor; " +
+        "       minSigma2 = (sigma2 < minSigma2) ? sigma2 : minSigma2; " +
         "   } " +
             
         "   return vec4(returnColor, 1.0); " +
