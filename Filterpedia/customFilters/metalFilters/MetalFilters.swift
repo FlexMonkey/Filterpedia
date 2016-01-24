@@ -257,7 +257,8 @@ class MetalFilter: CIFilter
         
         commandBuffer.commit()
         
-        return CIImage(MTLTexture: kernelOutputTexture!, options: nil)
+        return CIImage(MTLTexture: kernelOutputTexture!,
+            options: [kCIImageColorSpace: colorSpace])
     }
 }
 
