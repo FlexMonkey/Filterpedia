@@ -67,47 +67,46 @@ class MetalPixellateFilter: MetalFilter
 
 // MARK: MetalKuwaharaFilter
 
-class MetalKuwaharaFilter: MetalFilter
-{
-    init()
+    class MetalKuwaharaFilter: MetalFilter
     {
-        super.init(functionName: "kuwahara")
+        init()
+        {
+            super.init(functionName: "kuwahara")
+        }
+        
+        required init?(coder aDecoder: NSCoder)
+        {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        var inputRadius: CGFloat = 15
+        
+        override func setDefaults()
+        {
+            inputRadius = 15
+        }
+        
+        override var attributes: [String : AnyObject]
+        {
+            return [
+                kCIAttributeFilterDisplayName: "Metal Kuwahara",
+                
+                "inputImage": [kCIAttributeIdentity: 0,
+                    kCIAttributeClass: "CIImage",
+                    kCIAttributeDisplayName: "Image",
+                    kCIAttributeType: kCIAttributeTypeImage],
+                
+                "inputRadius": [kCIAttributeIdentity: 0,
+                    kCIAttributeClass: "NSNumber",
+                    kCIAttributeDefault: 15,
+                    kCIAttributeDisplayName: "Radius",
+                    kCIAttributeMin: 0,
+                    kCIAttributeSliderMin: 0,
+                    kCIAttributeSliderMax: 30,
+                    kCIAttributeType: kCIAttributeTypeScalar],
+            ]
+        }
     }
-    
-    required init?(coder aDecoder: NSCoder)
-    {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    var inputRadius: CGFloat = 15
-    
-    override func setDefaults()
-    {
-        inputRadius = 15
-    }
-    
-    override var attributes: [String : AnyObject]
-    {
-        return [
-            kCIAttributeFilterDisplayName: "Metal Kuwahara",
-            
-            "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
-            
-            "inputRadius": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 15,
-                kCIAttributeDisplayName: "Radius",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 30,
-                kCIAttributeType: kCIAttributeTypeScalar],
-        ]
-    }
-    
-}
 
 // MARK: Base class
 

@@ -64,8 +64,9 @@ class FilterDetail: UIView
         return imageView
     }()
     
-    let ciContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
-
+    let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+    let ciOpenGLESContext = CIContext()
+  
     /// Whether the user has changed the filter whilst it's
     /// running in the background.
     var pending = false
@@ -216,6 +217,8 @@ class FilterDetail: UIView
             
             let outputImage = currentFilter.outputImage!
             let finalImage: CGImageRef
+  
+            let context = (currentFilter is MetalFilter) ? self.ciMetalContext : self.ciOpenGLESContext
             
             if outputImage.extent.width == 1 || outputImage.extent.height == 1
             {
@@ -228,7 +231,7 @@ class FilterDetail: UIView
                         "inputCenterStretchAmount": 1,
                         kCIInputImageKey: outputImage])!
                 
-                finalImage = self.ciContext.createCGImage(stretch.outputImage!,
+                finalImage = context.createCGImage(stretch.outputImage!,
                     fromRect: self.rect640x640)
             }
             else if outputImage.extent.width < 640 || outputImage.extent.height < 640
@@ -239,12 +242,12 @@ class FilterDetail: UIView
                 self.compositeOverBlackFilter.setValue(outputImage,
                     forKey: kCIInputImageKey)
                 
-                finalImage = self.ciContext.createCGImage(self.compositeOverBlackFilter.outputImage!,
+                finalImage = context.createCGImage(self.compositeOverBlackFilter.outputImage!,
                     fromRect: self.rect640x640)
             }
             else
             {
-                finalImage = self.ciContext.createCGImage(outputImage,
+                finalImage = context.createCGImage(outputImage,
                     fromRect: self.rect640x640)
             }
             
