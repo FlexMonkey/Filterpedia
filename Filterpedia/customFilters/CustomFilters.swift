@@ -85,6 +85,18 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("MetalPixellateFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("MetalKuwaharaFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -120,6 +132,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "KuwaharaFilter":
             return KuwaharaFilter()
+            
+        case "MetalPixellateFilter":
+            return MetalPixellateFilter()
+            
+        case "MetalKuwaharaFilter":
+            return MetalKuwaharaFilter()
             
         default:
             return nil

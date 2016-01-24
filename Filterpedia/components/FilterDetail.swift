@@ -49,29 +49,22 @@ class FilterDetail: UIView
         return tableView
     }()
     
-    lazy var imageView: ImageView =
+    let imageView: UIImageView =
     {
-        [unowned self] in
+        let imageView = UIImageView()
         
-        let imageView = ImageView()
+        imageView.backgroundColor = UIColor.blackColor()
         
         imageView.layer.borderColor = UIColor.grayColor().CGColor
         imageView.layer.borderWidth = 1
         imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
         imageView.layer.shadowOpacity = 0.75
         imageView.layer.shadowRadius = 5
-
         
         return imageView
     }()
     
-    lazy var ciContext: CIContext =
-    {
-        [unowned self] in
-        
-        return CIContext(EAGLContext: self.imageView.eaglContext,
-            options: [kCIContextWorkingColorSpace: NSNull()])
-    }()
+    let ciContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
 
     /// Whether the user has changed the filter whilst it's
     /// running in the background.
@@ -260,7 +253,7 @@ class FilterDetail: UIView
             
             dispatch_async(dispatch_get_main_queue())
             {
-                self.imageView.image = CIImage(CGImage: finalImage)
+                self.imageView.image = UIImage(CGImage: finalImage)
                 self.busy = false
                 
                 if self.pending

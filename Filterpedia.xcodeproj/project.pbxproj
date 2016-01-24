@@ -19,7 +19,6 @@
 		3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */; };
 		3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */; };
 		3E74E7D91C36D61000F0BCCF /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D81C36D61000F0BCCF /* Assets.swift */; };
-		3E97FA8E1C416E4B006365F7 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E97FA8D1C416E4B006365F7 /* ImageView.swift */; };
 		3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A720A1C325E5600CAD516 /* AppDelegate.swift */; };
 		3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A720C1C325E5600CAD516 /* ViewController.swift */; };
 		3E9A72101C325E5600CAD516 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A720E1C325E5600CAD516 /* Main.storyboard */; };
@@ -34,6 +33,8 @@
 		3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A722E1C350E6A00CAD516 /* stop.jpg */; };
 		3E9A72351C35101A00CAD516 /* vegas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72341C35101A00CAD516 /* vegas.jpg */; };
 		3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72361C35250100CAD516 /* screenshot.jpg */; };
+		3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A7E1C54902B0071B584 /* Shaders.metal */; };
+		3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A801C5490540071B584 /* MetalFilters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +50,6 @@
 		3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompositeOverBlackFilter.swift; path = components/CompositeOverBlackFilter.swift; sourceTree = "<group>"; };
 		3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterInputItemRenderer.swift; path = components/FilterInputItemRenderer.swift; sourceTree = "<group>"; };
 		3E74E7D81C36D61000F0BCCF /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = assets/Assets.swift; sourceTree = "<group>"; };
-		3E97FA8D1C416E4B006365F7 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageView.swift; path = components/ImageView.swift; sourceTree = "<group>"; };
 		3E9A72071C325E5600CAD516 /* Filterpedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterpedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9A720A1C325E5600CAD516 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E9A720C1C325E5600CAD516 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +66,8 @@
 		3E9A722E1C350E6A00CAD516 /* stop.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = stop.jpg; path = assets/stop.jpg; sourceTree = "<group>"; };
 		3E9A72341C35101A00CAD516 /* vegas.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = vegas.jpg; path = assets/vegas.jpg; sourceTree = "<group>"; };
 		3E9A72361C35250100CAD516 /* screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = screenshot.jpg; path = assets/screenshot.jpg; sourceTree = "<group>"; };
+		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
+		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 		3E0F65001C48BA0500852420 /* customFilters */ = {
 			isa = PBXGroup;
 			children = (
+				3EF73A7D1C5490090071B584 /* metalFilters */,
 				3E0F65011C48BA2000852420 /* CustomFilters.swift */,
 				3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */,
 				3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */,
@@ -142,7 +145,6 @@
 				3E9A72231C33146000CAD516 /* VectorSlider.swift */,
 				3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */,
 				3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */,
-				3E97FA8D1C416E4B006365F7 /* ImageView.swift */,
 			);
 			name = components;
 			sourceTree = "<group>";
@@ -160,6 +162,15 @@
 				3E9A72271C33A8AB00CAD516 /* sunflower.jpg */,
 			);
 			name = asssets;
+			sourceTree = "<group>";
+		};
+		3EF73A7D1C5490090071B584 /* metalFilters */ = {
+			isa = PBXGroup;
+			children = (
+				3EF73A7E1C54902B0071B584 /* Shaders.metal */,
+				3EF73A801C5490540071B584 /* MetalFilters.swift */,
+			);
+			name = metalFilters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,11 +251,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E97FA8E1C416E4B006365F7 /* ImageView.swift in Sources */,
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
 				3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */,
 				3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */,
 				3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */,
+				3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */,
 				3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */,
 				3E0F65021C48BA2000852420 /* CustomFilters.swift in Sources */,
 				3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */,
@@ -255,6 +266,7 @@
 				3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */,
 				3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */,
 				3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */,
+				3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */,
 				3E9A72241C33146000CAD516 /* VectorSlider.swift in Sources */,
 				3E74E7D91C36D61000F0BCCF /* Assets.swift in Sources */,
 			);
