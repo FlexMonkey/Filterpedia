@@ -62,51 +62,133 @@ class MetalPixellateFilter: MetalFilter
                 kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
+}
+
+// MARK: Perlin Noise
+
+class MetalPerlinNoise: MetalFilter
+{
+    init()
+    {
+        super.init(functionName: "perlin")
+    }
     
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var inputReciprocalScale = CGFloat(50)
+    var inputOctaves = CGFloat(2)
+    var inputPersistence = CGFloat(0.5)
+    
+    var inputColor0 = CIColor(red: 0.5, green: 0.25, blue: 0)
+    var inputColor1 = CIColor(red: 0, green: 0, blue: 0.15)
+    
+    override func setDefaults()
+    {
+        inputReciprocalScale = 50
+        inputOctaves = 2
+        inputPersistence = 0.5
+        
+        inputColor0 = CIColor(red: 0.5, green: 0.25, blue: 0)
+        inputColor1 = CIColor(red: 0, green: 0, blue: 0.15)
+    }
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Metal Perlin Noise",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputReciprocalScale": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 50,
+                kCIAttributeDisplayName: "Scale",
+                kCIAttributeMin: 10,
+                kCIAttributeSliderMin: 10,
+                kCIAttributeSliderMax: 100,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputOctaves": [kCIAttributeIdentity: 1,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Octaves",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: 1,
+                kCIAttributeSliderMax: 16,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPersistence": [kCIAttributeIdentity: 2,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.5,
+                kCIAttributeDisplayName: "Persistence",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputColor0": [kCIAttributeIdentity: 3,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDefault: CIColor(red: 0.5, green: 0.25, blue: 0),
+                kCIAttributeDisplayName: "Color One",
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor1": [kCIAttributeIdentity: 4,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 0.15),
+                kCIAttributeDisplayName: "Color Two",
+                kCIAttributeType: kCIAttributeTypeColor],
+        ]
+    }
 }
 
 // MARK: MetalKuwaharaFilter
 
-    class MetalKuwaharaFilter: MetalFilter
+class MetalKuwaharaFilter: MetalFilter
+{
+    init()
     {
-        init()
-        {
-            super.init(functionName: "kuwahara")
-        }
-        
-        required init?(coder aDecoder: NSCoder)
-        {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        var inputRadius: CGFloat = 15
-        
-        override func setDefaults()
-        {
-            inputRadius = 15
-        }
-        
-        override var attributes: [String : AnyObject]
-        {
-            return [
-                kCIAttributeFilterDisplayName: "Metal Kuwahara",
-                
-                "inputImage": [kCIAttributeIdentity: 0,
-                    kCIAttributeClass: "CIImage",
-                    kCIAttributeDisplayName: "Image",
-                    kCIAttributeType: kCIAttributeTypeImage],
-                
-                "inputRadius": [kCIAttributeIdentity: 0,
-                    kCIAttributeClass: "NSNumber",
-                    kCIAttributeDefault: 15,
-                    kCIAttributeDisplayName: "Radius",
-                    kCIAttributeMin: 0,
-                    kCIAttributeSliderMin: 0,
-                    kCIAttributeSliderMax: 30,
-                    kCIAttributeType: kCIAttributeTypeScalar],
-            ]
-        }
+        super.init(functionName: "kuwahara")
     }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var inputRadius: CGFloat = 15
+    
+    override func setDefaults()
+    {
+        inputRadius = 15
+    }
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Metal Kuwahara",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 15,
+                kCIAttributeDisplayName: "Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 30,
+                kCIAttributeType: kCIAttributeTypeScalar],
+        ]
+    }
+}
 
 // MARK: Base class
 
@@ -114,6 +196,9 @@ class MetalPixellateFilter: MetalFilter
 /// This version supports a single input image and an arbritrary number of `NSNumber`
 /// parameters. Numeric parameters require a properly set `kCIAttributeIdentity` which
 /// defines their buffer index into the Metal kernel.
+///
+/// Note that `MetalFilter` generators (e.g. `MetalPerlinNoise`) require an input image which 
+/// is used to define the extent of the final output
 class MetalFilter: CIFilter
 {
     let device: MTLDevice = MTLCreateSystemDefaultDevice()!
@@ -241,6 +326,25 @@ class MetalFilter: CIFilter
             {
                 let buffer = device.newBufferWithBytes(&bufferValue,
                     length: sizeof(Float),
+                    options: MTLResourceOptions.CPUCacheModeDefaultCache)
+                
+                commandEncoder.setBuffer(buffer, offset: 0, atIndex: bufferIndex)
+            }
+        }
+        
+        // populate color buffers using kCIAttributeIdentity as buffer index
+        for inputKey in inputKeys where attributes[inputKey]?[kCIAttributeClass] == "CIColor"
+        {
+            if let bufferIndex = (attributes[inputKey] as! [String:AnyObject])[kCIAttributeIdentity] as? Int,
+                bufferValue = valueForKey(inputKey) as? CIColor
+            {
+                var color = float4(Float(bufferValue.red),
+                    Float(bufferValue.green),
+                    Float(bufferValue.blue),
+                    Float(bufferValue.alpha))
+                
+                let buffer = device.newBufferWithBytes(&color,
+                    length: sizeof(float4),
                     options: MTLResourceOptions.CPUCacheModeDefaultCache)
                 
                 commandEncoder.setBuffer(buffer, offset: 0, atIndex: bufferIndex)

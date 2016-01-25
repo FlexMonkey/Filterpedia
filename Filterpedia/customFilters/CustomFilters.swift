@@ -97,6 +97,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("MetalPerlinNoise",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -138,6 +144,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "MetalKuwaharaFilter":
             return MetalKuwaharaFilter()
+            
+        case "MetalPerlinNoise":
+            return MetalPerlinNoise()
             
         default:
             return nil
