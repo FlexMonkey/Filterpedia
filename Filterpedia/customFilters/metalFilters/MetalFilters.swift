@@ -220,16 +220,8 @@ class MetalGeneratorFilter: MetalFilter
 {
     var inputWidth: CGFloat = 640
     var inputHeight: CGFloat = 640
-}
-
-class MetalImageFilter: MetalFilter
-{
-    var inputImage: CIImage?
-}
-
-extension MetalGeneratorFilter
-{
-    func textureInvalid() -> Bool
+    
+    override func textureInvalid() -> Bool
     {
         if let textureDescriptor = textureDescriptor where
             textureDescriptor.width != Int(inputWidth)  ||
@@ -237,14 +229,16 @@ extension MetalGeneratorFilter
         {
             return true
         }
-
+        
         return false
     }
 }
 
-extension MetalImageFilter
+class MetalImageFilter: MetalFilter
 {
-    func textureInvalid() -> Bool
+    var inputImage: CIImage?
+    
+    override func textureInvalid() -> Bool
     {
         if let textureDescriptor = textureDescriptor,
             inputImage = inputImage where
@@ -322,14 +316,14 @@ class MetalFilter: CIFilter
 
     override var outputImage: CIImage!
     {
+        if textureInvalid()
+        {
+            self.textureDescriptor = nil
+        }
+        
         if let imageFilter = self as? MetalImageFilter,
             inputImage = imageFilter.inputImage
         {
-            if imageFilter.textureInvalid()
-            {
-                self.textureDescriptor = nil
-            }
-            
             return imageFromComputeShader(width: inputImage.extent.width,
                 height: inputImage.extent.height,
                 inputImage: inputImage)
@@ -337,11 +331,6 @@ class MetalFilter: CIFilter
         
         if let generatorFilter = self as? MetalGeneratorFilter
         {
-            if generatorFilter.textureInvalid()
-            {
-                self.textureDescriptor = nil
-            }
-
             return imageFromComputeShader(width: generatorFilter.inputWidth,
                 height: generatorFilter.inputHeight,
                 inputImage: nil)
@@ -365,6 +354,11 @@ class MetalFilter: CIFilter
     required init?(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func textureInvalid() -> Bool
+    {
+        fatalError("textureInvalid() not implemented in MetalFilter")
     }
     
     func imageFromComputeShader(width width: CGFloat, height: CGFloat, inputImage: CIImage?) -> CIImage
