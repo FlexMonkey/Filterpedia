@@ -252,7 +252,7 @@ class FilterDetail: UIView
             }
             
             let endTime = (CFAbsoluteTimeGetCurrent() - startTime)
-            print(self.filterName, "execution time", endTime)
+            print(self.filterName!, "execution time", endTime)
             
             dispatch_async(dispatch_get_main_queue())
             {
