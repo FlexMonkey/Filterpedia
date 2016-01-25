@@ -85,6 +85,8 @@ class MetalPerlinNoise: MetalFilter
     var inputColor0 = CIColor(red: 0.5, green: 0.25, blue: 0)
     var inputColor1 = CIColor(red: 0, green: 0, blue: 0.15)
     
+    var inputZ = CGFloat(0)
+    
     override func setDefaults()
     {
         inputReciprocalScale = 50
@@ -143,6 +145,15 @@ class MetalPerlinNoise: MetalFilter
                 kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 0.15),
                 kCIAttributeDisplayName: "Color Two",
                 kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputZ": [kCIAttributeIdentity: 5,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Z Position",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1024,
+                kCIAttributeType: kCIAttributeTypeScalar],
         ]
     }
 }
@@ -197,7 +208,7 @@ class MetalKuwaharaFilter: MetalFilter
 /// parameters. Numeric parameters require a properly set `kCIAttributeIdentity` which
 /// defines their buffer index into the Metal kernel.
 ///
-/// Note that `MetalFilter` generators (e.g. `MetalPerlinNoise`) require an input image which 
+/// Note that `MetalFilter` generators (e.g. `MetalPerlinNoise`) require an input image which
 /// is used to define the extent of the final output
 class MetalFilter: CIFilter
 {
