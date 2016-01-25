@@ -166,8 +166,7 @@ float cnoise(float3 P)
 }
 
 kernel void perlin(
-                    texture2d<float, access::read> inTexture [[texture(0)]],
-                    texture2d<float, access::write> outTexture [[texture(1)]],
+                    texture2d<float, access::write> outTexture [[texture(0)]],
              
                     constant float &reciprocalScale [[ buffer(0) ]],
                     constant float &oct [[ buffer(1) ]],
