@@ -103,6 +103,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
         ])
+        
+        CIFilter.registerFilterName("StarBurstFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -147,6 +153,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "MetalPerlinNoise":
             return MetalPerlinNoise()
+            
+        case "StarBurstFilter":
+            return StarBurstFilter()
             
         default:
             return nil
@@ -321,6 +330,88 @@ override var attributes: [String : AnyObject]
                     kCIInputIntensityKey: inputSepiaToneIntensity])
         
         return finalImage
+    }
+    
+}
+
+// MARK: Starburst
+
+class StarBurstFilter: CIFilter
+{
+    var inputImage : CIImage?
+    var inputThreshold: CGFloat = 0.75
+    var inputRadius: CGFloat = 20
+    
+    let thresholdFilter = ThresholdFilter()
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Starburst Filter",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputThreshold": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.75,
+                kCIAttributeDisplayName: "Threshold",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 20,
+                kCIAttributeDisplayName: "Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 100,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        thresholdFilter.inputThreshold = inputThreshold
+        thresholdFilter.inputImage = inputImage
+        
+        let thresholdImage = thresholdFilter.outputImage!
+
+        let blurOne = thresholdImage.imageByApplyingFilter("CIMotionBlur",
+            withInputParameters: [kCIInputRadiusKey: inputRadius])
+            .imageByCroppingToRect(thresholdImage.extent)
+        
+        let blurTwo = thresholdImage.imageByApplyingFilter("CIMotionBlur",
+            withInputParameters: [
+                kCIInputAngleKey: CGFloat(M_PI * 2 * 0.3333),
+                kCIInputRadiusKey: inputRadius])
+            .imageByCroppingToRect(thresholdImage.extent)
+        
+        let blurThree = thresholdImage.imageByApplyingFilter("CIMotionBlur",
+            withInputParameters: [
+                kCIInputAngleKey: CGFloat(M_PI * 2 * 0.6666),
+                kCIInputRadiusKey: inputRadius])
+            .imageByCroppingToRect(thresholdImage.extent)
+        
+        
+        let starburst = blurOne
+            .imageByApplyingFilter("CIAdditionCompositing",
+                withInputParameters: [kCIInputBackgroundImageKey: blurTwo])
+            .imageByApplyingFilter("CIAdditionCompositing",
+                withInputParameters: [kCIInputBackgroundImageKey: blurThree])
+        
+        
+        let final = inputImage.imageByApplyingFilter("CIAdditionCompositing", withInputParameters: [kCIInputBackgroundImageKey: starburst])
+        
+        return final
     }
     
 }

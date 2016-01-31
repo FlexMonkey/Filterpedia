@@ -17,7 +17,8 @@ let assets = [
     NamedImage(name: "Sunflower", ciImage: CIImage(image: UIImage(named: "sunflower.jpg")!)!),
     NamedImage(name: "Vegas", ciImage: CIImage(image: UIImage(named: "vegas.jpg")!)!),
     NamedImage(name: "Sunset", ciImage: CIImage(image: UIImage(named: "sunset.jpg")!)!),
-    NamedImage(name: "Shutter", ciImage: CIImage(image: UIImage(named: "shutter.jpg")!)!)
+    NamedImage(name: "Shutter", ciImage: CIImage(image: UIImage(named: "shutter.jpg")!)!),
+    NamedImage(name: "Mascot", ciImage: CIImage(image: UIImage(named: "carMascot.jpg")!)!)
 ]
 
 let assetLabels = assets.map({ $0.name })

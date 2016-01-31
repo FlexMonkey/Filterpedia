@@ -19,6 +19,7 @@
 		3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */; };
 		3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */; };
 		3E74E7D91C36D61000F0BCCF /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D81C36D61000F0BCCF /* Assets.swift */; };
+		3E7505B11C5E0FA300248A3F /* carMascot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E7505B01C5E0FA300248A3F /* carMascot.jpg */; };
 		3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A720A1C325E5600CAD516 /* AppDelegate.swift */; };
 		3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A720C1C325E5600CAD516 /* ViewController.swift */; };
 		3E9A72101C325E5600CAD516 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A720E1C325E5600CAD516 /* Main.storyboard */; };
@@ -50,6 +51,7 @@
 		3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompositeOverBlackFilter.swift; path = components/CompositeOverBlackFilter.swift; sourceTree = "<group>"; };
 		3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterInputItemRenderer.swift; path = components/FilterInputItemRenderer.swift; sourceTree = "<group>"; };
 		3E74E7D81C36D61000F0BCCF /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = assets/Assets.swift; sourceTree = "<group>"; };
+		3E7505B01C5E0FA300248A3F /* carMascot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = carMascot.jpg; path = assets/carMascot.jpg; sourceTree = "<group>"; };
 		3E9A72071C325E5600CAD516 /* Filterpedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterpedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9A720A1C325E5600CAD516 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E9A720C1C325E5600CAD516 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 		3E9A72251C33A7B100CAD516 /* asssets */ = {
 			isa = PBXGroup;
 			children = (
+				3E7505B01C5E0FA300248A3F /* carMascot.jpg */,
 				3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */,
 				3E5928511C4D080D004BFA07 /* sunset.jpg */,
 				3E74E7D81C36D61000F0BCCF /* Assets.swift */,
@@ -233,6 +236,7 @@
 			files = (
 				3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */,
 				3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */,
+				3E7505B11C5E0FA300248A3F /* carMascot.jpg in Resources */,
 				3E5928521C4D080D004BFA07 /* sunset.jpg in Resources */,
 				3E9A72151C325E5600CAD516 /* LaunchScreen.storyboard in Resources */,
 				3E9A72121C325E5600CAD516 /* Assets.xcassets in Resources */,
