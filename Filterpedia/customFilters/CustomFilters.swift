@@ -32,6 +32,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
+        CIFilter.registerFilterName("ThresholdToAlphaFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
         CIFilter.registerFilterName("CRTFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
@@ -117,7 +123,10 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         {
         case "ThresholdFilter":
             return ThresholdFilter()
-
+            
+        case "ThresholdToAlphaFilter":
+            return ThresholdToAlphaFilter()
+            
         case "CRTFilter":
             return CRTFilter()
             
@@ -339,11 +348,13 @@ override var attributes: [String : AnyObject]
 class StarBurstFilter: CIFilter
 {
     var inputImage : CIImage?
-    var inputThreshold: CGFloat = 0.75
+    var inputThreshold: CGFloat = 0.9
     var inputRadius: CGFloat = 20
     var inputAngle: CGFloat = 0
+    var inputBeamCount: Int = 3
+    var inputStarburstBrightness: CGFloat = 0
     
-    let thresholdFilter = ThresholdFilter()
+    let thresholdFilter = ThresholdToAlphaFilter()
     
     override var attributes: [String : AnyObject]
     {
@@ -356,7 +367,7 @@ class StarBurstFilter: CIFilter
             
             "inputThreshold": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 0.75,
+                kCIAttributeDefault: 0.9,
                 kCIAttributeDisplayName: "Threshold",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
@@ -374,12 +385,30 @@ class StarBurstFilter: CIFilter
             
             "inputAngle": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 20,
+                kCIAttributeDefault: 0,
                 kCIAttributeDisplayName: "Angle",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
                 kCIAttributeSliderMax: M_PI,
-                kCIAttributeType: kCIAttributeTypeScalar]
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputStarburstBrightness": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Starburst Brightness",
+                kCIAttributeMin: -1,
+                kCIAttributeSliderMin: -1,
+                kCIAttributeSliderMax: 0.5,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBeamCount": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 3,
+                kCIAttributeDisplayName: "Beam Count",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: 1,
+                kCIAttributeSliderMax: 10,
+                kCIAttributeType: kCIAttributeTypeInteger]
         ]
     }
     
@@ -394,37 +423,69 @@ class StarBurstFilter: CIFilter
         thresholdFilter.inputImage = inputImage
         
         let thresholdImage = thresholdFilter.outputImage!
+     
+        let starBurstAccumulator = CIImageAccumulator(extent: thresholdImage.extent,
+            format: kCIFormatARGB8)
+        
+        for i in 0 ..< inputBeamCount
+        {
+            let angle = CGFloat((M_PI / Double(inputBeamCount)) * Double(i))
+            
+            let starburst = thresholdImage.imageByApplyingFilter("CIMotionBlur",
+                    withInputParameters: [
+                        kCIInputRadiusKey: inputRadius,
+                        kCIInputAngleKey: inputAngle + angle])
+                .imageByCroppingToRect(thresholdImage.extent)
+                .imageByApplyingFilter("CIAdditionCompositing",
+                    withInputParameters: [
+                        kCIInputBackgroundImageKey: starBurstAccumulator.image()])
+            
+            starBurstAccumulator.setImage(starburst)
+        }
+        
+        let adjustedStarBurst = starBurstAccumulator.image()
+            .imageByApplyingFilter("CIColorControls",
+                withInputParameters: [kCIInputBrightnessKey: inputStarburstBrightness])
 
-        let blurOne = thresholdImage.imageByApplyingFilter("CIMotionBlur",
-            withInputParameters: [
-                kCIInputRadiusKey: inputRadius,
-                kCIInputAngleKey: inputAngle])
-            .imageByCroppingToRect(thresholdImage.extent)
-        
-        let blurTwo = thresholdImage.imageByApplyingFilter("CIMotionBlur",
-            withInputParameters: [
-                kCIInputAngleKey: inputAngle + CGFloat(M_PI * 2 * 0.3333),
-                kCIInputRadiusKey: inputRadius])
-            .imageByCroppingToRect(thresholdImage.extent)
-        
-        let blurThree = thresholdImage.imageByApplyingFilter("CIMotionBlur",
-            withInputParameters: [
-                kCIInputAngleKey: inputAngle + CGFloat(M_PI * 2 * 0.6666),
-                kCIInputRadiusKey: inputRadius])
-            .imageByCroppingToRect(thresholdImage.extent)
-        
-        let starburst = blurOne
-            .imageByApplyingFilter("CIAdditionCompositing",
-                withInputParameters: [kCIInputBackgroundImageKey: blurTwo])
-            .imageByApplyingFilter("CIAdditionCompositing",
-                withInputParameters: [kCIInputBackgroundImageKey: blurThree])
-        
-        
-        let final = inputImage.imageByApplyingFilter("CIAdditionCompositing", withInputParameters: [kCIInputBackgroundImageKey: starburst])
+        let final = inputImage.imageByApplyingFilter("CIAdditionCompositing",
+            withInputParameters: [kCIInputBackgroundImageKey: adjustedStarBurst])
         
         return final
     }
     
+}
+
+// MARK: ThresholdToAlphaFilter
+
+class ThresholdToAlphaFilter: ThresholdFilter
+{
+    override var attributes: [String : AnyObject]
+    {
+        var superAttributes = super.attributes
+        
+        superAttributes[kCIAttributeFilterDisplayName] = "Threshold To Alpha Filter"
+        
+        return superAttributes
+    }
+    
+    override init()
+    {
+        super.init()
+        
+        thresholdKernel = CIColorKernel(string:
+            "kernel vec4 thresholdFilter(__sample image, float threshold)" +
+                "{" +
+                "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+                
+                "   return (luma > threshold) ? image : vec4(image.r, image.g, image.b, 0.0);" +
+            "}"
+        )
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: Threshold
@@ -458,14 +519,27 @@ class ThresholdFilter: CIFilter
         inputThreshold = 0.75
     }
     
-    let thresholdKernel = CIColorKernel(string:
-        "kernel vec4 thresholdFilter(__sample image, float threshold)" +
-        "{" +
-        "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+    override init()
+    {
+        super.init()
         
-        "   return (luma > threshold) ? vec4(1.0, 1.0, 1.0, 1.0) : vec4(0.0, 0.0, 0.0, 0.0);" +
-        "}"
-    )
+        thresholdKernel = CIColorKernel(string:
+            "kernel vec4 thresholdFilter(__sample image, float threshold)" +
+                "{" +
+                "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+                
+                "   return (luma > threshold) ? vec4(1.0) : vec4(0.0);" +
+            "}"
+        )
+
+    }
+ 
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var thresholdKernel: CIColorKernel?
     
     override var outputImage: CIImage!
     {
