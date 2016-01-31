@@ -341,6 +341,7 @@ class StarBurstFilter: CIFilter
     var inputImage : CIImage?
     var inputThreshold: CGFloat = 0.75
     var inputRadius: CGFloat = 20
+    var inputAngle: CGFloat = 0
     
     let thresholdFilter = ThresholdFilter()
     
@@ -369,6 +370,15 @@ class StarBurstFilter: CIFilter
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
                 kCIAttributeSliderMax: 100,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputAngle": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 20,
+                kCIAttributeDisplayName: "Angle",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: M_PI,
                 kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
@@ -386,21 +396,22 @@ class StarBurstFilter: CIFilter
         let thresholdImage = thresholdFilter.outputImage!
 
         let blurOne = thresholdImage.imageByApplyingFilter("CIMotionBlur",
-            withInputParameters: [kCIInputRadiusKey: inputRadius])
+            withInputParameters: [
+                kCIInputRadiusKey: inputRadius,
+                kCIInputAngleKey: inputAngle])
             .imageByCroppingToRect(thresholdImage.extent)
         
         let blurTwo = thresholdImage.imageByApplyingFilter("CIMotionBlur",
             withInputParameters: [
-                kCIInputAngleKey: CGFloat(M_PI * 2 * 0.3333),
+                kCIInputAngleKey: inputAngle + CGFloat(M_PI * 2 * 0.3333),
                 kCIInputRadiusKey: inputRadius])
             .imageByCroppingToRect(thresholdImage.extent)
         
         let blurThree = thresholdImage.imageByApplyingFilter("CIMotionBlur",
             withInputParameters: [
-                kCIInputAngleKey: CGFloat(M_PI * 2 * 0.6666),
+                kCIInputAngleKey: inputAngle + CGFloat(M_PI * 2 * 0.6666),
                 kCIInputRadiusKey: inputRadius])
             .imageByCroppingToRect(thresholdImage.extent)
-        
         
         let starburst = blurOne
             .imageByApplyingFilter("CIAdditionCompositing",
