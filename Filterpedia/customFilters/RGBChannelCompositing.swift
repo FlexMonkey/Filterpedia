@@ -20,6 +20,8 @@
 
 import CoreImage
 
+let tau = CGFloat(M_PI * 2)
+
 /// `RGBChannelCompositing` filter takes three input images and composites them together
 /// by their color channels, the output RGB is `(inputRed.r, inputGreen.g, inputBlue.b)`
 
@@ -173,6 +175,87 @@ class RGBChannelToneCurve: CIFilter
         rgbChannelCompositing.inputBlueImage = blue
         
         return rgbChannelCompositing.outputImage
+    }
+}
+
+/// `ChromaticAbberation` offsets an image's RGB channels around an equilateral triangle
+
+class ChromaticAbberation: CIFilter
+{
+    var inputImage: CIImage?
+    
+    var inputAngle: CGFloat = 0
+    var inputRadius: CGFloat = 2
+    
+    let rgbChannelCompositing = RGBChannelCompositing()
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Chromatic Abberation",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputAngle": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Angle",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: tau,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 25,
+                kCIAttributeType: kCIAttributeTypeScalar],
+
+        ]
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let redAngle = inputAngle + tau
+        let greenAngle = inputAngle + tau * 0.333
+        let blueAngle = inputAngle + tau * 0.666
+        
+        let redTransform = CGAffineTransformMakeTranslation(sin(redAngle) * inputRadius, cos(redAngle) * inputRadius)
+        let greenTransform = CGAffineTransformMakeTranslation(sin(greenAngle) * inputRadius, cos(greenAngle) * inputRadius)
+        let blueTransform = CGAffineTransformMakeTranslation(sin(blueAngle) * inputRadius, cos(blueAngle) * inputRadius)
+        
+        let red = inputImage.imageByApplyingFilter("CIAffineTransform",
+            withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: redTransform)])
+            .imageByCroppingToRect(inputImage.extent)
+        
+        let green = inputImage.imageByApplyingFilter("CIAffineTransform",
+            withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: greenTransform)])
+            .imageByCroppingToRect(inputImage.extent)
+        
+        let blue = inputImage.imageByApplyingFilter("CIAffineTransform",
+            withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: blueTransform)])
+            .imageByCroppingToRect(inputImage.extent)
+        
+        let rgbChannelCompositing = RGBChannelCompositing()
+        
+        rgbChannelCompositing.inputRedImage = red
+        rgbChannelCompositing.inputGreenImage = green
+        rgbChannelCompositing.inputBlueImage = blue
+        
+        let finalImage = rgbChannelCompositing.outputImage
+        
+        return finalImage
     }
 }
 
