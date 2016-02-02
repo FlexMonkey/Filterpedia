@@ -67,13 +67,14 @@ class MercurializeFilter: CIFilter
     
     // MARK: SceneKit Objects
     
+    var sphereImage: CIImage?
+    
     let material = SCNMaterial()
     
     let sceneKitView = SCNView()
     
-    let omniLight = OmniLight()
-    
-    let ambientLight = SCNLight()
+    let omniLightNode = LightNode(type: .Omni)
+    let ambientLightNode = LightNode(type: .Ambient)
     
     // MARK: Attributes
     
@@ -161,8 +162,6 @@ class MercurializeFilter: CIFilter
     
     // MARK: Output Image
     
-    private var sphereImage: CIImage?
-    
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage else
@@ -174,11 +173,11 @@ class MercurializeFilter: CIFilter
         {
             material.shininess = inputShininess
             
-            omniLight.color = inputLightColor
-            omniLight.position.x = Float(-50 + (inputLightPosition.X * 100))
-            omniLight.position.y = Float(-50 + (inputLightPosition.Y * 100))
+            omniLightNode.color = inputLightColor
+            omniLightNode.position.x = Float(-50 + (inputLightPosition.X * 100))
+            omniLightNode.position.y = Float(-50 + (inputLightPosition.Y * 100))
             
-            ambientLight.color = UIColor(CIColor: inputAmbientLightColor)
+            ambientLightNode.color = inputAmbientLightColor
             
             sceneKitView.prepareObject(sceneKitView.scene!, shouldAbortBlock: {false})
             
@@ -237,13 +236,8 @@ class MercurializeFilter: CIFilter
         
         // Lights
         
-        ambientLight.type = SCNLightTypeAmbient
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = ambientLight
-        
         scene.rootNode.addChildNode(ambientLightNode)
-        
-        scene.rootNode.addChildNode(omniLight)
+        scene.rootNode.addChildNode(omniLightNode)
         
         // Material
         
@@ -256,18 +250,16 @@ class MercurializeFilter: CIFilter
     }
 }
 
-// MARK: OmniLight class - SceneKit node with Omni light
+/// LightNode class - SceneKit node with light
 
-class OmniLight: SCNNode
+class LightNode: SCNNode
 {
-    override init()
+    required init(type: LightType)
     {
         super.init()
         
-        let omniLight = SCNLight()
-        omniLight.type = SCNLightTypeOmni
-        
-        light = omniLight
+        light = SCNLight()
+        light!.type = type.rawValue
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -283,3 +275,12 @@ class OmniLight: SCNNode
         }
     }
 }
+
+enum LightType: String
+{
+    case Ambient = "ambient"
+    case Omni = "omni"
+    case Directional = "directional"
+    case Spot = "spot"
+}
+
