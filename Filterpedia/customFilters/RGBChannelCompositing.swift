@@ -178,9 +178,9 @@ class RGBChannelToneCurve: CIFilter
     }
 }
 
-/// `ChromaticAbberation` offsets an image's RGB channels around an equilateral triangle
+/// `ChromaticAberration` offsets an image's RGB channels around an equilateral triangle
 
-class ChromaticAbberation: CIFilter
+class ChromaticAberration: CIFilter
 {
     var inputImage: CIImage?
     

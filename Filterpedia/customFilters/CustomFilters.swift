@@ -116,7 +116,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName("ChromaticAbberation",
+        CIFilter.registerFilterName("ChromaticAberration",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
@@ -172,8 +172,8 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "StarBurstFilter":
             return StarBurstFilter()
             
-        case "ChromaticAbberation":
-            return ChromaticAbberation()
+        case "ChromaticAberration":
+            return ChromaticAberration()
             
         default:
             return nil
