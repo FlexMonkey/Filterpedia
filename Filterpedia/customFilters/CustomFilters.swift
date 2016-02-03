@@ -80,7 +80,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName("PseudoColorFilter",
+        CIFilter.registerFilterName("PseudoColorLinearFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("PseudoColorSmoothFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
@@ -160,8 +166,11 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "RGBChannelToneCurve":
             return RGBChannelToneCurve()
             
-        case "PseudoColorFilter":
-            return PseudoColorFilter()
+        case "PseudoColorLinearFilter":
+            return PseudoColorLinearFilter()
+            
+        case "PseudoColorSmoothFilter":
+            return PseudoColorSmoothFilter()
             
         case "KuwaharaFilter":
             return KuwaharaFilter()
@@ -196,20 +205,20 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
 /// but it accepts five input colors and uses mix() to transition
 /// between them based on an image's luminance
 
-class PseudoColorFilter: CIFilter
+class PseudoColorLinearFilter: CIFilter
 {
     var inputImage: CIImage?
     
     var inputColor0 = CIColor(red: 1, green: 0, blue: 0)
-    var inputColor1 = CIColor(red: 0, green: 0, blue: 0)
+    var inputColor1 = CIColor(red: 0, green: 0, blue: 1)
     var inputColor2 = CIColor(red: 0, green: 1, blue: 0)
-    var inputColor3 = CIColor(red: 1, green: 1, blue: 1)
-    var inputColor4 = CIColor(red: 0, green: 0, blue: 1)
+    var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
+    var inputColor4 = CIColor(red: 0, green: 1, blue: 1)
     
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Pseudo Color Filter",
+            kCIAttributeFilterDisplayName: "Pseudo Color Filter (Linear)",
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -219,7 +228,7 @@ class PseudoColorFilter: CIFilter
             "inputColor0": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIColor",
                 kCIAttributeDisplayName: "Color One",
-                kCIAttributeDefault: CIColor(red: 1, green: 0, blue: 0),
+                kCIAttributeDefault: CIColor(red: 1, green: 0, blue: 1),
                 kCIAttributeType: kCIAttributeTypeColor],
             
             "inputColor1": [kCIAttributeIdentity: 0,
@@ -237,19 +246,19 @@ class PseudoColorFilter: CIFilter
             "inputColor3": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIColor",
                 kCIAttributeDisplayName: "Color Four",
-                kCIAttributeDefault: CIColor(red: 1, green: 1, blue: 1),
+                kCIAttributeDefault: CIColor(red: 1, green: 0, blue: 1),
                 kCIAttributeType: kCIAttributeTypeColor],
             
             "inputColor4": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIColor",
                 kCIAttributeDisplayName: "Color Five",
-                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 1),
+                kCIAttributeDefault: CIColor(red: 0, green: 1, blue: 1),
                 kCIAttributeType: kCIAttributeTypeColor]
         ]
     }
     
     let pseudoColorKernel = CIColorKernel(string:
-        "kernel vec4 thresholdFilter(__sample image, vec4 inputColor0, vec4 inputColor1, vec4 inputColor2, vec4 inputColor3, vec4 inputColor4) \n" +
+        "kernel vec4 pseudoColor(__sample image, vec4 inputColor0, vec4 inputColor1, vec4 inputColor2, vec4 inputColor3, vec4 inputColor4) \n" +
             "{ \n" +
             "   vec4 luma = vec4(dot(image.rgb, vec3(0.2126, 0.7152, 0.0722))); \n" +
             
@@ -263,6 +272,91 @@ class PseudoColorFilter: CIFilter
             "   { return mix(inputColor2, inputColor3, (luma - 0.5) * 4.0) ; } \n" +
             
             "   return mix(inputColor3, inputColor4, (luma - 0.75) * 4.0) ; \n" +
+        "}"
+    )
+
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            pseudoColorKernel = pseudoColorKernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, inputColor0, inputColor1, inputColor2, inputColor3, inputColor4]
+        
+        return pseudoColorKernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
+class PseudoColorSmoothFilter: CIFilter
+{
+    var inputImage: CIImage?
+    
+    var inputColor0 = CIColor(red: 1, green: 0, blue: 0)
+    var inputColor1 = CIColor(red: 0, green: 0, blue: 1)
+    var inputColor2 = CIColor(red: 0, green: 1, blue: 0)
+    var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
+    var inputColor4 = CIColor(red: 0, green: 1, blue: 1)
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Pseudo Color Filter (Smooth)",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputColor0": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color One",
+                kCIAttributeDefault: CIColor(red: 1, green: 0, blue: 1),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor1": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Two",
+                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 0),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor2": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Three",
+                kCIAttributeDefault: CIColor(red: 0, green: 1, blue: 0),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor3": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Four",
+                kCIAttributeDefault: CIColor(red: 1, green: 0, blue: 1),
+                kCIAttributeType: kCIAttributeTypeColor],
+            
+            "inputColor4": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIColor",
+                kCIAttributeDisplayName: "Color Five",
+                kCIAttributeDefault: CIColor(red: 0, green: 1, blue: 1),
+                kCIAttributeType: kCIAttributeTypeColor]
+        ]
+    }
+    
+    let pseudoColorKernel = CIColorKernel(string:
+        "kernel vec4 pseudoColor(__sample image, vec4 inputColor0, vec4 inputColor1, vec4 inputColor2, vec4 inputColor3, vec4 inputColor4) \n" +
+            "{ \n" +
+            "   vec4 luma = vec4(dot(image.rgb, vec3(0.2126, 0.7152, 0.0722))); \n" +
+            
+            "   if (luma.x < 0.25) \n" +
+            "   { return inputColor0 + ((inputColor1 - inputColor0) * smoothstep(0.0, 1.0, luma * 4.0)); } \n" +
+            
+            "   else if (luma.x >= 0.25 && luma.x < 0.5) \n" +
+            "   { return inputColor1 + ((inputColor2 - inputColor1) * smoothstep(0.0, 1.0, (luma - 0.25) * 4.0)); } \n" +
+            
+            "   else if (luma.x >= 0.5 && luma.x < 0.75) \n" +
+            "   { return inputColor2 + ((inputColor3 - inputColor2) * smoothstep(0.0, 1.0, (luma - 0.5) * 4.0)); } \n" +
+            
+            "   { return inputColor3 + ((inputColor4 - inputColor3) * smoothstep(0.0, 1.0, (luma - 0.75) * 4.0)); } \n" +
         "}"
     )
     
