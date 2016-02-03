@@ -209,7 +209,7 @@ class PseudoColorLinearFilter: CIFilter
 {
     var inputImage: CIImage?
     
-    var inputColor0 = CIColor(red: 1, green: 0, blue: 0)
+    var inputColor0 = CIColor(red: 1, green: 0, blue: 1)
     var inputColor1 = CIColor(red: 0, green: 0, blue: 1)
     var inputColor2 = CIColor(red: 0, green: 1, blue: 0)
     var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
@@ -234,7 +234,7 @@ class PseudoColorLinearFilter: CIFilter
             "inputColor1": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIColor",
                 kCIAttributeDisplayName: "Color Two",
-                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 0),
+                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 1),
                 kCIAttributeType: kCIAttributeTypeColor],
             
             "inputColor2": [kCIAttributeIdentity: 0,
@@ -294,7 +294,7 @@ class PseudoColorSmoothFilter: CIFilter
 {
     var inputImage: CIImage?
     
-    var inputColor0 = CIColor(red: 1, green: 0, blue: 0)
+    var inputColor0 = CIColor(red: 1, green: 0, blue: 1)
     var inputColor1 = CIColor(red: 0, green: 0, blue: 1)
     var inputColor2 = CIColor(red: 0, green: 1, blue: 0)
     var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
@@ -319,7 +319,7 @@ class PseudoColorSmoothFilter: CIFilter
             "inputColor1": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIColor",
                 kCIAttributeDisplayName: "Color Two",
-                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 0),
+                kCIAttributeDefault: CIColor(red: 0, green: 0, blue: 1),
                 kCIAttributeType: kCIAttributeTypeColor],
             
             "inputColor2": [kCIAttributeIdentity: 0,
@@ -348,15 +348,15 @@ class PseudoColorSmoothFilter: CIFilter
             "   vec4 luma = vec4(dot(image.rgb, vec3(0.2126, 0.7152, 0.0722))); \n" +
             
             "   if (luma.x < 0.25) \n" +
-            "   { return inputColor0 + ((inputColor1 - inputColor0) * smoothstep(0.0, 1.0, luma * 4.0)); } \n" +
+            "   { return inputColor0 + ((inputColor1 - inputColor0) * smoothstep(0.0, 0.25, luma)); } \n" +
             
             "   else if (luma.x >= 0.25 && luma.x < 0.5) \n" +
-            "   { return inputColor1 + ((inputColor2 - inputColor1) * smoothstep(0.0, 1.0, (luma - 0.25) * 4.0)); } \n" +
+            "   { return inputColor1 + ((inputColor2 - inputColor1) * smoothstep(0.25, 0.5, luma)); } \n" +
             
             "   else if (luma.x >= 0.5 && luma.x < 0.75) \n" +
-            "   { return inputColor2 + ((inputColor3 - inputColor2) * smoothstep(0.0, 1.0, (luma - 0.5) * 4.0)); } \n" +
+            "   { return inputColor2 + ((inputColor3 - inputColor2) * smoothstep(0.5, 0.75, luma)); } \n" +
             
-            "   { return inputColor3 + ((inputColor4 - inputColor3) * smoothstep(0.0, 1.0, (luma - 0.75) * 4.0)); } \n" +
+            "   { return inputColor3 + ((inputColor4 - inputColor3) * smoothstep(0.75, 1.0, luma)); } \n" +
         "}"
     )
     
