@@ -22,9 +22,58 @@ class OverlayWidgets
         case "RGBChannelToneCurve":
             return RGBChannelToneCurveWidget()
             
+        case "CIToneCurve":
+            return ToneCurveWidget()
+            
         default:
             return nil
         }
+    }
+}
+
+class ToneCurveWidget: UIView, FilterAttributesDisplayable
+{
+    let toneCurveLayer = curveLayer(strokeColor: UIColor.whiteColor().CGColor)
+    
+    func setFilter(filter: CIFilter)
+    {
+        if let inputPoint0 = filter.valueForKey("inputPoint0") as? CIVector,
+            inputPoint1 = filter.valueForKey("inputPoint1") as? CIVector,
+            inputPoint2 = filter.valueForKey("inputPoint2") as? CIVector,
+            inputPoint3 = filter.valueForKey("inputPoint3") as? CIVector,
+            inputPoint4 = filter.valueForKey("inputPoint4") as? CIVector
+        {
+            let points =  [inputPoint0, inputPoint1, inputPoint2, inputPoint3, inputPoint4].map
+            {
+                CGPoint(x: $0.X * frame.width, y: (1 - $0.Y) * frame.height)
+            }
+            
+            let path = UIBezierPath()
+            path.interpolatePointsWithHermite(points)
+         
+            toneCurveLayer.path = path.CGPath
+        }
+        else
+        {
+            toneCurveLayer.path = nil
+        }
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+    
+        layer.addSublayer(toneCurveLayer)
+    }
+
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews()
+    {
+        toneCurveLayer.frame = bounds
     }
 }
 
@@ -64,26 +113,6 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         return path.CGPath
     }
     
-    static func curveLayer(strokeColor color: CGColorRef) -> CAShapeLayer
-    {
-        let layer = CAShapeLayer()
-        
-        layer.drawsAsynchronously = true
-        
-        layer.strokeColor = color
-        layer.fillColor = nil
-        layer.lineWidth = 3
-        
-        layer.shadowColor = UIColor.grayColor().CGColor
-        layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowOpacity = 1
-        layer.shadowRadius = 3
-        
-        layer.masksToBounds = true
-        
-        return layer
-    }
-    
     func setFilter(filter: CIFilter)
     {
         if let rgbChannelToneCurve =  filter as? RGBChannelToneCurve
@@ -94,9 +123,9 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     
     override init(frame: CGRect)
     {
-        redLayer = RGBChannelToneCurveWidget.curveLayer(strokeColor: UIColor.redColor().CGColor)
-        greenLayer = RGBChannelToneCurveWidget.curveLayer(strokeColor: UIColor.greenColor().CGColor)
-        blueLayer = RGBChannelToneCurveWidget.curveLayer(strokeColor: UIColor.blueColor().CGColor)
+        redLayer = curveLayer(strokeColor: UIColor.redColor().CGColor)
+        greenLayer = curveLayer(strokeColor: UIColor.greenColor().CGColor)
+        blueLayer = curveLayer(strokeColor: UIColor.blueColor().CGColor)
         
         super.init(frame: frame)
     
@@ -116,4 +145,24 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         greenLayer.frame = bounds
         blueLayer.frame = bounds
     }
+}
+
+func curveLayer(strokeColor color: CGColorRef) -> CAShapeLayer
+{
+    let layer = CAShapeLayer()
+    
+    layer.drawsAsynchronously = true
+    
+    layer.strokeColor = color
+    layer.fillColor = nil
+    layer.lineWidth = 3
+    
+    layer.shadowColor = UIColor.grayColor().CGColor
+    layer.shadowOffset = CGSize(width: 0, height: 0)
+    layer.shadowOpacity = 1
+    layer.shadowRadius = 3
+    
+    layer.masksToBounds = true
+    
+    return layer
 }
