@@ -41,7 +41,7 @@ class RGBChannelCompositing: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "RGB Channel Compositing",
+            kCIAttributeFilterDisplayName: "RGB Compositing",
             
             "inputRedImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -106,7 +106,7 @@ class RGBChannelToneCurve: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "RGB Channel Tone Curve",
+            kCIAttributeFilterDisplayName: "RGB Tone Curve",
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -178,6 +178,133 @@ class RGBChannelToneCurve: CIFilter
     }
 }
 
+/// `RGBChannelBrightnessAndContrast` controls brightness & contrast per color channel
+
+class RGBChannelBrightnessAndContrast: CIFilter
+{
+    var inputImage: CIImage?
+    
+    var inputRedBrightness: CGFloat = 0
+    var inputRedContrast: CGFloat = 1
+    
+    var inputGreenBrightness: CGFloat = 0
+    var inputGreenContrast: CGFloat = 1
+    
+    var inputBlueBrightness: CGFloat = 0
+    var inputBlueContrast: CGFloat = 1
+    
+    let rgbChannelCompositing = RGBChannelCompositing()
+    
+    override func setDefaults()
+    {
+        inputRedBrightness = 0
+        inputRedContrast = 1
+        
+        inputGreenBrightness = 0
+        inputGreenContrast = 1
+        
+        inputBlueBrightness = 0
+        inputBlueContrast = 1
+    }
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "RGB Brightness And Contrast",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputRedBrightness": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Red Brightness",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: -1,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputRedContrast": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Red Contrast",
+                kCIAttributeMin: 0.25,
+                kCIAttributeSliderMin: 0.25,
+                kCIAttributeSliderMax: 4,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputGreenBrightness": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Green Brightness",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: -1,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputGreenContrast": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Green Contrast",
+                kCIAttributeMin: 0.25,
+                kCIAttributeSliderMin: 0.25,
+                kCIAttributeSliderMax: 4,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBlueBrightness": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Blue Brightness",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: -1,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBlueContrast": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Blue Contrast",
+                kCIAttributeMin: 0.25,
+                kCIAttributeSliderMin: 0.25,
+                kCIAttributeSliderMax: 4,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let red = inputImage.imageByApplyingFilter("CIColorControls",
+            withInputParameters: [
+                kCIInputBrightnessKey: inputRedBrightness,
+                kCIInputContrastKey: inputRedContrast])
+        
+        let green = inputImage.imageByApplyingFilter("CIColorControls",
+            withInputParameters: [
+                kCIInputBrightnessKey: inputGreenBrightness,
+                kCIInputContrastKey: inputGreenContrast])
+        
+        let blue = inputImage.imageByApplyingFilter("CIColorControls",
+            withInputParameters: [
+                kCIInputBrightnessKey: inputBlueBrightness,
+                kCIInputContrastKey: inputBlueContrast])
+        
+        rgbChannelCompositing.inputRedImage = red
+        rgbChannelCompositing.inputGreenImage = green
+        rgbChannelCompositing.inputBlueImage = blue
+        
+        let finalImage = rgbChannelCompositing.outputImage
+        
+        return finalImage
+    }
+}
+
 /// `ChromaticAberration` offsets an image's RGB channels around an equilateral triangle
 
 class ChromaticAberration: CIFilter
@@ -188,6 +315,12 @@ class ChromaticAberration: CIFilter
     var inputRadius: CGFloat = 2
     
     let rgbChannelCompositing = RGBChannelCompositing()
+    
+    override func setDefaults()
+    {
+        inputAngle = 0
+        inputRadius = 2
+    }
     
     override var attributes: [String : AnyObject]
     {
@@ -201,7 +334,7 @@ class ChromaticAberration: CIFilter
             
             "inputAngle": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 2,
+                kCIAttributeDefault: 0,
                 kCIAttributeDisplayName: "Angle",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
@@ -216,7 +349,6 @@ class ChromaticAberration: CIFilter
                 kCIAttributeSliderMin: 0,
                 kCIAttributeSliderMax: 25,
                 kCIAttributeType: kCIAttributeTypeScalar],
-
         ]
     }
     
@@ -246,9 +378,7 @@ class ChromaticAberration: CIFilter
         let blue = inputImage.imageByApplyingFilter("CIAffineTransform",
             withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: blueTransform)])
             .imageByCroppingToRect(inputImage.extent)
-        
-        let rgbChannelCompositing = RGBChannelCompositing()
-        
+
         rgbChannelCompositing.inputRedImage = red
         rgbChannelCompositing.inputGreenImage = green
         rgbChannelCompositing.inputBlueImage = blue

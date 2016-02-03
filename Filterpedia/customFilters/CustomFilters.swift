@@ -121,6 +121,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("RGBChannelBrightnessAndContrast",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -174,6 +180,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ChromaticAberration":
             return ChromaticAberration()
+            
+        case "RGBChannelBrightnessAndContrast":
+            return RGBChannelBrightnessAndContrast()
             
         default:
             return nil
