@@ -514,10 +514,10 @@ class ThresholdToAlphaFilter: ThresholdFilter
         
         thresholdKernel = CIColorKernel(string:
             "kernel vec4 thresholdFilter(__sample image, float threshold)" +
-                "{" +
-                "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
-                
-                "   return (luma > threshold) ? image : vec4(image.r, image.g, image.b, 0.0);" +
+            "{" +
+            "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+            
+            "   return vec4(image.rgb, image.a * step(threshold, luma));" +
             "}"
         )
     }
@@ -568,7 +568,7 @@ class ThresholdFilter: CIFilter
                 "{" +
                 "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
                 
-                "   return (luma > threshold) ? vec4(1.0) : vec4(0.0);" +
+                "   return vec4(step(threshold, luma));" +
             "}"
         )
 
