@@ -2,11 +2,110 @@
 //  CRTFilter.swift
 //  Filterpedia
 //
+//  CRT filter and VHS Tracking Lines
+//
 //  Created by Simon Gladman on 20/01/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
 
 import CoreImage
+
+class VHSTrackingLines: CIFilter
+{
+    var inputImage: CIImage?
+    var inputTime: CGFloat = 0
+    var inputSpacing: CGFloat = 50
+    var inputStripeHeight: CGFloat = 0.5
+    var inputBackgroundNoise: CGFloat = 0.05
+    
+    override func setDefaults()
+    {
+        inputSpacing = 50
+        inputStripeHeight = 0.5
+        inputBackgroundNoise = 0.05
+    }
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "VHS Tracking Lines",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputTime": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 8,
+                kCIAttributeDisplayName: "Time",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2048,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputSpacing": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 50,
+                kCIAttributeDisplayName: "Spacing",
+                kCIAttributeMin: 20,
+                kCIAttributeSliderMin: 20,
+                kCIAttributeSliderMax: 200,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputStripeHeight": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.5,
+                kCIAttributeDisplayName: "Stripe Height",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputBackgroundNoise": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.05,
+                kCIAttributeDisplayName: "Background Noise",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 0.25,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let tx = NSValue(CGAffineTransform: CGAffineTransformMakeTranslation(CGFloat(drand48() * 100), CGFloat(drand48() * 100)))
+        
+        let noise = CIFilter(name: "CIRandomGenerator")!.outputImage!
+            .imageByApplyingFilter("CIAffineTransform",
+                withInputParameters: [kCIInputTransformKey: tx])
+            .imageByApplyingFilter("CILanczosScaleTransform",
+                withInputParameters: [kCIInputAspectRatioKey: 5])
+            .imageByCroppingToRect(inputImage.extent)
+        
+        
+        let kernel = CIColorKernel(string:
+            "kernel vec4 thresholdFilter(__sample image, __sample noise, float time, float spacing, float stripeHeight, float backgroundNoise)" +
+                "{" +
+                "   vec2 uv = samplerCoord(image);" +
+                
+                "   float stripe = smoothstep(1.0 - stripeHeight, 1.0, sin((time + uv.y) / spacing)); " +
+                
+                "   return image + (noise * noise * stripe) + (noise * backgroundNoise);" +
+            "}"
+            )!
+        
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, noise, inputTime, inputSpacing, inputStripeHeight, inputBackgroundNoise]
+        
+        let final = kernel.applyWithExtent(extent, arguments: arguments)?
+            .imageByApplyingFilter("CIPhotoEffectNoir", withInputParameters: nil)
+        
+        return final
+    }
+}
 
 class CRTFilter: CIFilter
 {
@@ -16,38 +115,38 @@ class CRTFilter: CIFilter
     var inputBend: CGFloat = 3.2
     
     override var attributes: [String : AnyObject]
-        {
-            return [
-                kCIAttributeFilterDisplayName: "CRT Filter",
-                "inputImage": [kCIAttributeIdentity: 0,
-                    kCIAttributeClass: "CIImage",
-                    kCIAttributeDisplayName: "Image",
-                    kCIAttributeType: kCIAttributeTypeImage],
-                "inputPixelWidth": [kCIAttributeIdentity: 0,
-                    kCIAttributeClass: "NSNumber",
-                    kCIAttributeDefault: 8,
-                    kCIAttributeDisplayName: "Pixel Width",
-                    kCIAttributeMin: 0,
-                    kCIAttributeSliderMin: 0,
-                    kCIAttributeSliderMax: 20,
-                    kCIAttributeType: kCIAttributeTypeScalar],
-                "inputPixelHeight": [kCIAttributeIdentity: 0,
-                    kCIAttributeClass: "NSNumber",
-                    kCIAttributeDefault: 12,
-                    kCIAttributeDisplayName: "Pixel Height",
-                    kCIAttributeMin: 0,
-                    kCIAttributeSliderMin: 0,
-                    kCIAttributeSliderMax: 20,
-                    kCIAttributeType: kCIAttributeTypeScalar],
-                "inputBend": [kCIAttributeIdentity: 0,
-                    kCIAttributeClass: "NSNumber",
-                    kCIAttributeDefault: 3.2,
-                    kCIAttributeDisplayName: "Bend",
-                    kCIAttributeMin: 0.5,
-                    kCIAttributeSliderMin: 0.5,
-                    kCIAttributeSliderMax: 10,
-                    kCIAttributeType: kCIAttributeTypeScalar]
-            ]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "CRT Filter",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputPixelWidth": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 8,
+                kCIAttributeDisplayName: "Pixel Width",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputPixelHeight": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 12,
+                kCIAttributeDisplayName: "Pixel Height",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputBend": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 3.2,
+                kCIAttributeDisplayName: "Bend",
+                kCIAttributeMin: 0.5,
+                kCIAttributeSliderMin: 0.5,
+                kCIAttributeSliderMax: 10,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
     }
     
     let crtWarpFilter = CRTWarpFilter()
@@ -66,22 +165,22 @@ class CRTFilter: CIFilter
     }
     
     override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
         {
-            guard let inputImage = inputImage else
-            {
-                return nil
-            }
-            
-            crtColorFilter.pixelHeight = inputPixelHeight
-            crtColorFilter.pixelWidth = inputPixelWidth
-            crtWarpFilter.bend =  inputBend
-            
-            crtColorFilter.inputImage = inputImage
-            vignette.setValue(crtColorFilter.outputImage,
-                forKey: kCIInputImageKey)
-            crtWarpFilter.inputImage = vignette.outputImage!
-            
-            return crtWarpFilter.outputImage
+            return nil
+        }
+        
+        crtColorFilter.pixelHeight = inputPixelHeight
+        crtColorFilter.pixelWidth = inputPixelWidth
+        crtWarpFilter.bend =  inputBend
+        
+        crtColorFilter.inputImage = inputImage
+        vignette.setValue(crtColorFilter.outputImage,
+            forKey: kCIInputImageKey)
+        crtWarpFilter.inputImage = vignette.outputImage!
+        
+        return crtWarpFilter.outputImage
     }
     
     class CRTColorFilter: CIFilter

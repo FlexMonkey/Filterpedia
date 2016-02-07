@@ -127,6 +127,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("VHSTrackingLines",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -183,6 +189,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "RGBChannelBrightnessAndContrast":
             return RGBChannelBrightnessAndContrast()
+            
+        case "VHSTrackingLines":
+            return VHSTrackingLines()
             
         default:
             return nil
