@@ -133,6 +133,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("EightBit",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -192,6 +198,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "VHSTrackingLines":
             return VHSTrackingLines()
+            
+        case "EightBit":
+            return EightBit()
             
         default:
             return nil

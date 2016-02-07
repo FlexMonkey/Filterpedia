@@ -34,6 +34,7 @@
 		3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A722E1C350E6A00CAD516 /* stop.jpg */; };
 		3E9A72351C35101A00CAD516 /* vegas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72341C35101A00CAD516 /* vegas.jpg */; };
 		3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72361C35250100CAD516 /* screenshot.jpg */; };
+		3EF5C5951C67B229005071BF /* EightBit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5C5941C67B229005071BF /* EightBit.swift */; };
 		3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A7E1C54902B0071B584 /* Shaders.metal */; };
 		3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A801C5490540071B584 /* MetalFilters.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		3E9A722E1C350E6A00CAD516 /* stop.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = stop.jpg; path = assets/stop.jpg; sourceTree = "<group>"; };
 		3E9A72341C35101A00CAD516 /* vegas.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = vegas.jpg; path = assets/vegas.jpg; sourceTree = "<group>"; };
 		3E9A72361C35250100CAD516 /* screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = screenshot.jpg; path = assets/screenshot.jpg; sourceTree = "<group>"; };
+		3EF5C5941C67B229005071BF /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EightBit.swift; path = customFilters/EightBit.swift; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,6 +94,7 @@
 				3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */,
 				3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */,
 				3E1E3EA31C509A1500EEF0D8 /* KuwaharaFilter.swift */,
+				3EF5C5941C67B229005071BF /* EightBit.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EF5C5951C67B229005071BF /* EightBit.swift in Sources */,
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
 				3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */,
 				3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */,
