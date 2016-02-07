@@ -60,23 +60,20 @@ class EightBit: CIFilter
         
         let paletteIndex = max(min(EightBit.palettes.count - 1, Int(inputPaletteIndex)), 0)
         
-        let colors = EightBit.palettes[paletteIndex].map
-        {
-            CIColor(red: CGFloat($0.r) / 255, green: CGFloat($0.g) / 255, blue: CGFloat($0.b) / 255)
-        }
+        let palette = EightBit.palettes[paletteIndex]
         
         var kernelString = "kernel vec4 thresholdFilter(__sample image)"
         kernelString += "{ \n"
         kernelString += "   vec2 uv = samplerCoord(image); \n"
-        kernelString += "   float dist = distance(image.rgb, \(ciColorToVectorString(colors.first!))); \n"
-        kernelString += "   vec3 returnColor = \(ciColorToVectorString(colors.first!));\n "
+        kernelString += "   float dist = distance(image.rgb, \(palette.first!.toVectorString()))); \n"
+        kernelString += "   vec3 returnColor = \(palette.first!.toVectorString());\n "
         
-        for paletteColor in colors where paletteColor != colors.first
+        for paletteColor in palette where paletteColor != palette.first!
         {
-            kernelString += "if (distance(image.rgb, \(ciColorToVectorString(paletteColor))) < dist) \n"
+            kernelString += "if (distance(image.rgb, \(paletteColor.toVectorString())) < dist) \n"
             kernelString += "{ \n"
-            kernelString += "   dist = distance(image.rgb, \(ciColorToVectorString(paletteColor))); \n"
-            kernelString += "   returnColor = \(ciColorToVectorString(paletteColor)); \n"
+            kernelString += "   dist = distance(image.rgb, \(paletteColor.toVectorString())); \n"
+            kernelString += "   returnColor = \(paletteColor.toVectorString()); \n"
             kernelString += "} \n"
         }
         
@@ -96,23 +93,9 @@ class EightBit: CIFilter
         
         return final
     }
-    
-    // MARK: Helpers
-    
-    func ciColorToVectorString(value: CIColor) -> String
-    {
-        return "vec3(\(value.red), \(value.green), \(value.blue))"
-    }
-    
+
     // MARK: Palettes
-    
-    struct RGB
-    {
-        let r:UInt8
-        let g:UInt8
-        let b:UInt8
-    }
-    
+
     // ZX Spectrum Dim
     
     static let dimSpectrumColors = [
@@ -202,5 +185,22 @@ class EightBit: CIFilter
     ]
     
     static let palettes = [dimSpectrumColors, brightSpectrumColors, vic20Colors, c64Colors, appleIIColors]
+}
+
+struct RGB: Equatable
+{
+    let r:UInt8
+    let g:UInt8
+    let b:UInt8
+    
+    func toVectorString() -> String
+    {
+        return "vec3(\(Double(self.r) / 255), \(Double(self.g) / 255), \(Double(self.b) / 255))"
+    }
+}
+
+func ==(lhs: RGB, rhs: RGB) -> Bool
+{
+    return lhs.toVectorString() == rhs.toVectorString()
 }
 
