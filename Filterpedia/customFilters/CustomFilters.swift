@@ -139,6 +139,18 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("TechnicolorFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("BleachBypassFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -201,6 +213,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "EightBit":
             return EightBit()
+            
+        case "TechnicolorFilter":
+            return TechnicolorFilter()
+            
+        case "BleachBypassFilter":
+            return BleachBypassFilter()
             
         default:
             return nil

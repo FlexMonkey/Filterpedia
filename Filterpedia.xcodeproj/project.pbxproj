@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E0F65021C48BA2000852420 /* CustomFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0F65011C48BA2000852420 /* CustomFilters.swift */; };
+		3E1B54561C69CB8700F57FF2 /* FilmicEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B54551C69CB8700F57FF2 /* FilmicEffects.swift */; };
 		3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */; };
 		3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */; };
 		3E1E3E981C4F8D5D00EEF0D8 /* shutter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		3E0F65011C48BA2000852420 /* CustomFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomFilters.swift; path = customFilters/CustomFilters.swift; sourceTree = "<group>"; };
+		3E1B54551C69CB8700F57FF2 /* FilmicEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilmicEffects.swift; path = customFilters/FilmicEffects.swift; sourceTree = "<group>"; };
 		3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MercurializeFilter.swift; path = customFilters/MercurializeFilter.swift; sourceTree = "<group>"; };
 		3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RGBChannelCompositing.swift; path = customFilters/RGBChannelCompositing.swift; sourceTree = "<group>"; };
 		3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = shutter.jpg; path = assets/shutter.jpg; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */,
 				3E1E3EA31C509A1500EEF0D8 /* KuwaharaFilter.swift */,
 				3EF5C5941C67B229005071BF /* EightBit.swift */,
+				3E1B54551C69CB8700F57FF2 /* FilmicEffects.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 			files = (
 				3EF5C5951C67B229005071BF /* EightBit.swift in Sources */,
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
+				3E1B54561C69CB8700F57FF2 /* FilmicEffects.swift in Sources */,
 				3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */,
 				3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */,
 				3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */,

@@ -38,7 +38,7 @@ class EightBit: CIFilter
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
                 kCIAttributeSliderMax: 4,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                kCIAttributeType: kCIAttributeTypeInteger],
             
             "inputScale": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
