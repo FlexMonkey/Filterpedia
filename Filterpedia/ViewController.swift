@@ -8,6 +8,8 @@
 
 import UIKit
 
+public var CIKernel_DitherBayer: String?
+
 class ViewController: UIViewController
 {
     let filterNavigator = FilterNavigator()
@@ -21,6 +23,8 @@ class ViewController: UIViewController
         view.addSubview(filterDetail)
         
         filterNavigator.delegate = self
+        
+        CIKernel_DitherBayer = NSBundle.mainBundle().pathForResource("DitherBayer", ofType: "cikernel")
     }
 
     override func viewDidLayoutSubviews()
