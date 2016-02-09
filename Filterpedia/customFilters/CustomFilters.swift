@@ -236,7 +236,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             return CarnivalMirror()
             
         case "BayerDitherFilter":
-            return BayerDitherFilter()
+            return BayerDitherFilter() 
             
         default:
             return nil
@@ -735,7 +735,7 @@ class BayerDitherFilter: CIFilter
 {
     var inputImage: CIImage?
     var inputIntensity = CGFloat(5.0)
-    var inputMatrix = CGFloat(4.0)
+    var inputMatrix = CGFloat(8.0)
     var inputPalette = CGFloat(0.0)
     
     override var attributes: [String : AnyObject]
@@ -759,7 +759,7 @@ class BayerDitherFilter: CIFilter
             "inputMatrix": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDescription: "Matrix: 2, 3, 4, 8",
-                kCIAttributeDefault: 4,
+                kCIAttributeDefault: 8,
                 kCIAttributeDisplayName: "Matrix",
                 kCIAttributeMin: 2,
                 kCIAttributeSliderMin: 2,
@@ -768,7 +768,7 @@ class BayerDitherFilter: CIFilter
             "inputPalette": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDescription: "Palette: 0 = Black / White, 1 = 3 Bit RGB",
-                kCIAttributeDefault: 1.0,
+                kCIAttributeDefault: 0.0,
                 kCIAttributeDisplayName: "Palette",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
@@ -778,6 +778,8 @@ class BayerDitherFilter: CIFilter
     
     override var outputImage: CIImage!
     {
+        let CIKernel_DitherBayer = NSBundle.mainBundle().pathForResource("DitherBayer", ofType: "cikernel")
+        
         guard let path = CIKernel_DitherBayer,
             code = try? String(contentsOfFile: path),
             ditherKernel = CIColorKernel(string: code) else { return nil }
