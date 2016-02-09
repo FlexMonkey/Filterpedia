@@ -78,13 +78,11 @@ class CarnivalMirror: CIFilter
     }
     
     let carnivalMirrorKernel = CIWarpKernel(string:
-        "kernel vec2 carnivalMirror(vec2 extent, float xWavelength, float xAmount, float yWavelength, float yAmount)" +
-            "{" +
-            
-            "   float y = destCoord().y + sin(destCoord().y / yWavelength) * yAmount; " +
-            "   float x = destCoord().x + sin(destCoord().x / xWavelength) * xAmount; " +
-            "   return vec2(x, y); " +
-            
+        "kernel vec2 carnivalMirror(float xWavelength, float xAmount, float yWavelength, float yAmount)" +
+        "{" +
+        "   float y = destCoord().y + sin(destCoord().y / yWavelength) * yAmount; " +
+        "   float x = destCoord().x + sin(destCoord().x / xWavelength) * xAmount; " +
+        "   return vec2(x, y); " +
         "}"
     )
     
@@ -93,9 +91,7 @@ class CarnivalMirror: CIFilter
         if let inputImage = inputImage,
             kernel = carnivalMirrorKernel
         {
-            let arguments = [CIVector(
-                x: inputImage.extent.size.width,
-                y: inputImage.extent.size.height),
+            let arguments = [
                 inputHorizontalWavelength, inputHorizontalAmount,
                 inputVerticalWavelength, inputVerticalAmount]
             
