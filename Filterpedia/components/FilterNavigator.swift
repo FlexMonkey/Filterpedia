@@ -138,7 +138,10 @@ extension FilterNavigator: UITableViewDelegate
         case .Grouped:
             filterName = supportedFilterNamesInCategory(filterCategories[indexPath.section]).sort()[indexPath.row]
         case .Flat:
-            filterName = supportedFilterNamesInCategories(nil).sort()[indexPath.row]
+            filterName = supportedFilterNamesInCategories(nil).sort
+            {
+                CIFilter.localizedNameForFilterName($0) ?? $0 < CIFilter.localizedNameForFilterName($1) ?? $1
+            }[indexPath.row]
         }
         
         delegate?.filterNavigator(self, didSelectFilterName: filterName)
