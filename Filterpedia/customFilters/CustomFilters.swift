@@ -151,6 +151,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("CarnivalMirror",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -219,6 +225,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "BleachBypassFilter":
             return BleachBypassFilter()
+            
+        case "CarnivalMirror":
+            return CarnivalMirror()
             
         default:
             return nil
