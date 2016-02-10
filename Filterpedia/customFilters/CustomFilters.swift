@@ -730,6 +730,8 @@ class VignetteNoirFilter: CIFilter
 }
 
 // MARK: BayerDitherFilter
+// Created by African Swift on 09/02/2016.
+// https://twitter.com/SwiftAfricanus
 
 class BayerDitherFilter: CIFilter
 {
