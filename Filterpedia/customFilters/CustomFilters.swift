@@ -157,6 +157,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("BayerDitherFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -228,6 +234,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "CarnivalMirror":
             return CarnivalMirror()
+            
+        case "BayerDitherFilter":
+            return BayerDitherFilter() 
             
         default:
             return nil
@@ -720,6 +729,65 @@ class VignetteNoirFilter: CIFilter
     }
 }
 
+// MARK: BayerDitherFilter
 
-
-
+class BayerDitherFilter: CIFilter
+{
+    var inputImage: CIImage?
+    var inputIntensity = CGFloat(5.0)
+    var inputMatrix = CGFloat(8.0)
+    var inputPalette = CGFloat(0.0)
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Bayer Dither Filter",
+            
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputIntensity": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDescription: "Intensity: Range from 0.0 to 10.0",
+                kCIAttributeDefault: 5.0,
+                kCIAttributeDisplayName: "Intensity",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 10,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputMatrix": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDescription: "Matrix: 2, 3, 4, 8",
+                kCIAttributeDefault: 8,
+                kCIAttributeDisplayName: "Matrix",
+                kCIAttributeMin: 2,
+                kCIAttributeSliderMin: 2,
+                kCIAttributeSliderMax: 8,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputPalette": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDescription: "Palette: 0 = Black / White, 1 = 3 Bit RGB",
+                kCIAttributeDefault: 0.0,
+                kCIAttributeDisplayName: "Palette",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]]
+    }
+    
+    override var outputImage: CIImage!
+    {
+        let CIKernel_DitherBayer = NSBundle.mainBundle().pathForResource("DitherBayer", ofType: "cikernel")
+        
+        guard let path = CIKernel_DitherBayer,
+            code = try? String(contentsOfFile: path),
+            ditherKernel = CIColorKernel(string: code) else { return nil }
+        guard let inputImage = inputImage else { return nil }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, inputIntensity, inputMatrix, inputPalette]
+        
+        return ditherKernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
