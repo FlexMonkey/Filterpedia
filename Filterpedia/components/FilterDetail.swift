@@ -49,6 +49,8 @@ class FilterDetail: UIView
         return tableView
     }()
     
+    let scrollView = UIScrollView()
+    
     let imageView: UIImageView =
     {
         let imageView = UIImageView()
@@ -108,7 +110,12 @@ class FilterDetail: UIView
         tableView.delegate = self
  
         addSubview(tableView)
-        addSubview(imageView)
+        
+        addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 6.0
+        scrollView.delegate = self
         
         imageView.addSubview(activityIndicator)
         
@@ -118,6 +125,10 @@ class FilterDetail: UIView
     required init?(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return imageView
     }
     
     func updateFromFilterName()
@@ -274,10 +285,15 @@ class FilterDetail: UIView
         let thirdHeight = frame.height * 0.333
         let twoThirdHeight = frame.height * 0.666
         
-        imageView.frame = CGRect(x: halfWidth - thirdHeight,
+        scrollView.frame = CGRect(x: halfWidth - thirdHeight,
             y: 0,
             width: twoThirdHeight,
             height: twoThirdHeight)
+        
+        imageView.frame = CGRect(x: 0,
+            y: 0,
+            width: scrollView.frame.width,
+            height: scrollView.frame.height)
         
         tableView.frame = CGRect(x: 0,
             y: twoThirdHeight,
