@@ -236,7 +236,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             return CarnivalMirror()
             
         case "BayerDitherFilter":
-            return BayerDitherFilter() 
+            return BayerDitherFilter()
             
         default:
             return nil
@@ -767,12 +767,12 @@ class BayerDitherFilter: CIFilter
                 kCIAttributeType: kCIAttributeTypeScalar],
             "inputPalette": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDescription: "Palette: 0 = Black / White, 1 = 3 Bit RGB",
+                kCIAttributeDescription: "Palette: 0 = Binary, 1 = Commodore64, 2 = vic20, 3 = AppleII, 4 = ZX Bright, 5 = ZX Dim, 6 = RGB",
                 kCIAttributeDefault: 0.0,
                 kCIAttributeDisplayName: "Palette",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
+                kCIAttributeSliderMax: 6,
                 kCIAttributeType: kCIAttributeTypeScalar]]
     }
     
