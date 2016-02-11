@@ -50,12 +50,12 @@ class BayerDitherFilter: CIFilter
                 kCIAttributeType: kCIAttributeTypeScalar],
             "inputPalette": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDescription: "Palette: 0 = Black / White, 1 = 3 Bit RGB",
+                kCIAttributeDescription: "Palette: 0 = Binary, 1 = Commodore 64, 2 = Vic-20, 3 = Apple II, 4 = ZX Spectrum Bright, 5 = ZX Spectrum Dim, 6 = RGB",
                 kCIAttributeDefault: 0.0,
                 kCIAttributeDisplayName: "Palette",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
+                kCIAttributeSliderMax: 6,
                 kCIAttributeType: kCIAttributeTypeScalar]]
     }
     
