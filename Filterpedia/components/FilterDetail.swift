@@ -66,7 +66,12 @@ class FilterDetail: UIView
         return imageView
     }()
     
-    let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+    #if !arch(i386) && !arch(x86_64)
+        let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+    #else
+        let ciMetalContext = CIContext()
+    #endif
+    
     let ciOpenGLESContext = CIContext()
   
     /// Whether the user has changed the filter whilst it's

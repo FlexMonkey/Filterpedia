@@ -202,15 +202,6 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "KuwaharaFilter":
             return KuwaharaFilter()
             
-        case "MetalPixellateFilter":
-            return MetalPixellateFilter()
-            
-        case "MetalKuwaharaFilter":
-            return MetalKuwaharaFilter()
-            
-        case "MetalPerlinNoise":
-            return MetalPerlinNoise()
-            
         case "StarBurstFilter":
             return StarBurstFilter()
             
@@ -237,7 +228,28 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "BayerDitherFilter":
             return BayerDitherFilter() 
+
+        case "MetalPixellateFilter":
+            #if !arch(i386) && !arch(x86_64)
+                return MetalPixellateFilter()
+            #else
+                return nil
+            #endif
             
+        case "MetalKuwaharaFilter":
+            #if !arch(i386) && !arch(x86_64)
+                return MetalKuwaharaFilter()
+            #else
+                return nil
+            #endif
+            
+        case "MetalPerlinNoise":
+            #if !arch(i386) && !arch(x86_64)
+                return MetalPerlinNoise()
+            #else
+                return nil
+            #endif
+
         default:
             return nil
         }

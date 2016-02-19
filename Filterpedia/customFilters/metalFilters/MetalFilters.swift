@@ -7,9 +7,12 @@
 //
 
 import CoreImage
+
+#if !arch(i386) && !arch(x86_64)
+
 import Metal
 import MetalKit
-
+    
 // MARK: MetalPixellateFilter
 
 class MetalPixellateFilter: MetalImageFilter
@@ -449,3 +452,9 @@ class MetalFilter: CIFilter
     }
 }
 
+#else
+    class MetalFilter: CIFilter
+    {
+    }
+    
+#endif
