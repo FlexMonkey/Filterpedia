@@ -112,9 +112,7 @@ class CompoundEye: CIFilter
         
         " vec3 sphereNormal = vec3(sphereNormalXY, dist / bend); " +
         " vec3 reflectVector = reflect(vec3(0.0, 0.0, -1.0), sphereNormal); " +
-        
-        " reflectVector = (reflectVector + 1.0) * 0.5;" +
-        
+
         " float xx = destCoord().x + xOffset + reflectVector.x; " +
         " float yy = destCoord().y  + reflectVector.y; " +
         
