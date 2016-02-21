@@ -163,6 +163,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("CompoundEye",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -227,7 +233,10 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             return CarnivalMirror()
             
         case "BayerDitherFilter":
-            return BayerDitherFilter() 
+            return BayerDitherFilter()
+            
+        case "CompoundEye":
+            return CompoundEye()
 
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
