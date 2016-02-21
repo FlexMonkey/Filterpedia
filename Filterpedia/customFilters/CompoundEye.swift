@@ -103,9 +103,12 @@ class CompoundEye: CIFilter
         
         " float x = float(int((destCoord().x + xOffset) / width)) * width;  " +
         
-        " float dist = distance(vec2(x + halfWidth, y + (height / 2.0)), vec2(destCoord().x + xOffset, destCoord().y) ); " +
+        " vec2 cellCenter = vec2(x + halfWidth, y + (height / 2.0)); " +
+        " vec2 offsetDestCoord = vec2(destCoord().x + xOffset, destCoord().y);" +
         
-        " vec2 sphereNormalXY = vec2(destCoord().x + xOffset, destCoord().y) - vec2(x + halfWidth, y + (height / 2.0)); " +
+        " float dist = distance(cellCenter, offsetDestCoord); " +
+        
+        " vec2 sphereNormalXY = vec2(offsetDestCoord - cellCenter); " +
         
         " vec3 sphereNormal = vec3(sphereNormalXY, dist / bend); " +
         " vec3 reflectVector = reflect(vec3(0.0, 0.0, -1.0), sphereNormal); " +
@@ -114,8 +117,8 @@ class CompoundEye: CIFilter
         
         " float xx = destCoord().x + xOffset + reflectVector.x; " +
         " float yy = destCoord().y  + reflectVector.y; " +
-            
-        " return dist < diameter  ? vec2(xx, yy) : vec2(-1.0, -1.0); " +
+        
+        " return vec2(xx, yy); " +
         "}"
     )
     
