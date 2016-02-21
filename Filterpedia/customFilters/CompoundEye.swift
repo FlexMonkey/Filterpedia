@@ -75,26 +75,24 @@ class CompoundEye: CIFilter
     }
     
     let colorKernel = CIColorKernel(string:
-        "kernel vec4 color(__sample pixel, float width, float halfWidth, float height)" +
+        "kernel vec4 color(float width, float halfWidth, float height, float diameter)" +
         "{" +
-        " vec2 coord = samplerCoord(pixel);" +
-            
-        " float y = float(int(coord.y / height)) * height;  " +
+        " float y = float(int(destCoord().y / height)) * height;  " +
         
-        " int yIndex = int(mod(coord.y / height, 2.0)); " +
+        " int yIndex = int(mod(destCoord().y / height, 2.0)); " +
         
         " float xOffset = (yIndex == 0) ? halfWidth : 0.0; " +
         
-        " float x = float(int((coord.x + xOffset) / width)) * width;  " +
+        " float x = float(int((destCoord().x + xOffset) / width)) * width;  " +
         
-        " float dist = distance(vec2(x + halfWidth, y + (height / 2.0)), vec2(coord.x + xOffset, coord.y) ); " +
+        " float dist = distance(vec2(x + halfWidth, y + (height / 2.0)), vec2(destCoord().x + xOffset, destCoord().y) ); " +
             
-        " return dist < (sqrt(height * height) / 2.0)  ? vec4(0.0, 0.0, 0.0, 0.0) : vec4(1.0, 1.0, 1.0, 1.0); " +
+        " return dist < diameter  ? vec4(0.0, 0.0, 0.0, 0.0) : vec4(1.0, 1.0, 1.0, 1.0); " +
         "}"
     )
     
     let warpKernel = CIWarpKernel(string:
-        "kernel vec2 warp(float width, float halfWidth, float height, float bend)" +
+        "kernel vec2 warp(float width, float halfWidth, float height, float diameter, float bend)" +
         "{ " +
         
         " float y = float(int(destCoord().y / height)) * height;  " +
@@ -122,7 +120,7 @@ class CompoundEye: CIFilter
         " float xx = destCoord().x + xOffset + reflectVector.x; " +
         " float yy = destCoord().y  + reflectVector.y; " +
             
-        " return dist < (sqrt(height * height) / 2.0)  ? vec2(xx, yy) : vec2(-1.0, -1.0); " +
+        " return dist < diameter  ? vec2(xx, yy) : vec2(-1.0, -1.0); " +
         "}"
     )
     
@@ -134,6 +132,7 @@ class CompoundEye: CIFilter
         {
             let halfWidth = inputWidth / 2
             let height = sqrt(3.0) / 2.0 * inputWidth
+            let diameter = sqrt(height * height) / 2.0
             
             let extent = inputImage.extent
             
@@ -144,10 +143,10 @@ class CompoundEye: CIFilter
                     return rect
                 },
                 inputImage: inputImage,
-                arguments: [inputWidth, halfWidth, height, inputBend])!
+                arguments: [inputWidth, halfWidth, height, diameter, inputBend])!
             
             let maskImage =  colorKernel.applyWithExtent(extent,
-                arguments: [inputImage, inputWidth, halfWidth, height])!
+                arguments: [inputWidth, halfWidth, height, diameter])!
             
             let backgroundImage = CIImage(color: inputBackgroundColor)
                 .imageByCroppingToRect(extent)
