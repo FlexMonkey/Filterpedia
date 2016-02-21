@@ -56,7 +56,7 @@ class CompoundEye: CIFilter
                 kCIAttributeDisplayName: "Bend",
                 kCIAttributeMin: 2,
                 kCIAttributeSliderMin: 2,
-                kCIAttributeSliderMax: 8,
+                kCIAttributeSliderMax: 32,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
             "inputBackgroundColor": [kCIAttributeIdentity: 0,
@@ -106,11 +106,23 @@ class CompoundEye: CIFilter
         " float x = float(int((destCoord().x + xOffset) / width)) * width;  " +
         
         " float dist = distance(vec2(x + halfWidth, y + (height / 2.0)), vec2(destCoord().x + xOffset, destCoord().y) ); " +
+
+//        Original version using bend technique from CRT warp...
+//        " float xx = destCoord().x + xOffset + pow((destCoord().x + xOffset - x) / bend, 2.0);" +
+//        " float yy = destCoord().y + pow((destCoord().y - y) / bend, 2.0);" +
         
-        " float xx = destCoord().x + xOffset + pow((destCoord().x + xOffset - x) / bend, 2.0);" +
-        " float yy = destCoord().y + pow((destCoord().y - y) / bend, 2.0);" +
+        // Second version from book uses reflect()
+        " vec2 sphereNormalXY = vec2(destCoord().x + xOffset, destCoord().y) - vec2(x + halfWidth, y + (height / 2.0)); " +
         
-        " return dist < (sqrt(height * height) / 2.0)  ? vec2(xx - width, yy - height) : vec2(-1.0, -1.0); " +
+        " vec3 sphereNormal = vec3(sphereNormalXY, dist / bend); " +
+        " vec3 reflectVector = reflect(vec3(0.0, 0.0, -1.0), sphereNormal); " +
+        
+        " reflectVector = (reflectVector + 1.0) * 0.5;" +
+        
+        " float xx = destCoord().x + xOffset + reflectVector.x; " +
+        " float yy = destCoord().y  + reflectVector.y; " +
+            
+        " return dist < (sqrt(height * height) / 2.0)  ? vec2(xx, yy) : vec2(-1.0, -1.0); " +
         "}"
     )
     
