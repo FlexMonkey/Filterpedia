@@ -104,12 +104,7 @@ class CompoundEye: CIFilter
         " float x = float(int((destCoord().x + xOffset) / width)) * width;  " +
         
         " float dist = distance(vec2(x + halfWidth, y + (height / 2.0)), vec2(destCoord().x + xOffset, destCoord().y) ); " +
-
-//        Original version using bend technique from CRT warp...
-//        " float xx = destCoord().x + xOffset + pow((destCoord().x + xOffset - x) / bend, 2.0);" +
-//        " float yy = destCoord().y + pow((destCoord().y - y) / bend, 2.0);" +
         
-        // Second version from book uses reflect()
         " vec2 sphereNormalXY = vec2(destCoord().x + xOffset, destCoord().y) - vec2(x + halfWidth, y + (height / 2.0)); " +
         
         " vec3 sphereNormal = vec3(sphereNormalXY, dist / bend); " +
