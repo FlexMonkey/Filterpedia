@@ -300,28 +300,11 @@ class MetalFilter: CIFilter
         return self.device.newDefaultLibrary()!
     }()
     
-    lazy var pipelineState: MTLComputePipelineState =
-    {
-        [unowned self] in
-        
-        let kernelFunction = self.defaultLibrary.newFunctionWithName(self.functionName)!
-        
-        do
-        {
-            let pipelineState = try self.device.newComputePipelineStateWithFunction(kernelFunction)
-            return pipelineState
-        }
-        catch
-        {
-            fatalError("Unable to create pipeline state for kernel function \(self.functionName)")
-        }
-    }()
+    var pipelineState: MTLComputePipelineState!
     
     let functionName: String
     
-    let threadsPerThreadgroup = MTLSize(width:16,
-        height:16,
-        depth:1)
+    var threadsPerThreadgroup: MTLSize!
     
     var threadgroupsPerGrid: MTLSize?
     
@@ -359,6 +342,33 @@ class MetalFilter: CIFilter
         self.functionName = functionName
         
         super.init()
+        
+        let kernelFunction = defaultLibrary.newFunctionWithName(self.functionName)!
+        
+        do
+        {
+            pipelineState = try self.device.newComputePipelineStateWithFunction(kernelFunction)
+            
+            let maxTotalThreadsPerThreadgroup = Double(pipelineState.maxTotalThreadsPerThreadgroup)
+            let threadExecutionWidth = Double(pipelineState.threadExecutionWidth)
+            
+            let threadsPerThreadgroupSide = 0.stride(
+                to: Int(sqrt(maxTotalThreadsPerThreadgroup)),
+                by: 1).reduce(16)
+            {
+                return (Double($1 * $1) / threadExecutionWidth) % 1 == 0 ? $1 : $0
+            }
+  
+            threadsPerThreadgroup = MTLSize(width:threadsPerThreadgroupSide,
+                height:threadsPerThreadgroupSide,
+                depth:1)
+        }
+        catch
+        {
+            fatalError("Unable to create pipeline state for kernel function \(functionName)")
+        }
+        
+        
         
         if !(self is MetalImageFilter) && !(self is MetalGeneratorFilter)
         {
