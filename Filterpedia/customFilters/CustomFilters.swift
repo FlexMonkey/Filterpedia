@@ -169,6 +169,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("DifferenceOfGaussians",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -237,6 +243,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "CompoundEye":
             return CompoundEye()
+            
+        case "DifferenceOfGaussians":
+            return DifferenceOfGaussians()
 
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
@@ -456,6 +465,89 @@ override var attributes: [String : AnyObject]
         return finalImage
     }
     
+}
+
+// MARK: Difference of Gaussians
+
+class DifferenceOfGaussians: CIFilter
+{
+    var inputImage : CIImage?
+    var inputRadius0: CGFloat = 2
+    var inputRadius1: CGFloat = 8
+    var inputBoost: CGFloat = 0.5
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Difference of Gaussians",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputRadius0": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Radius One",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputRadius1": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 8,
+                kCIAttributeDisplayName: "Radius Two",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBoost": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.5,
+                kCIAttributeDisplayName: "Midtone Boost",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let gaussianOne = CIFilter(name: "CIGaussianBlur",
+            withInputParameters: [
+                kCIInputImageKey: inputImage,
+                kCIInputRadiusKey: inputRadius0])!.outputImage!.imageByCroppingToRect(inputImage.extent)
+        
+        let gaussianTwo = CIFilter(name: "CIGaussianBlur",
+            withInputParameters: [
+                kCIInputImageKey: inputImage,
+                kCIInputRadiusKey: inputRadius1])!.outputImage!.imageByCroppingToRect(inputImage.extent)
+        
+        let difference =  CIFilter(name: "CIDifferenceBlendMode",
+            withInputParameters: [
+                kCIInputImageKey: gaussianOne,
+                kCIInputBackgroundImageKey: gaussianTwo])!.outputImage!
+        
+        let y2 = 0.5 + (inputBoost / 2.0)
+        let y1 = y2 / 2.0
+        let y3 = (y2 + 1.0) / 2.0
+        
+        return difference.imageByApplyingFilter("CIToneCurve",
+            withInputParameters: [
+                kCIInputImageKey: difference,
+                "inputPoint1": CIVector(x: 0.25, y: y1),
+                "inputPoint2": CIVector(x: 0.5, y: y2),
+                "inputPoint3": CIVector(x: 0.75, y: y3)
+                ])
+    }
 }
 
 // MARK: Starburst
