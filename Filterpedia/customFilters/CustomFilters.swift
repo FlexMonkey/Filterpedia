@@ -175,6 +175,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("AdvancedMonochrome",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -246,6 +252,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "DifferenceOfGaussians":
             return DifferenceOfGaussians()
+            
+        case "AdvancedMonochrome":
+            return AdvancedMonochrome()
 
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
@@ -695,6 +704,91 @@ class ThresholdToAlphaFilter: ThresholdFilter
     }
 }
 
+// MARK: Advanced Monochrome
+
+class AdvancedMonochrome: CIFilter
+{
+    var inputImage : CIImage?
+    
+    var inputRedBalance: CGFloat = 1
+    var inputGreenBalance: CGFloat = 1
+    var inputBlueBalance: CGFloat = 1
+    var inputClamp: CGFloat = 0
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Advanced Monochrome",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputRedBalance": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Red Balance",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputGreenBalance": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Green Balance",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputBlueBalance": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Blue Balance",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputClamp": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Clamp",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    let kernel = CIColorKernel(string:
+        "kernel vec4 advancedMonochrome(__sample pixel, float redBalance, float greenBalance, float blueBalance, float clamp)" +
+        "{" +
+        "   float scale = 1.0 / (redBalance + greenBalance + blueBalance);" +
+            
+        "   float red = pixel.r * redBalance * scale;" +
+        "   float green = pixel.g * greenBalance * scale;" +
+        "   float blue = pixel.b * blueBalance * scale;" +
+            
+        "   vec3 grey = vec3(red + green + blue);" +
+            
+        "   grey = mix(grey, smoothstep(0.0, 1.0, grey), clamp); " +
+        
+        "   return vec4(grey, pixel.a);" +
+        "}")
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            kernel = kernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp]
+        
+        return kernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
 // MARK: Threshold
 
 class ThresholdFilter: CIFilter
@@ -731,12 +825,12 @@ class ThresholdFilter: CIFilter
         super.init()
         
         thresholdKernel = CIColorKernel(string:
-            "kernel vec4 thresholdFilter(__sample image, float threshold)" +
-                "{" +
-                "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
-                
-                "   return vec4(step(threshold, luma));" +
-            "}"
+        "kernel vec4 thresholdFilter(__sample image, float threshold)" +
+        "{" +
+        "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+        
+        "   return vec4(step(threshold, luma));" +
+        "}"
         )
 
     }
