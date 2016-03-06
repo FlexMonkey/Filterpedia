@@ -43,7 +43,7 @@ class RefractedTextFilter: CIFilter
     }
     
     var inputRefractiveIndex: CGFloat = 4.0
-    var inputLensDistance: CGFloat = 50
+    var inputLensScale: CGFloat = 50
     var inputLightingAmount: CGFloat = 1.5
     
     var inputRadius: CGFloat = 15
@@ -79,15 +79,15 @@ class RefractedTextFilter: CIFilter
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 4.0,
                 kCIAttributeDisplayName: "Refractive Index",
-                kCIAttributeMin: 1,
-                kCIAttributeSliderMin: 1,
+                kCIAttributeMin: -4.0,
+                kCIAttributeSliderMin: -10.0,
                 kCIAttributeSliderMax: 10,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
-            "inputLensDistance": [kCIAttributeIdentity: 0,
+            "inputLensScale": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 50,
-                kCIAttributeDisplayName: "Lens Distance",
+                kCIAttributeDisplayName: "Lens Scale",
                 kCIAttributeMin: 1,
                 kCIAttributeSliderMin: 1,
                 kCIAttributeSliderMax: 100,
@@ -118,7 +118,7 @@ class RefractedTextFilter: CIFilter
     {
         inputText = "Filterpedia"
         inputRefractiveIndex = 4.0
-        inputLensDistance = 50
+        inputLensScale = 50
         inputLightingAmount = 1.5
         inputRadius = 15
     }
@@ -140,7 +140,7 @@ class RefractedTextFilter: CIFilter
         let arguments = [inputImage,
             refractingImage!,
             inputRefractiveIndex,
-            inputLensDistance,
+            inputLensScale,
             inputLightingAmount]
         
         return refractingKernel.applyWithExtent(extent,
@@ -191,7 +191,7 @@ class RefractedTextFilter: CIFilter
         "}" +
         
         
-        "kernel vec4 lumaBasedRefract(sampler image, sampler refractingImage, float refractiveIndex, float lensDistance, float lightingAmount) \n" +
+        "kernel vec4 lumaBasedRefract(sampler image, sampler refractingImage, float refractiveIndex, float lensScale, float lightingAmount) \n" +
         "{ " +
         " vec2 d = destCoord();" +
         
@@ -202,7 +202,7 @@ class RefractedTextFilter: CIFilter
         
         " vec3 lensNormal = normalize(vec3((eastLuma - westLuma), (southLuma - northLuma), 1.0));" +
 
-        " vec3 refractVector = refract(vec3(0.0, 0.0, lensDistance), lensNormal, refractiveIndex); " +
+        " vec3 refractVector = refract(vec3(0.0, 0.0, 1.0), lensNormal, refractiveIndex) * lensScale; " +
         
         " vec3 outputPixel = sample(image, samplerTransform(image, d + refractVector.xy)).rgb;" +
         
