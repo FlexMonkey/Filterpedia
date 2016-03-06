@@ -181,6 +181,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("RefractedTextFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -255,6 +261,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "AdvancedMonochrome":
             return AdvancedMonochrome()
+            
+        case "RefractedTextFilter":
+            return RefractedTextFilter()
 
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
