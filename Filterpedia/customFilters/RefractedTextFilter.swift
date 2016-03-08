@@ -46,6 +46,9 @@ class RefractedTextFilter: CIFilter
     var inputLensScale: CGFloat = 50
     var inputLightingAmount: CGFloat = 1.5
     
+    var inputLensBlur: CGFloat = 0
+    var inputBackgroundBlur: CGFloat = 2
+    
     var inputRadius: CGFloat = 15
     {
         didSet
@@ -58,6 +61,7 @@ class RefractedTextFilter: CIFilter
     }
     
     private var refractingImage: CIImage?
+    private var rawTextImage: CIImage?
     
     override var attributes: [String : AnyObject]
     {
@@ -109,6 +113,24 @@ class RefractedTextFilter: CIFilter
                 kCIAttributeMin: 5,
                 kCIAttributeSliderMin: 5,
                 kCIAttributeSliderMax: 50,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputLensBlur": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Lens Blur",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBackgroundBlur": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Background Blur",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
                 kCIAttributeType: kCIAttributeTypeScalar]
         
         ]
@@ -121,6 +143,8 @@ class RefractedTextFilter: CIFilter
         inputLensScale = 50
         inputLightingAmount = 1.5
         inputRadius = 15
+        inputLensBlur = 0
+        inputBackgroundBlur = 2
     }
     
     override var outputImage: CIImage!
@@ -143,13 +167,21 @@ class RefractedTextFilter: CIFilter
             inputLensScale,
             inputLightingAmount]
         
+        let blurMask = rawTextImage?.imageByApplyingFilter("CIColorInvert", withInputParameters: nil)
+        
         return refractingKernel.applyWithExtent(extent,
-            roiCallback:
-            {
-                (index, rect) in
-                return rect
-            },
-            arguments: arguments)
+                roiCallback:
+                {
+                    (index, rect) in
+                    return rect
+                },
+                arguments: arguments)!
+            .imageByApplyingFilter("CIMaskedVariableBlur", withInputParameters: [
+                kCIInputRadiusKey: inputBackgroundBlur,
+                "inputMask": blurMask!])
+            .imageByApplyingFilter("CIMaskedVariableBlur", withInputParameters: [
+                kCIInputRadiusKey: inputLensBlur,
+                "inputMask": rawTextImage!])
     }
     
     func generateRefractingImage()
@@ -165,7 +197,7 @@ class RefractedTextFilter: CIFilter
         
         UIGraphicsBeginImageContextWithOptions(
             CGSize(width: label.frame.width,
-                height: label.frame.height), false, 1)
+                height: label.frame.height), true, 1)
         
         label.layer.renderInContext(UIGraphicsGetCurrentContext()!)
         
@@ -173,12 +205,12 @@ class RefractedTextFilter: CIFilter
         
         UIGraphicsEndImageContext()
         
-        let image = CIImage(image: textImage)!
-        
+        rawTextImage = CIImage(image: textImage)!
+
         refractingImage = CIFilter(name: "CIHeightFieldFromMask",
             withInputParameters: [
                 kCIInputRadiusKey: inputRadius,
-                kCIInputImageKey: image])?.outputImage?
+                kCIInputImageKey: rawTextImage!])?.outputImage?
             .imageByCroppingToRect(inputImage!.extent)
     }
     
