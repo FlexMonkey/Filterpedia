@@ -188,7 +188,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName("SobelEdgeDetection",
+        CIFilter.registerFilterName("SobelEdgeDetection5x5",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+                
+        CIFilter.registerFilterName("SobelEdgeDetection3x3",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
@@ -271,8 +277,11 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "RefractedTextFilter":
             return RefractedTextFilter()
 
-        case "SobelEdgeDetection":
-            return SobelEdgeDetection()
+        case "SobelEdgeDetection5x5":
+            return SobelEdgeDetection5x5()
+            
+        case "SobelEdgeDetection3x3":
+            return SobelEdgeDetection3x3()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)

@@ -102,7 +102,6 @@
 		3E0F65001C48BA0500852420 /* customFilters */ = {
 			isa = PBXGroup;
 			children = (
-				3E9CD5031C9C211100C67CB5 /* SobelEdgeDetection.swift */,
 				3E1B54591C6B03CB00F57FF2 /* DitherBayer.cikernel */,
 				3EF73A7D1C5490090071B584 /* metalFilters */,
 				3E0F65011C48BA2000852420 /* CustomFilters.swift */,
@@ -113,6 +112,7 @@
 				3EF5C5941C67B229005071BF /* EightBit.swift */,
 				3E1B54551C69CB8700F57FF2 /* FilmicEffects.swift */,
 				3E1B54571C6A33EA00F57FF2 /* CarnivalMirror.swift */,
+				3E9CD5031C9C211100C67CB5 /* SobelEdgeDetection.swift */,
 				3E1B545B1C6B054A00F57FF2 /* ThirdPartyFilters.swift */,
 				3EC5C9911C7987120053EAED /* CompoundEye.swift */,
 				3E0CFC621C8C01EA005CBC64 /* RefractedTextFilter.swift */,

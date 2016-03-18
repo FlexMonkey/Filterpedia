@@ -8,7 +8,40 @@
 
 import CoreImage
 
-class SobelEdgeDetection: CIFilter
+class SobelEdgeDetection3x3: SobelEdgeDetectionBase
+{
+    let horizontalSobel = CIVector(values: [
+        -1, 0, 1,
+        -2, 0, 2,
+        -1, 0, 1], count: 9)
+    
+    let verticalSobel = CIVector(values: [
+        -1, -2, -1,
+        0,  0,  0,
+        1,  2,  1], count: 9)
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let final = sobel(inputImage,
+            filterName: "CIConvolution3X3",
+            horizontalWeights: horizontalSobel,
+            verticalWeights: verticalSobel)
+        
+        return final
+    }
+    
+    override func displayName() -> String
+    {
+        return "Sobel Edge Detection 3x3 "
+    }
+}
+
+class SobelEdgeDetection5x5: SobelEdgeDetectionBase
 {
     let horizontalSobel = CIVector(values: [
         -1, -2, 0, 2, 1,
@@ -24,6 +57,42 @@ class SobelEdgeDetection: CIFilter
         2, 8, 12, 8, 2,
         1, 4, 6, 4, 1], count: 25)
     
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let final = sobel(inputImage,
+            filterName: "CIConvolution5X5",
+            horizontalWeights: horizontalSobel,
+            verticalWeights: verticalSobel)
+
+        return final
+    }
+    
+    override func displayName() -> String
+    {
+        return "Sobel Edge Detection 5x5 "
+    }
+}
+
+class SobelEdgeDetectionBase: CIFilter
+{
+    private func sobel(sourceImage: CIImage, filterName: String, horizontalWeights: CIVector, verticalWeights: CIVector) -> CIImage
+    {
+        return sourceImage
+            .imageByApplyingFilter(filterName,
+                withInputParameters: [
+                    kCIInputWeightsKey: horizontalWeights.multiply(inputWeight),
+                    kCIInputBiasKey: inputBias])
+            .imageByApplyingFilter(filterName,
+                withInputParameters: [
+                    kCIInputWeightsKey: verticalWeights.multiply(inputWeight),
+                    kCIInputBiasKey: inputBias])
+            .imageByCroppingToRect(sourceImage.extent)
+    }
     
     var inputImage : CIImage?
     var inputBias: CGFloat = 1
@@ -35,10 +104,15 @@ class SobelEdgeDetection: CIFilter
         inputWeight = 1
     }
     
+    func displayName() -> String
+    {
+        fatalError("SobelEdgeDetectionBase must be sublassed")
+    }
+    
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Sobel Edge Detection",
+            kCIAttributeFilterDisplayName: displayName(),
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -65,26 +139,6 @@ class SobelEdgeDetection: CIFilter
             ]
     }
     
-    override var outputImage: CIImage!
-    {
-        guard let inputImage = inputImage else
-        {
-            return nil
-        }
-        
-        let final = inputImage
-            .imageByApplyingFilter("CIConvolution5X5",
-                withInputParameters: [
-                    kCIInputWeightsKey: horizontalSobel.multiply(inputWeight),
-                    kCIInputBiasKey: inputBias])
-            .imageByApplyingFilter("CIConvolution5X5",
-                withInputParameters: [
-                    kCIInputWeightsKey: verticalSobel.multiply(inputWeight),
-                    kCIInputBiasKey: inputBias])
-            .imageByCroppingToRect(inputImage.extent)
-        
-        return final
-    }
 }
 
 
