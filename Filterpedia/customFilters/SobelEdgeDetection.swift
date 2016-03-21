@@ -32,7 +32,7 @@ class SobelEdgeDetection3x3: SobelEdgeDetectionBase
             horizontalWeights: horizontalSobel,
             verticalWeights: verticalSobel)
         
-        return final
+        return makeOpaqueKernel?.applyWithExtent(inputImage.extent, arguments: [final])
     }
     
     override func displayName() -> String
@@ -69,7 +69,7 @@ class SobelEdgeDetection5x5: SobelEdgeDetectionBase
             horizontalWeights: horizontalSobel,
             verticalWeights: verticalSobel)
 
-        return final
+        return makeOpaqueKernel?.applyWithExtent(inputImage.extent, arguments: [final])
     }
     
     override func displayName() -> String
@@ -80,6 +80,8 @@ class SobelEdgeDetection5x5: SobelEdgeDetectionBase
 
 class SobelEdgeDetectionBase: CIFilter
 {
+    let makeOpaqueKernel = CIColorKernel(string: "kernel vec4 xyz(__sample pixel) { return vec4(pixel.rgb, 1.0); }")
+    
     private func sobel(sourceImage: CIImage, filterName: String, horizontalWeights: CIVector, verticalWeights: CIVector) -> CIImage
     {
         return sourceImage
