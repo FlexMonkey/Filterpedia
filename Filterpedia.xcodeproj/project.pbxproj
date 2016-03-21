@@ -20,6 +20,7 @@
 		3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */; };
 		3E1E3E9F1C4FD31400EEF0D8 /* CRTFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */; };
 		3E1E3EA41C509A1500EEF0D8 /* KuwaharaFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3EA31C509A1500EEF0D8 /* KuwaharaFilter.swift */; };
+		3E39C7FB1CA0726C00D06D86 /* MultiBandHSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E39C7FA1CA0726C00D06D86 /* MultiBandHSV.swift */; };
 		3E5928521C4D080D004BFA07 /* sunset.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E5928511C4D080D004BFA07 /* sunset.jpg */; };
 		3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */; };
 		3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */; };
@@ -60,6 +61,7 @@
 		3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = overlayWidgets/Extensions.swift; sourceTree = "<group>"; };
 		3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRTFilter.swift; path = customFilters/CRTFilter.swift; sourceTree = "<group>"; };
 		3E1E3EA31C509A1500EEF0D8 /* KuwaharaFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KuwaharaFilter.swift; path = customFilters/KuwaharaFilter.swift; sourceTree = "<group>"; };
+		3E39C7FA1CA0726C00D06D86 /* MultiBandHSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiBandHSV.swift; path = customFilters/MultiBandHSV.swift; sourceTree = "<group>"; };
 		3E5928511C4D080D004BFA07 /* sunset.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sunset.jpg; path = assets/sunset.jpg; sourceTree = "<group>"; };
 		3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompositeOverBlackFilter.swift; path = components/CompositeOverBlackFilter.swift; sourceTree = "<group>"; };
 		3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterInputItemRenderer.swift; path = components/FilterInputItemRenderer.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				3E1B545B1C6B054A00F57FF2 /* ThirdPartyFilters.swift */,
 				3EC5C9911C7987120053EAED /* CompoundEye.swift */,
 				3E0CFC621C8C01EA005CBC64 /* RefractedTextFilter.swift */,
+				3E39C7FA1CA0726C00D06D86 /* MultiBandHSV.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */,
 				3EC5C9921C7987120053EAED /* CompoundEye.swift in Sources */,
 				3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */,
+				3E39C7FB1CA0726C00D06D86 /* MultiBandHSV.swift in Sources */,
 				3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */,
 				3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */,
 				3E1B545C1C6B054A00F57FF2 /* ThirdPartyFilters.swift in Sources */,

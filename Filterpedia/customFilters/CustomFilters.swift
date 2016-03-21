@@ -199,6 +199,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("MultiBandHSV",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -282,6 +288,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "SobelEdgeDetection3x3":
             return SobelEdgeDetection3x3()
+            
+        case "MultiBandHSV":
+            return MultiBandHSV()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
