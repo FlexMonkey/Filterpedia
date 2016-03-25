@@ -19,6 +19,7 @@
 		3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */; };
 		3E1E3E9F1C4FD31400EEF0D8 /* CRTFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */; };
 		3E1E3EA41C509A1500EEF0D8 /* KuwaharaFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3EA31C509A1500EEF0D8 /* KuwaharaFilter.swift */; };
+		3E2760BE1CA5652C00C71B50 /* ModelIOGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2760BD1CA5652C00C71B50 /* ModelIOGenerators.swift */; };
 		3E39C7FB1CA0726C00D06D86 /* MultiBandHSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E39C7FA1CA0726C00D06D86 /* MultiBandHSV.swift */; };
 		3E5928521C4D080D004BFA07 /* sunset.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E5928511C4D080D004BFA07 /* sunset.jpg */; };
 		3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */; };
@@ -60,6 +61,7 @@
 		3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = overlayWidgets/Extensions.swift; sourceTree = "<group>"; };
 		3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRTFilter.swift; path = customFilters/CRTFilter.swift; sourceTree = "<group>"; };
 		3E1E3EA31C509A1500EEF0D8 /* KuwaharaFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KuwaharaFilter.swift; path = customFilters/KuwaharaFilter.swift; sourceTree = "<group>"; };
+		3E2760BD1CA5652C00C71B50 /* ModelIOGenerators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelIOGenerators.swift; path = customFilters/ModelIOGenerators.swift; sourceTree = "<group>"; };
 		3E39C7FA1CA0726C00D06D86 /* MultiBandHSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiBandHSV.swift; path = customFilters/MultiBandHSV.swift; sourceTree = "<group>"; };
 		3E5928511C4D080D004BFA07 /* sunset.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sunset.jpg; path = assets/sunset.jpg; sourceTree = "<group>"; };
 		3E74E7D41C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompositeOverBlackFilter.swift; path = components/CompositeOverBlackFilter.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				3EC5C9911C7987120053EAED /* CompoundEye.swift */,
 				3E0CFC621C8C01EA005CBC64 /* RefractedTextFilter.swift */,
 				3E39C7FA1CA0726C00D06D86 /* MultiBandHSV.swift */,
+				3E2760BD1CA5652C00C71B50 /* ModelIOGenerators.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E9CD5041C9C211100C67CB5 /* SobelEdgeDetection.swift in Sources */,
+				3E2760BE1CA5652C00C71B50 /* ModelIOGenerators.swift in Sources */,
 				3EF5C5951C67B229005071BF /* EightBit.swift in Sources */,
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
 				3E1B54561C69CB8700F57FF2 /* FilmicEffects.swift in Sources */,

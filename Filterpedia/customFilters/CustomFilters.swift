@@ -211,6 +211,14 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("SkyGenerator",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -300,6 +308,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "MultiBandHSV":
             return MultiBandHSV()
+            
+        case "SkyGenerator":
+            return SkyGenerator()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
