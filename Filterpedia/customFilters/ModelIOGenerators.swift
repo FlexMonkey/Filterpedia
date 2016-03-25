@@ -105,13 +105,11 @@ class ModelIOColorScalarNoise: CIFilter
 
 class ModelIOSkyGenerator: CIFilter
 {
-    private var textureInvalid = true
-    
     var inputSize = CIVector(x: 640, y: 640)
     {
         didSet
         {
-            textureInvalid = inputSize != oldValue
+            sky = nil
         }
     }
 
@@ -122,11 +120,18 @@ class ModelIOSkyGenerator: CIFilter
     var inputContrast: CGFloat = 1
     var inputExposure: CGFloat = 0.5
     
-    var sky: MDLSkyCubeTexture!
+    var sky: MDLSkyCubeTexture?
     
     override var outputImage: CIImage!
     {
-        if textureInvalid
+        if let sky = sky
+        {
+            sky.turbidity = inputTurbidity.toFloat()
+            sky.sunElevation = inputSunElevation.toFloat()
+            sky.upperAtmosphereScattering = inputUpperAtmosphereScattering.toFloat()
+            sky.groundAlbedo = inputGroundAlbedo.toFloat()
+        }
+        else
         {
             sky = MDLSkyCubeTexture(name: nil,
                 channelEncoding: MDLTextureChannelEncoding.UInt8,
@@ -135,23 +140,14 @@ class ModelIOSkyGenerator: CIFilter
                 sunElevation: inputSunElevation.toFloat(),
                 upperAtmosphereScattering: inputUpperAtmosphereScattering.toFloat(),
                 groundAlbedo: inputGroundAlbedo.toFloat())
-            
-            textureInvalid = false
-        }
-        else
-        {
-            sky.turbidity = inputTurbidity.toFloat()
-            sky.sunElevation = inputSunElevation.toFloat()
-            sky.upperAtmosphereScattering = inputUpperAtmosphereScattering.toFloat()
-            sky.groundAlbedo = inputGroundAlbedo.toFloat()
         }
         
-        sky.contrast = inputContrast.toFloat()
-        sky.exposure = inputExposure.toFloat()
+        sky!.contrast = inputContrast.toFloat()
+        sky!.exposure = inputExposure.toFloat()
         
-        sky.updateTexture()
+        sky!.updateTexture()
         
-        let skyImage = sky.imageFromTexture()!.takeUnretainedValue()
+        let skyImage = sky!.imageFromTexture()!.takeUnretainedValue()
         
         return  CIImage(CGImage: skyImage)
             .imageByCroppingToRect(CGRect(x: 0, y: 0, width: inputSize.X, height: inputSize.Y))
