@@ -19,12 +19,13 @@ class ModelIOColorFromTemperature: CIFilter
     
     override var outputImage: CIImage!
     {
-        let swatch = MDLColorSwatchTexture(colorTemperatureGradientFrom: inputTemperature.toFloat(),
+        let swatch = MDLColorSwatchTexture(
+            colorTemperatureGradientFrom: inputTemperature.toFloat(),
             toColorTemperature: inputTemperature.toFloat(),
             name: "",
             textureDimensions: [Int32(inputSize.X), Int32(inputSize.Y)])
         
-        let swatchImage = swatch.imageFromTexture()!.takeUnretainedValue()
+        let swatchImage = swatch.imageFromTexture()!.takeRetainedValue()
         
         return CIImage(CGImage: swatchImage)
     }
@@ -71,7 +72,7 @@ class ModelIOColorScalarNoise: CIFilter
             channelEncoding: MDLTextureChannelEncoding.UInt8,
             grayscale: false)
         
-        let noiseImage = noise.imageFromTexture()!.takeUnretainedValue()
+        let noiseImage = noise.imageFromTexture()!.takeRetainedValue()
         
         let final = CIImage(CGImage: noiseImage)
         
@@ -149,7 +150,7 @@ class ModelIOSkyGenerator: CIFilter
         
         sky!.updateTexture()
         
-        let skyImage = sky!.imageFromTexture()!.takeUnretainedValue()
+        let skyImage = sky!.imageFromTexture()!.takeRetainedValue()
         
         return  CIImage(CGImage: skyImage)
             .imageByCroppingToRect(CGRect(x: 0, y: 0, width: inputSize.X, height: inputSize.Y))
