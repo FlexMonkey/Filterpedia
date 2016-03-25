@@ -24,8 +24,6 @@ class ModelIOColorFromTemperature: CIFilter
             name: "",
             textureDimensions: [Int32(inputSize.X), Int32(inputSize.Y)])
         
-        print("inputTemperature.toFloat()", inputTemperature.toFloat())
-        
         let swatchImage = swatch.imageFromTexture()!.takeUnretainedValue()
         
         return CIImage(CGImage: swatchImage)
