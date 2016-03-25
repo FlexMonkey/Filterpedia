@@ -163,6 +163,73 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("CompoundEye",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("DifferenceOfGaussians",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("AdvancedMonochrome",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("RefractedTextFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("SobelEdgeDetection5x5",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+                
+        CIFilter.registerFilterName("SobelEdgeDetection3x3",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("MultiBandHSV",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("PolarPixellate",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("ModelIOSkyGenerator",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("ModelIOColorScalarNoise",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("ModelIOColorFromTemperature",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -202,15 +269,6 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "KuwaharaFilter":
             return KuwaharaFilter()
             
-        case "MetalPixellateFilter":
-            return MetalPixellateFilter()
-            
-        case "MetalKuwaharaFilter":
-            return MetalKuwaharaFilter()
-            
-        case "MetalPerlinNoise":
-            return MetalPerlinNoise()
-            
         case "StarBurstFilter":
             return StarBurstFilter()
             
@@ -236,8 +294,62 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             return CarnivalMirror()
             
         case "BayerDitherFilter":
-            return BayerDitherFilter() 
+            return BayerDitherFilter()
             
+        case "CompoundEye":
+            return CompoundEye()
+            
+        case "DifferenceOfGaussians":
+            return DifferenceOfGaussians()
+            
+        case "AdvancedMonochrome":
+            return AdvancedMonochrome()
+            
+        case "RefractedTextFilter":
+            return RefractedTextFilter()
+
+        case "SobelEdgeDetection5x5":
+            return SobelEdgeDetection5x5()
+            
+        case "SobelEdgeDetection3x3":
+            return SobelEdgeDetection3x3()
+            
+        case "PolarPixellate":
+            return PolarPixellate()
+            
+        case "MultiBandHSV":
+            return MultiBandHSV()
+            
+        case "ModelIOSkyGenerator":
+            return ModelIOSkyGenerator()
+            
+        case "ModelIOColorScalarNoise":
+            return ModelIOColorScalarNoise()
+            
+        case "ModelIOColorFromTemperature":
+            return ModelIOColorFromTemperature()
+            
+        case "MetalPixellateFilter":
+            #if !arch(i386) && !arch(x86_64)
+                return MetalPixellateFilter()
+            #else
+                return nil
+            #endif
+            
+        case "MetalKuwaharaFilter":
+            #if !arch(i386) && !arch(x86_64)
+                return MetalKuwaharaFilter()
+            #else
+                return nil
+            #endif
+            
+        case "MetalPerlinNoise":
+            #if !arch(i386) && !arch(x86_64)
+                return MetalPerlinNoise()
+            #else
+                return nil
+            #endif
+
         default:
             return nil
         }
@@ -437,6 +549,89 @@ override var attributes: [String : AnyObject]
     
 }
 
+// MARK: Difference of Gaussians
+
+class DifferenceOfGaussians: CIFilter
+{
+    var inputImage : CIImage?
+    var inputRadius0: CGFloat = 2
+    var inputRadius1: CGFloat = 8
+    var inputBoost: CGFloat = 0.5
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Difference of Gaussians",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputRadius0": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Radius One",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputRadius1": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 8,
+                kCIAttributeDisplayName: "Radius Two",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBoost": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.5,
+                kCIAttributeDisplayName: "Midtone Boost",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let gaussianOne = CIFilter(name: "CIGaussianBlur",
+            withInputParameters: [
+                kCIInputImageKey: inputImage,
+                kCIInputRadiusKey: inputRadius0])!.outputImage!.imageByCroppingToRect(inputImage.extent)
+        
+        let gaussianTwo = CIFilter(name: "CIGaussianBlur",
+            withInputParameters: [
+                kCIInputImageKey: inputImage,
+                kCIInputRadiusKey: inputRadius1])!.outputImage!.imageByCroppingToRect(inputImage.extent)
+        
+        let difference =  CIFilter(name: "CIDifferenceBlendMode",
+            withInputParameters: [
+                kCIInputImageKey: gaussianOne,
+                kCIInputBackgroundImageKey: gaussianTwo])!.outputImage!
+        
+        let y2 = 0.5 + (inputBoost / 2.0)
+        let y1 = y2 / 2.0
+        let y3 = (y2 + 1.0) / 2.0
+        
+        return difference.imageByApplyingFilter("CIToneCurve",
+            withInputParameters: [
+                kCIInputImageKey: difference,
+                "inputPoint1": CIVector(x: 0.25, y: y1),
+                "inputPoint2": CIVector(x: 0.5, y: y2),
+                "inputPoint3": CIVector(x: 0.75, y: y3)
+                ])
+    }
+}
+
 // MARK: Starburst
 
 class StarBurstFilter: CIFilter
@@ -582,6 +777,91 @@ class ThresholdToAlphaFilter: ThresholdFilter
     }
 }
 
+// MARK: Advanced Monochrome
+
+class AdvancedMonochrome: CIFilter
+{
+    var inputImage : CIImage?
+    
+    var inputRedBalance: CGFloat = 1
+    var inputGreenBalance: CGFloat = 1
+    var inputBlueBalance: CGFloat = 1
+    var inputClamp: CGFloat = 0
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Advanced Monochrome",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputRedBalance": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Red Balance",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputGreenBalance": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Green Balance",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputBlueBalance": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1,
+                kCIAttributeDisplayName: "Blue Balance",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputClamp": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Clamp",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    let kernel = CIColorKernel(string:
+        "kernel vec4 advancedMonochrome(__sample pixel, float redBalance, float greenBalance, float blueBalance, float clamp)" +
+        "{" +
+        "   float scale = 1.0 / (redBalance + greenBalance + blueBalance);" +
+            
+        "   float red = pixel.r * redBalance * scale;" +
+        "   float green = pixel.g * greenBalance * scale;" +
+        "   float blue = pixel.b * blueBalance * scale;" +
+            
+        "   vec3 grey = vec3(red + green + blue);" +
+            
+        "   grey = mix(grey, smoothstep(0.0, 1.0, grey), clamp); " +
+        
+        "   return vec4(grey, pixel.a);" +
+        "}")
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            kernel = kernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp]
+        
+        return kernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
 // MARK: Threshold
 
 class ThresholdFilter: CIFilter
@@ -618,12 +898,12 @@ class ThresholdFilter: CIFilter
         super.init()
         
         thresholdKernel = CIColorKernel(string:
-            "kernel vec4 thresholdFilter(__sample image, float threshold)" +
-                "{" +
-                "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
-                
-                "   return vec4(step(threshold, luma));" +
-            "}"
+        "kernel vec4 thresholdFilter(__sample image, float threshold)" +
+        "{" +
+        "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+        
+        "   return vec4(step(threshold, luma));" +
+        "}"
         )
 
     }
@@ -650,6 +930,95 @@ class ThresholdFilter: CIFilter
     }
 }
 
+// MARK: Polar Pixellate
+
+// based on https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImagePolarPixellateFilter.m
+class PolarPixellate: CIFilter
+{
+    var inputImage : CIImage?
+    var inputCenter = CIVector(x: 320, y: 320)
+    
+    var inputPixelArc = CGFloat(M_PI / 15)
+    var inputPixelLength = CGFloat(50)
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Polar Pixellate",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputPixelArc": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: CGFloat(M_PI / 15),
+                kCIAttributeDisplayName: "Pixel Arc",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: CGFloat(M_PI),
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPixelLength": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 50,
+                kCIAttributeDisplayName: "Pixel Length",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 250,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputCenter": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIVector",
+                kCIAttributeDisplayName: "Center",
+                kCIAttributeDefault: CIVector(x: 320, y: 320),
+                kCIAttributeType: kCIAttributeTypePosition],
+        ]
+    }
+    
+    override func setDefaults()
+    {
+        inputPixelArc = CGFloat(M_PI / 15)
+        inputPixelLength = 50
+        inputCenter = CIVector(x: 320, y: 320)
+    }
+    
+    let warpKernel = CIWarpKernel(string:
+        "kernel vec2 polarPixellate(vec2 center, vec2 pixelSize)" +
+        "{" +
+        " vec2 normCoord = 2.0 * destCoord() - 1.0;" +
+        " vec2 normCenter = 2.0 * center - 1.0;" +
+        " normCoord -= normCenter; " +
+        " float r = length(normCoord);" +
+        " float phi = atan(normCoord.y, normCoord.x);" +
+        " r = r - mod(r, pixelSize.x) + 0.03;" +
+        " phi = phi - mod(phi, pixelSize.y);" +
+        " normCoord.x = r * cos(phi);" +
+        " normCoord.y = r * sin(phi);" +
+        " normCoord += normCenter;" +
+        " return normCoord / 2.0 + 0.5;" +
+        "}"
+    )
+    
+    override var outputImage : CIImage!
+    {
+        if let inputImage = inputImage, kernel = warpKernel
+        {
+            let extent = inputImage.extent
+            let pixelSize = CIVector(x: inputPixelLength, y: inputPixelArc)
+            
+            return kernel.applyWithExtent(extent,
+                roiCallback:
+                {
+                    (index, rect) in
+                    return rect
+                },
+                inputImage: inputImage,
+                arguments: [inputCenter, pixelSize])
+        }
+        return nil
+    }
+}
 
 // MARK: VignetteNoir
 

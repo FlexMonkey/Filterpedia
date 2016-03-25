@@ -5,11 +5,26 @@
 //  Created by Simon Gladman on 24/01/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import CoreImage
+
+#if !arch(i386) && !arch(x86_64)
+
 import Metal
 import MetalKit
-
+    
 // MARK: MetalPixellateFilter
 
 class MetalPixellateFilter: MetalImageFilter
@@ -285,28 +300,11 @@ class MetalFilter: CIFilter
         return self.device.newDefaultLibrary()!
     }()
     
-    lazy var pipelineState: MTLComputePipelineState =
-    {
-        [unowned self] in
-        
-        let kernelFunction = self.defaultLibrary.newFunctionWithName(self.functionName)!
-        
-        do
-        {
-            let pipelineState = try self.device.newComputePipelineStateWithFunction(kernelFunction)
-            return pipelineState
-        }
-        catch
-        {
-            fatalError("Unable to create pipeline state for kernel function \(self.functionName)")
-        }
-    }()
+    var pipelineState: MTLComputePipelineState!
     
     let functionName: String
     
-    let threadsPerThreadgroup = MTLSize(width:16,
-        height:16,
-        depth:1)
+    var threadsPerThreadgroup: MTLSize!
     
     var threadgroupsPerGrid: MTLSize?
     
@@ -344,6 +342,33 @@ class MetalFilter: CIFilter
         self.functionName = functionName
         
         super.init()
+        
+        let kernelFunction = defaultLibrary.newFunctionWithName(self.functionName)!
+        
+        do
+        {
+            pipelineState = try self.device.newComputePipelineStateWithFunction(kernelFunction)
+            
+            let maxTotalThreadsPerThreadgroup = Double(pipelineState.maxTotalThreadsPerThreadgroup)
+            let threadExecutionWidth = Double(pipelineState.threadExecutionWidth)
+            
+            let threadsPerThreadgroupSide = 0.stride(
+                to: Int(sqrt(maxTotalThreadsPerThreadgroup)),
+                by: 1).reduce(16)
+            {
+                return (Double($1 * $1) / threadExecutionWidth) % 1 == 0 ? $1 : $0
+            }
+  
+            threadsPerThreadgroup = MTLSize(width:threadsPerThreadgroupSide,
+                height:threadsPerThreadgroupSide,
+                depth:1)
+        }
+        catch
+        {
+            fatalError("Unable to create pipeline state for kernel function \(functionName)")
+        }
+        
+        
         
         if !(self is MetalImageFilter) && !(self is MetalGeneratorFilter)
         {
@@ -449,3 +474,9 @@ class MetalFilter: CIFilter
     }
 }
 
+#else
+    class MetalFilter: CIFilter
+    {
+    }
+    
+#endif

@@ -209,15 +209,15 @@ class CRTFilter: CIFilter
         
         
         override var outputImage: CIImage!
+        {
+            if let inputImage = inputImage,
+                crtColorKernel = crtColorKernel
             {
-                if let inputImage = inputImage,
-                    crtColorKernel = crtColorKernel
-                {
-                    let dod = inputImage.extent
-                    let args = [inputImage, pixelWidth, pixelHeight]
-                    return crtColorKernel.applyWithExtent(dod, arguments: args)
-                }
-                return nil
+                let dod = inputImage.extent
+                let args = [inputImage, pixelWidth, pixelHeight]
+                return crtColorKernel.applyWithExtent(dod, arguments: args)
+            }
+            return nil
         }
     }
     

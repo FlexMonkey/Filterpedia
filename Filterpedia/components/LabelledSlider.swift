@@ -64,7 +64,7 @@ class LabelledSlider: UIControl
         
         addSubview(slider)
  
-        slider.addTarget(self, action: "sliderChangeHandler", forControlEvents: UIControlEvents.ValueChanged)
+        slider.addTarget(self, action: #selector(LabelledSlider.sliderChangeHandler), forControlEvents: UIControlEvents.ValueChanged)
     }
     
     required init?(coder aDecoder: NSCoder)

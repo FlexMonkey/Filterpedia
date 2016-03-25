@@ -23,6 +23,7 @@ import UIKit
 
 class FilterInputItemRenderer: UITableViewCell
 {
+    let textEditButton = UIButton()
     let slider = LabelledSlider()
     let vectorSlider = VectorSlider()
     let imagesSegmentedControl = UISegmentedControl(items: assetLabels)
@@ -113,23 +114,32 @@ class FilterInputItemRenderer: UITableViewCell
         
         contentView.addSubview(stackView)
         
+        textEditButton.layer.cornerRadius = 5
+        textEditButton.layer.backgroundColor = UIColor(white: 0.8, alpha: 1.0).CGColor
+        textEditButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
         stackView.addArrangedSubview(slider)
         stackView.addArrangedSubview(imagesSegmentedControl)
         stackView.addArrangedSubview(vectorSlider)
+        stackView.addArrangedSubview(textEditButton)
       
         slider.addTarget(self,
-            action: "sliderChangeHandler",
+            action: #selector(FilterInputItemRenderer.sliderChangeHandler),
             forControlEvents: UIControlEvents.ValueChanged)
         
         vectorSlider.addTarget(self,
-            action: "vectorSliderChangeHandler",
+            action: #selector(FilterInputItemRenderer.vectorSliderChangeHandler),
             forControlEvents: UIControlEvents.ValueChanged)
         
         imagesSegmentedControl.addTarget(self,
-            action: "imagesSegmentedControlChangeHandler",
+            action: #selector(FilterInputItemRenderer.imagesSegmentedControlChangeHandler),
             forControlEvents: UIControlEvents.ValueChanged)
+        
+        textEditButton.addTarget(self,
+            action: #selector(FilterInputItemRenderer.textEditClicked),
+            forControlEvents: .TouchDown)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -170,6 +180,42 @@ class FilterInputItemRenderer: UITableViewCell
         value = assets[imagesSegmentedControl.selectedSegmentIndex].ciImage
     }
     
+    func textEditClicked()
+    {
+        guard let rootController = UIApplication.sharedApplication().keyWindow!.rootViewController else
+        {
+            return
+        }
+        
+        let editTextController = UIAlertController(title: "Filterpedia", message: nil, preferredStyle: .Alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default)
+        {
+            (_: UIAlertAction) in
+            
+            if let updatedText = editTextController.textFields?.first?.text
+            {
+                self.value = updatedText
+                
+                self.textEditButton.setTitle(updatedText, forState: .Normal)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        
+        editTextController.addTextFieldWithConfigurationHandler
+        {
+            (textField: UITextField) in
+            
+            textField.text = self.value as? String
+        }
+        
+        editTextController.addAction(okAction)
+        editTextController.addAction(cancelAction)
+        
+        rootController.presentViewController(editTextController, animated: false, completion: nil)
+    }
+    
     // MARK: Update user interface for attributes
     
     func updateForAttribute()
@@ -185,6 +231,7 @@ class FilterInputItemRenderer: UITableViewCell
             slider.hidden = false
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = true
+            textEditButton.hidden = true
      
             slider.min = attribute[kCIAttributeSliderMin] as? Float ?? 0
             slider.max = attribute[kCIAttributeSliderMax] as? Float ?? 1
@@ -198,6 +245,7 @@ class FilterInputItemRenderer: UITableViewCell
             slider.hidden = true
             imagesSegmentedControl.hidden = false
             vectorSlider.hidden = true
+            textEditButton.hidden = true
             
             imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage == filterParameterValues[inputKey] as? CIImage}) ?? 0
             
@@ -207,6 +255,7 @@ class FilterInputItemRenderer: UITableViewCell
             slider.hidden = true
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
+            textEditButton.hidden = true
          
             let max: CGFloat? = (attribute[kCIAttributeType] as? String == kCIAttributeTypePosition) ? 640 : nil
             let vector = filterParameterValues[inputKey] as? CIVector ?? attribute[kCIAttributeDefault] as? CIVector
@@ -219,6 +268,7 @@ class FilterInputItemRenderer: UITableViewCell
             slider.hidden = true
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = false
+            textEditButton.hidden = true
             
             if let color = filterParameterValues[inputKey] as? CIColor ?? attribute[kCIAttributeDefault] as? CIColor
             {
@@ -228,10 +278,22 @@ class FilterInputItemRenderer: UITableViewCell
             
             vectorSliderChangeHandler()
             
+        case "NSString":
+            slider.hidden = true
+            imagesSegmentedControl.hidden = true
+            vectorSlider.hidden = true
+            textEditButton.hidden = false
+      
+            let text = filterParameterValues[inputKey] as? NSString ?? attribute[kCIAttributeDefault] as? NSString ?? ""
+            
+            value = text
+            textEditButton.setTitle(String(text), forState: .Normal)
+            
         default:
             slider.hidden = true
             imagesSegmentedControl.hidden = true
             vectorSlider.hidden = true
+            textEditButton.hidden = true
             
         }
     }

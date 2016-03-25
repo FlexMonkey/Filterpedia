@@ -15,7 +15,7 @@ extension UIBezierPath
     {
         let n = interpolationPoints.count - 1
         
-        for var ii = 0; ii < n; ++ii
+        for ii in 0 ..< n
         {
             var currentPoint = interpolationPoints[ii]
             
