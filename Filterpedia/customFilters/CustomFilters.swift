@@ -205,6 +205,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("PolarPixellate",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
     
     func filterWithName(name: String) -> CIFilter?
@@ -288,6 +294,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "SobelEdgeDetection3x3":
             return SobelEdgeDetection3x3()
+            
+        case "PolarPixellate":
+            return PolarPixellate()
             
         case "MultiBandHSV":
             return MultiBandHSV()
@@ -893,6 +902,95 @@ class ThresholdFilter: CIFilter
     }
 }
 
+// MARK: Polar Pixellate
+
+// based on https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImagePolarPixellateFilter.m
+class PolarPixellate: CIFilter
+{
+    var inputImage : CIImage?
+    var inputCenter = CIVector(x: 320, y: 320)
+    
+    var inputPixelArc = CGFloat(M_PI / 15)
+    var inputPixelLength = CGFloat(50)
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Polar Pixellate",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputPixelArc": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: CGFloat(M_PI / 15),
+                kCIAttributeDisplayName: "Pixel Arc",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: CGFloat(M_PI),
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPixelLength": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 50,
+                kCIAttributeDisplayName: "Pixel Length",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 250,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputCenter": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIVector",
+                kCIAttributeDisplayName: "Center",
+                kCIAttributeDefault: CIVector(x: 320, y: 320),
+                kCIAttributeType: kCIAttributeTypePosition],
+        ]
+    }
+    
+    override func setDefaults()
+    {
+        inputPixelArc = CGFloat(M_PI / 15)
+        inputPixelLength = 50
+        inputCenter = CIVector(x: 320, y: 320)
+    }
+    
+    let warpKernel = CIWarpKernel(string:
+        "kernel vec2 polarPixellate(vec2 center, vec2 pixelSize)" +
+        "{" +
+        " vec2 normCoord = 2.0 * destCoord() - 1.0;" +
+        " vec2 normCenter = 2.0 * center - 1.0;" +
+        " normCoord -= normCenter; " +
+        " float r = length(normCoord);" +
+        " float phi = atan(normCoord.y, normCoord.x);" +
+        " r = r - mod(r, pixelSize.x) + 0.03;" +
+        " phi = phi - mod(phi, pixelSize.y);" +
+        " normCoord.x = r * cos(phi);" +
+        " normCoord.y = r * sin(phi);" +
+        " normCoord += normCenter;" +
+        " return normCoord / 2.0 + 0.5;" +
+        "}"
+    )
+    
+    override var outputImage : CIImage!
+    {
+        if let inputImage = inputImage, kernel = warpKernel
+        {
+            let extent = inputImage.extent
+            let pixelSize = CIVector(x: inputPixelLength, y: inputPixelArc)
+            
+            return kernel.applyWithExtent(extent,
+                roiCallback:
+                {
+                    (index, rect) in
+                    return rect
+                },
+                inputImage: inputImage,
+                arguments: [inputCenter, pixelSize])
+        }
+        return nil
+    }
+}
 
 // MARK: VignetteNoir
 

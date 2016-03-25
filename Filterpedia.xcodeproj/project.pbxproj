@@ -15,7 +15,6 @@
 		3E1B545C1C6B054A00F57FF2 /* ThirdPartyFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B545B1C6B054A00F57FF2 /* ThirdPartyFilters.swift */; };
 		3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */; };
 		3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */; };
-		3E1E3E981C4F8D5D00EEF0D8 /* shutter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */; };
 		3E1E3E9B1C4FA01200EEF0D8 /* OverlayWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9A1C4FA01200EEF0D8 /* OverlayWidgets.swift */; };
 		3E1E3E9D1C4FADEB00EEF0D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */; };
 		3E1E3E9F1C4FD31400EEF0D8 /* CRTFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */; };
@@ -42,6 +41,7 @@
 		3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A72361C35250100CAD516 /* screenshot.jpg */; };
 		3E9CD5041C9C211100C67CB5 /* SobelEdgeDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9CD5031C9C211100C67CB5 /* SobelEdgeDetection.swift */; };
 		3EC5C9921C7987120053EAED /* CompoundEye.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC5C9911C7987120053EAED /* CompoundEye.swift */; };
+		3EC6D0C31CA4FDB0003B5E90 /* coffeecup.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */; };
 		3EF5C5951C67B229005071BF /* EightBit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5C5941C67B229005071BF /* EightBit.swift */; };
 		3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A7E1C54902B0071B584 /* Shaders.metal */; };
 		3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A801C5490540071B584 /* MetalFilters.swift */; };
@@ -56,7 +56,6 @@
 		3E1B545B1C6B054A00F57FF2 /* ThirdPartyFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThirdPartyFilters.swift; path = customFilters/ThirdPartyFilters.swift; sourceTree = "<group>"; };
 		3E1E3E6D1C4DF75E00EEF0D8 /* MercurializeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MercurializeFilter.swift; path = customFilters/MercurializeFilter.swift; sourceTree = "<group>"; };
 		3E1E3E951C4F85D800EEF0D8 /* RGBChannelCompositing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RGBChannelCompositing.swift; path = customFilters/RGBChannelCompositing.swift; sourceTree = "<group>"; };
-		3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = shutter.jpg; path = assets/shutter.jpg; sourceTree = "<group>"; };
 		3E1E3E9A1C4FA01200EEF0D8 /* OverlayWidgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OverlayWidgets.swift; path = overlayWidgets/OverlayWidgets.swift; sourceTree = "<group>"; };
 		3E1E3E9C1C4FADEB00EEF0D8 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = overlayWidgets/Extensions.swift; sourceTree = "<group>"; };
 		3E1E3E9E1C4FD31400EEF0D8 /* CRTFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRTFilter.swift; path = customFilters/CRTFilter.swift; sourceTree = "<group>"; };
@@ -85,6 +84,7 @@
 		3E9A72361C35250100CAD516 /* screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = screenshot.jpg; path = assets/screenshot.jpg; sourceTree = "<group>"; };
 		3E9CD5031C9C211100C67CB5 /* SobelEdgeDetection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SobelEdgeDetection.swift; path = customFilters/SobelEdgeDetection.swift; sourceTree = "<group>"; };
 		3EC5C9911C7987120053EAED /* CompoundEye.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundEye.swift; path = customFilters/CompoundEye.swift; sourceTree = "<group>"; };
+		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = coffeecup.jpg; sourceTree = "<group>"; };
 		3EF5C5941C67B229005071BF /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EightBit.swift; path = customFilters/EightBit.swift; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
@@ -181,8 +181,8 @@
 		3E9A72251C33A7B100CAD516 /* asssets */ = {
 			isa = PBXGroup;
 			children = (
+				3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */,
 				3E7505B01C5E0FA300248A3F /* carMascot.jpg */,
-				3E1E3E971C4F8D5D00EEF0D8 /* shutter.jpg */,
 				3E5928511C4D080D004BFA07 /* sunset.jpg */,
 				3E74E7D81C36D61000F0BCCF /* Assets.swift */,
 				3E9A72361C35250100CAD516 /* screenshot.jpg */,
@@ -261,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC6D0C31CA4FDB0003B5E90 /* coffeecup.jpg in Resources */,
 				3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */,
 				3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */,
 				3E7505B11C5E0FA300248A3F /* carMascot.jpg in Resources */,
@@ -272,7 +273,6 @@
 				3E9A72281C33A8AB00CAD516 /* monalisa.jpg in Resources */,
 				3E9A72351C35101A00CAD516 /* vegas.jpg in Resources */,
 				3E1B545A1C6B03CB00F57FF2 /* DitherBayer.cikernel in Resources */,
-				3E1E3E981C4F8D5D00EEF0D8 /* shutter.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
