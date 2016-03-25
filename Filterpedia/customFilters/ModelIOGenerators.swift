@@ -9,7 +9,9 @@
 import ModelIO
 import CoreImage
 
-class SkyGenerator: CompositeOverBlackFilter
+
+
+class ModelIOSkyGenerator: CIFilter
 {
     private var textureInvalid = true
     
@@ -67,7 +69,7 @@ class SkyGenerator: CompositeOverBlackFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Sky Texture",
+            kCIAttributeFilterDisplayName: "ModelIO Sky Generator",
 
             "inputSize": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",
