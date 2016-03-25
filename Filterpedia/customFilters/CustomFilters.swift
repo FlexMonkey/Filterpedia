@@ -218,6 +218,17 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
+        CIFilter.registerFilterName("ModelIOColorScalarNoise",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("ModelIOColorFromTemperature",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
 
     }
     
@@ -311,6 +322,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ModelIOSkyGenerator":
             return ModelIOSkyGenerator()
+            
+        case "ModelIOColorScalarNoise":
+            return ModelIOColorScalarNoise()
+            
+        case "ModelIOColorFromTemperature":
+            return ModelIOColorFromTemperature()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)

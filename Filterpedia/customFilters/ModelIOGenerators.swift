@@ -9,7 +9,101 @@
 import ModelIO
 import CoreImage
 
+// MARK: ModelIO Color from Temperature
+// See: https://en.wikipedia.org/wiki/Color_temperature
 
+class ModelIOColorFromTemperature: CIFilter
+{
+    var inputSize = CIVector(x: 640, y: 640)
+    var inputTemperature: CGFloat = 1700
+    
+    override var outputImage: CIImage!
+    {
+        let swatch = MDLColorSwatchTexture(colorTemperatureGradientFrom: inputTemperature.toFloat(),
+            toColorTemperature: inputTemperature.toFloat(),
+            name: "",
+            textureDimensions: [Int32(inputSize.X), Int32(inputSize.Y)])
+        
+        print("inputTemperature.toFloat()", inputTemperature.toFloat())
+        
+        let swatchImage = swatch.imageFromTexture()!.takeUnretainedValue()
+        
+        return CIImage(CGImage: swatchImage)
+    }
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "ModelIO Color From Temperature",
+
+            "inputSize": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIVector",
+                kCIAttributeDisplayName: "Size",
+                kCIAttributeDefault: CIVector(x: 640, y: 640),
+                kCIAttributeType: kCIAttributeTypeOffset],
+            
+            "inputTemperature": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 1700,
+                kCIAttributeDescription: "Black-body color temperature (°K)",
+                kCIAttributeDisplayName: "Temperature",
+                kCIAttributeMin: 1500,
+                kCIAttributeSliderMin: 1500,
+                kCIAttributeSliderMax: 15000,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+}
+
+// MARK: ModelIO Color Scalar Noise
+
+class ModelIOColorScalarNoise: CIFilter
+{
+    var inputSize = CIVector(x: 640, y: 640)
+    var inputSmoothness: CGFloat = 0.5
+    
+    let makeOpaqueKernel = CIColorKernel(string: "kernel vec4 xyz(__sample pixel) { return vec4(pixel.rgb, 1.0); }")
+    
+    override var outputImage: CIImage!
+    {
+        let noise = MDLNoiseTexture(scalarNoiseWithSmoothness: inputSmoothness.toFloat(),
+            name: "",
+            textureDimensions: [Int32(inputSize.X), Int32(inputSize.Y)],
+            channelCount: 4,
+            channelEncoding: MDLTextureChannelEncoding.UInt8,
+            grayscale: false)
+        
+        let noiseImage = noise.imageFromTexture()!.takeUnretainedValue()
+        
+        let final = CIImage(CGImage: noiseImage)
+        
+        return makeOpaqueKernel?.applyWithExtent(final.extent, arguments: [final])
+    }
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "ModelIO Color Scalar Noise",
+
+            "inputSize": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIVector",
+                kCIAttributeDisplayName: "Size",
+                kCIAttributeDefault: CIVector(x: 640, y: 640),
+                kCIAttributeType: kCIAttributeTypeOffset],
+            
+            "inputSmoothness": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.5,
+                kCIAttributeDisplayName: "Smoothness",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+}
+
+// MARK: ModelIO Sky Generator
 
 class ModelIOSkyGenerator: CIFilter
 {
@@ -59,7 +153,7 @@ class ModelIOSkyGenerator: CIFilter
         
         sky.updateTexture()
         
-        let skyImage = sky.imageFromTexture()!.takeUnretainedValue() as CGImage
+        let skyImage = sky.imageFromTexture()!.takeUnretainedValue()
         
         return  CIImage(CGImage: skyImage)
             .imageByCroppingToRect(CGRect(x: 0, y: 0, width: inputSize.X, height: inputSize.Y))
