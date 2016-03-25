@@ -119,6 +119,7 @@ class ModelIOSkyGenerator: CIFilter
     var inputGroundAlbedo: CGFloat = 0.5
     var inputContrast: CGFloat = 1
     var inputExposure: CGFloat = 0.5
+    var inputSaturation: CGFloat = 0.0
     
     var sky: MDLSkyCubeTexture?
     
@@ -144,6 +145,7 @@ class ModelIOSkyGenerator: CIFilter
         
         sky!.contrast = inputContrast.toFloat()
         sky!.exposure = inputExposure.toFloat()
+        sky!.saturation = inputSaturation.toFloat()
         
         sky!.updateTexture()
         
@@ -179,7 +181,7 @@ class ModelIOSkyGenerator: CIFilter
                 kCIAttributeDefault: 0.75,
                 kCIAttributeDisplayName: "Sun Elevation",
                 kCIAttributeMin: 0.5,
-                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMin: 0.5,
                 kCIAttributeSliderMax: 1,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
@@ -217,6 +219,15 @@ class ModelIOSkyGenerator: CIFilter
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: -1,
                 kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputSaturation": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.5,
+                kCIAttributeDisplayName: "Saturation",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: -2,
+                kCIAttributeSliderMax: 2,
                 kCIAttributeType: kCIAttributeTypeScalar],
         ]
     }
