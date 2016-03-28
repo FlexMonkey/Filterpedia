@@ -8,3 +8,8 @@ Core Image Filter explorer
 The UI is split into two sections: the table view on the left allows the user to navigate through and select a filter, the panel on the right then displays all the parameters of the selected filter which can be adjusted using horizontal sliders.
 
 *Filterpedia* is also a showcase for custom filters I'm creating that are discussed in the book. These include simple compositions of existing `CIFilter`, `CIKernel` based filters using GLSL and filters that use Metal kernel functions as their filtering engine.
+
+*Core Image for Swift* is available from: 
+
+* [*Core Image for Swift* from iBook Store](https://itunes.apple.com/us/book/core-image-for-swift/id1073029980?mt=13)
+* [*Core Image For Swift* from Gumroad](https://gumroad.com/l/CoreImageForSwift)
