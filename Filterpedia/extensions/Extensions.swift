@@ -116,6 +116,19 @@ extension CIVector
         return CIVector(values: normalizedValues,
                         count: normalizedValues.count)
     }
+    
+    func multiply(value: CGFloat) -> CIVector
+    {
+        let n = self.count
+        var targetArray = [CGFloat]()
+        
+        for i in 0 ..< n
+        {
+            targetArray.append(self.valueAtIndex(i) * value)
+        }
+        
+        return CIVector(values: targetArray, count: n)
+    }
 }
 
 
@@ -137,18 +150,3 @@ extension UIColor
     }
 }
 
-extension CIVector
-{
-    func multiply(value: CGFloat) -> CIVector
-    {
-        let n = self.count
-        var targetArray = [CGFloat]()
-        
-        for i in 0 ..< n
-        {
-            targetArray.append(self.valueAtIndex(i) * value)
-        }
-        
-        return CIVector(values: targetArray, count: n)
-    }
-}
