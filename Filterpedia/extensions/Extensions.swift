@@ -1,13 +1,13 @@
 //
-//  UIBezierPathExtension.swift
+//  Extensions.swift
 //  Filterpedia
 //
-//  Created by Simon Gladman on 20/01/2016.
+//  Created by Simon Gladman on 05/04/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
 
-
 import UIKit
+
 
 extension UIBezierPath
 {
@@ -69,6 +69,15 @@ extension UIBezierPath
     }
 }
 
+
+extension CGFloat
+{
+    func toFloat() -> Float
+    {
+        return Float(self)
+    }
+}
+
 extension CIVector
 {
     func toArray() -> [CGFloat]
@@ -81,5 +90,65 @@ extension CIVector
         }
         
         return returnArray
+    }
+    
+    func normalize() -> CIVector
+    {
+        var sum: CGFloat = 0
+        
+        for i in 0 ..< self.count
+        {
+            sum += self.valueAtIndex(i)
+        }
+        
+        if sum == 0
+        {
+            return self
+        }
+        
+        var normalizedValues = [CGFloat]()
+        
+        for i in 0 ..< self.count
+        {
+            normalizedValues.append(self.valueAtIndex(i) / sum)
+        }
+        
+        return CIVector(values: normalizedValues,
+                        count: normalizedValues.count)
+    }
+}
+
+
+extension UIColor
+{
+    func hue()-> CGFloat
+    {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        self.getHue(&hue,
+                    saturation: &saturation,
+                    brightness: &brightness,
+                    alpha: &alpha)
+        
+        return hue
+    }
+}
+
+extension CIVector
+{
+    func multiply(value: CGFloat) -> CIVector
+    {
+        let n = self.count
+        var targetArray = [CGFloat]()
+        
+        for i in 0 ..< n
+        {
+            targetArray.append(self.valueAtIndex(i) * value)
+        }
+        
+        return CIVector(values: targetArray, count: n)
     }
 }

@@ -144,18 +144,3 @@ class SobelEdgeDetectionBase: CIFilter
 }
 
 
-extension CIVector
-{
-    func multiply(value: CGFloat) -> CIVector
-    {
-        let n = self.count
-        var targetArray = [CGFloat]()
-        
-        for i in 0 ..< n
-        {
-            targetArray.append(self.valueAtIndex(i) * value)
-        }
-        
-        return CIVector(values: targetArray, count: n)
-    }
-}
