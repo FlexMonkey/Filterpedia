@@ -229,6 +229,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("ColorDirectedBlur",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
 
     }
     
@@ -328,6 +334,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ModelIOColorFromTemperature":
             return ModelIOColorFromTemperature()
+            
+        case "ColorDirectedBlur":
+            return ColorDirectedBlur()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
