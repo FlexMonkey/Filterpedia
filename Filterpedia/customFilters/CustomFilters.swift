@@ -235,6 +235,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                                     classAttributes: [
                                         kCIAttributeFilterCategories: [CategoryCustomFilters]
         ])
+        
+        CIFilter.registerFilterName("CMYKRegistrationMismatch",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
 
     }
     
@@ -337,6 +343,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ColorDirectedBlur":
             return ColorDirectedBlur()
+
+        case "CMYKRegistrationMismatch":
+            return CMYKRegistrationMismatch()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
