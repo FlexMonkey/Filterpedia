@@ -247,6 +247,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                                     classAttributes: [
                                         kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("SmoothThreshold",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
 
     }
     
@@ -354,7 +360,10 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             return CMYKRegistrationMismatch()
             
         case "CMYKLevels":
-            return CMYKLevels();
+            return CMYKLevels()
+            
+        case "SmoothThreshold":
+            return SmoothThreshold()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
@@ -891,6 +900,68 @@ class AdvancedMonochrome: CIFilter
         let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp]
         
         return kernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
+// MARK: SmoothThreshold
+
+class SmoothThreshold: CIFilter
+{
+    var inputImage : CIImage?
+    var inputEdgeO: CGFloat = 0.25
+    var inputEdge1: CGFloat = 0.75
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Smooth Threshold Filter",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputEdgeO": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.25,
+                kCIAttributeDisplayName: "Edge 0",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputEdge1": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.75,
+                kCIAttributeDisplayName: "Edge 1",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    var colorKernel = CIColorKernel(string:
+        "kernel vec4 color(__sample pixel, float inputEdgeO, float inputEdge1)" +
+            "{" +
+            "    float luma = dot(pixel.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+            "    float threshold = smoothstep(inputEdgeO, inputEdge1, luma);" +
+            "    return vec4(threshold, threshold, threshold, 1.0);" +
+        "}"
+    )
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            colorKernel = colorKernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage,
+                         min(inputEdgeO, inputEdge1),
+                         max(inputEdgeO, inputEdge1),]
+        
+        return colorKernel.applyWithExtent(extent,
+                                           arguments: arguments)
     }
 }
 
