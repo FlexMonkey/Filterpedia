@@ -241,6 +241,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                                     classAttributes: [
                                         kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("CMYKLevels",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
 
     }
     
@@ -346,6 +352,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
 
         case "CMYKRegistrationMismatch":
             return CMYKRegistrationMismatch()
+            
+        case "CMYKLevels":
+            return CMYKLevels();
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)

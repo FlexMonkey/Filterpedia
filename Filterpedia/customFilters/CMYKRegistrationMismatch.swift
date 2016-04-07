@@ -20,6 +20,114 @@
 
 import CoreImage
 
+/// **CMYKLevels**
+///
+/// _Applies a multiplier to indivdual CMYK channels._
+///
+/// - Authors: Simon Gladman
+/// - Date: April 2016
+class CMYKLevels: CIFilter
+{
+    var inputImage: CIImage?
+    
+    var inputCyanMultiplier: CGFloat = 1
+    var inputMagentaMultiplier: CGFloat = 1
+    var inputYellowMultiplier: CGFloat = 1
+    var inputBlackMultiplier: CGFloat = 1
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "CMYK Levels",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputCyanMultiplier": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDisplayName: "Cyan Multiplier",
+                kCIAttributeDefault: 1,
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputMagentaMultiplier": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDisplayName: "Magenta Multiplier",
+                kCIAttributeDefault: 1,
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputYellowMultiplier": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDisplayName: "Yellow Multiplier",
+                kCIAttributeDefault: 1,
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBlackMultiplier": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDisplayName: "Black Multiplier",
+                kCIAttributeDefault: 1,
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 2,
+                kCIAttributeType: kCIAttributeTypeScalar],
+        ]
+    }
+    
+    let kernel = CIColorKernel(string:
+        "vec4 rgbToCMYK(vec3 rgb)" +
+        "{" +
+        "   float k = 1.0 - max(max(rgb.r, rgb.g), rgb.b); \n" +
+        "   float c = (1.0 - rgb.r - k) / (1.0 - k);  \n" +
+        "   float m = (1.0 - rgb.g - k) / (1.0 - k); \n"  +
+        "   float y = (1.0 - rgb.b - k) / (1.0 - k); \n"  +
+        
+        "   return vec4(c, m, y, k);" +
+        "}" +
+        
+        "vec4 cmykToRGB(float c, float m, float y, float k)" +
+        "{" +
+        "    float r = (1.0 - c) * (1.0 - k);" +
+        "    float g = (1.0 - m) * (1.0 - k);" +
+        "    float b = (1.0 - y) * (1.0 - k);" +
+        "    return vec4(r, g, b, 1.0);" +
+        "}" +
+    
+        "kernel vec4 colorKernel(__sample pixel, float cyanMultiplier, float magentaMultiplier, float yellowMultiplier, float blackMultiplier)" +
+        "{ " +
+        "   vec4 cmyk = rgbToCMYK(pixel.rgb); " +
+        "   cmyk.x *= cyanMultiplier;" +
+        "   cmyk.y *= magentaMultiplier;" +
+        "   cmyk.z *= yellowMultiplier;" +
+        "   cmyk.w *= blackMultiplier;" +
+
+        "   return cmykToRGB(cmyk.x, cmyk.y, cmyk.z, cmyk.w); " +
+        "} "
+    )
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            kernel = kernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage, inputCyanMultiplier, inputMagentaMultiplier, inputYellowMultiplier, inputBlackMultiplier]
+        
+        return kernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
 /// **CMYKRegistrationMismatch**
 ///
 /// _A filter for simulating registration mismatch of printed colors._
