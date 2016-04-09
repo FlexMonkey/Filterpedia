@@ -230,6 +230,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
+        CIFilter.registerFilterName("CausticRefraction",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
         CIFilter.registerFilterName("ColorDirectedBlur",
                                     constructor: CustomFiltersVendor(),
                                     classAttributes: [
@@ -373,6 +379,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "VoronoiNoise":
             return VoronoiNoise()
+            
+        case "CausticRefraction":
+            return CausticRefraction()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
