@@ -1,0 +1,44 @@
+// Based on: Colorful Voronoi
+// By: Brandon Fogerty
+// bfogerty at gmail dot com
+// xdpixel.com
+// Based on http://glslsandbox.com/e#31908.0
+
+vec2 hash(vec2 p, float time)
+{
+    mat2 m = mat2(  13.85, 47.77,
+                    99.41, 88.48
+                );
+
+    return fract(sin(m*p) / sqrt(m*p) * (m*p*(time*0.0025)));
+}
+
+float voronoi(vec2 p, float seed)
+{
+    vec2 g = floor(p);
+    vec2 f = fract(p);
+
+    float distanceToClosestFeaturePoint = 1.0;
+    for(int y = -1; y <= 1; y++)
+    {
+        for(int x = -1; x <= 1; x++)
+        {
+            vec2 latticePoint = vec2(x, y);
+            float currentDistance = distance(latticePoint + hash(g+latticePoint, seed), f);
+            distanceToClosestFeaturePoint = min(distanceToClosestFeaturePoint, currentDistance);
+        }
+    }
+
+    return distanceToClosestFeaturePoint;
+}
+
+kernel vec4 colorKernel(float seed, float size, float density)
+{
+    vec2 uv = destCoord() / size;
+
+    float r = smoothstep(0.0, 1.0, voronoi( uv, seed) * density);
+
+    vec3 finalColor = vec3(r);
+    
+    return vec4(finalColor, 1.0 );
+}

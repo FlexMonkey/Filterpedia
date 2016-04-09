@@ -234,7 +234,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                                     constructor: CustomFiltersVendor(),
                                     classAttributes: [
                                         kCIAttributeFilterCategories: [CategoryCustomFilters]
-        ])
+            ])
         
         CIFilter.registerFilterName("CMYKRegistrationMismatch",
                                     constructor: CustomFiltersVendor(),
@@ -249,6 +249,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             ])
         
         CIFilter.registerFilterName("SmoothThreshold",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("VoronoiNoise",
                                     constructor: CustomFiltersVendor(),
                                     classAttributes: [
                                         kCIAttributeFilterCategories: [CategoryCustomFilters]
@@ -364,6 +370,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "SmoothThreshold":
             return SmoothThreshold()
+            
+        case "VoronoiNoise":
+            return VoronoiNoise()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
@@ -938,7 +947,7 @@ class SmoothThreshold: CIFilter
         ]
     }
     
-    var colorKernel = CIColorKernel(string:
+    let colorKernel = CIColorKernel(string:
         "kernel vec4 color(__sample pixel, float inputEdgeO, float inputEdge1)" +
             "{" +
             "    float luma = dot(pixel.rgb, vec3(0.2126, 0.7152, 0.0722));" +
