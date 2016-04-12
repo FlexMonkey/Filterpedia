@@ -91,7 +91,7 @@ class FilterNavigator: UIView
         
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self,
-            action: #selector(FilterNavigator.segmentedControlChange),
+            action: Selector("segmentedControlChange"),
             forControlEvents: UIControlEvents.ValueChanged)
         
         addSubview(tableView)

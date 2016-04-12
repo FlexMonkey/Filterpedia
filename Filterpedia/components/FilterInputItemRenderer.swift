@@ -126,19 +126,19 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.addArrangedSubview(textEditButton)
       
         slider.addTarget(self,
-            action: #selector(FilterInputItemRenderer.sliderChangeHandler),
+            action: Selector("sliderChangeHandler"),
             forControlEvents: UIControlEvents.ValueChanged)
         
         vectorSlider.addTarget(self,
-            action: #selector(FilterInputItemRenderer.vectorSliderChangeHandler),
+            action: Selector("vectorSliderChangeHandler"),
             forControlEvents: UIControlEvents.ValueChanged)
         
         imagesSegmentedControl.addTarget(self,
-            action: #selector(FilterInputItemRenderer.imagesSegmentedControlChangeHandler),
+            action: Selector("imagesSegmentedControlChangeHandler"),
             forControlEvents: UIControlEvents.ValueChanged)
         
         textEditButton.addTarget(self,
-            action: #selector(FilterInputItemRenderer.textEditClicked),
+            action: Selector("textEditClicked"),
             forControlEvents: .TouchDown)
     }
     
