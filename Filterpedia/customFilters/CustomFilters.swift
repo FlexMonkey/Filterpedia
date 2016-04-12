@@ -253,6 +253,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                                     classAttributes: [
                                         kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+
+        CIFilter.registerFilterName("CMYKToneCurves",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
         
         CIFilter.registerFilterName("SmoothThreshold",
                                     constructor: CustomFiltersVendor(),
@@ -373,6 +379,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "CMYKLevels":
             return CMYKLevels()
+            
+        case "CMYKToneCurves":
+            return CMYKToneCurves()
             
         case "SmoothThreshold":
             return SmoothThreshold()
