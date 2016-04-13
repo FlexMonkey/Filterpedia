@@ -86,7 +86,7 @@
 		3E9A72361C35250100CAD516 /* screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = screenshot.jpg; path = assets/screenshot.jpg; sourceTree = "<group>"; };
 		3E9CD5031C9C211100C67CB5 /* SobelEdgeDetection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SobelEdgeDetection.swift; path = customFilters/SobelEdgeDetection.swift; sourceTree = "<group>"; };
 		3EC5C9911C7987120053EAED /* CompoundEye.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundEye.swift; path = customFilters/CompoundEye.swift; sourceTree = "<group>"; };
-		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = coffeecup.jpg; sourceTree = "<group>"; };
+		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = coffeecup.jpg; path = assets/coffeecup.jpg; sourceTree = "<group>"; };
 		3EF5C5941C67B229005071BF /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EightBit.swift; path = customFilters/EightBit.swift; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
