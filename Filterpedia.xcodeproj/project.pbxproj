@@ -95,12 +95,8 @@
 		3EA75FE41CB6347E00831CC1 /* CMYKRegistrationMismatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CMYKRegistrationMismatch.swift; path = customFilters/CMYKRegistrationMismatch.swift; sourceTree = "<group>"; };
 		3EB3B0281CB395710053BB5F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = extensions/Extensions.swift; sourceTree = "<group>"; };
 		3EC5C9911C7987120053EAED /* CompoundEye.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundEye.swift; path = customFilters/CompoundEye.swift; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = coffeecup.jpg; path = assets/coffeecup.jpg; sourceTree = "<group>"; };
-=======
-		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = coffeecup.jpg; sourceTree = "<group>"; };
 		3ED828431CB8E38400F67BB2 /* CausticRefraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CausticRefraction.swift; path = customFilters/CausticRefraction.swift; sourceTree = "<group>"; };
->>>>>>> FlexMonkey/master
 		3EF5C5941C67B229005071BF /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EightBit.swift; path = customFilters/EightBit.swift; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
