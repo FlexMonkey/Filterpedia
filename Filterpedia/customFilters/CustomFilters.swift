@@ -229,6 +229,48 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName("CausticRefraction",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("ColorDirectedBlur",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("CMYKRegistrationMismatch",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("CMYKLevels",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+
+        CIFilter.registerFilterName("CMYKToneCurves",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("SmoothThreshold",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName("VoronoiNoise",
+                                    constructor: CustomFiltersVendor(),
+                                    classAttributes: [
+                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
 
     }
     
@@ -328,6 +370,27 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ModelIOColorFromTemperature":
             return ModelIOColorFromTemperature()
+            
+        case "ColorDirectedBlur":
+            return ColorDirectedBlur()
+
+        case "CMYKRegistrationMismatch":
+            return CMYKRegistrationMismatch()
+            
+        case "CMYKLevels":
+            return CMYKLevels()
+            
+        case "CMYKToneCurves":
+            return CMYKToneCurves()
+            
+        case "SmoothThreshold":
+            return SmoothThreshold()
+            
+        case "VoronoiNoise":
+            return VoronoiNoise()
+            
+        case "CausticRefraction":
+            return CausticRefraction()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
@@ -554,9 +617,8 @@ override var attributes: [String : AnyObject]
 class DifferenceOfGaussians: CIFilter
 {
     var inputImage : CIImage?
-    var inputRadius0: CGFloat = 2
-    var inputRadius1: CGFloat = 8
-    var inputBoost: CGFloat = 0.5
+    var inputSigma0: CGFloat = 0.75
+    var inputSigma1: CGFloat = 3.25
     
     override var attributes: [String : AnyObject]
     {
@@ -567,31 +629,22 @@ class DifferenceOfGaussians: CIFilter
                 kCIAttributeDisplayName: "Image",
                 kCIAttributeType: kCIAttributeTypeImage],
             
-            "inputRadius0": [kCIAttributeIdentity: 0,
+            "inputSigma0": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 2,
-                kCIAttributeDisplayName: "Radius One",
+                kCIAttributeDefault: 0.75,
+                kCIAttributeDisplayName: "Sigma One",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 20,
+                kCIAttributeSliderMax: 4,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
-            "inputRadius1": [kCIAttributeIdentity: 0,
+            "inputSigma1": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 8,
-                kCIAttributeDisplayName: "Radius Two",
+                kCIAttributeDefault: 3.25,
+                kCIAttributeDisplayName: "Sigma Two",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 20,
-                kCIAttributeType: kCIAttributeTypeScalar],
-            
-            "inputBoost": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 0.5,
-                kCIAttributeDisplayName: "Midtone Boost",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
+                kCIAttributeSliderMax: 4,
                 kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
@@ -603,32 +656,47 @@ class DifferenceOfGaussians: CIFilter
             return nil
         }
         
-        let gaussianOne = CIFilter(name: "CIGaussianBlur",
-            withInputParameters: [
-                kCIInputImageKey: inputImage,
-                kCIInputRadiusKey: inputRadius0])!.outputImage!.imageByCroppingToRect(inputImage.extent)
+        let blurred0 = DifferenceOfGaussians.gaussianBlurWithSigma(inputSigma0, image: inputImage)
+            .imageByCroppingToRect(inputImage.extent)
+        let blurred1 = DifferenceOfGaussians.gaussianBlurWithSigma(inputSigma1, image: inputImage)
+            .imageByCroppingToRect(inputImage.extent)
+
+        return blurred0
+            .imageByApplyingFilter("CISubtractBlendMode",
+                withInputParameters: ["inputBackgroundImage": blurred1])
+            .imageByApplyingFilter("CIColorMatrix",
+                withInputParameters: ["inputBiasVector": CIVector(x: 0, y: 0, z: 0, w: 1)])
+            .imageByCroppingToRect(inputImage.extent)
+    }
+    
+    static func gaussianBlurWithSigma(sigma: CGFloat, image: CIImage) -> CIImage
+    {
+        let weightsArray: [CGFloat] = (-4).stride(through: 4, by: 1).map
+        {
+            CGFloat(DifferenceOfGaussians.gaussian(CGFloat($0), sigma: sigma))
+        }
         
-        let gaussianTwo = CIFilter(name: "CIGaussianBlur",
-            withInputParameters: [
-                kCIInputImageKey: inputImage,
-                kCIInputRadiusKey: inputRadius1])!.outputImage!.imageByCroppingToRect(inputImage.extent)
+        let weightsVector = CIVector(values: weightsArray,
+                                     count: weightsArray.count).normalize()
         
-        let difference =  CIFilter(name: "CIDifferenceBlendMode",
-            withInputParameters: [
-                kCIInputImageKey: gaussianOne,
-                kCIInputBackgroundImageKey: gaussianTwo])!.outputImage!
+        let horizontalBluredImage = CIFilter(name: "CIConvolution9Horizontal",
+                                                withInputParameters: [
+                                                    kCIInputWeightsKey: weightsVector,
+                                                    kCIInputImageKey: image])!.outputImage!
         
-        let y2 = 0.5 + (inputBoost / 2.0)
-        let y1 = y2 / 2.0
-        let y3 = (y2 + 1.0) / 2.0
+        let verticalBlurredImage = CIFilter(name: "CIConvolution9Vertical",
+                                               withInputParameters: [
+                                                kCIInputWeightsKey: weightsVector,
+                                                kCIInputImageKey: horizontalBluredImage])!.outputImage!
         
-        return difference.imageByApplyingFilter("CIToneCurve",
-            withInputParameters: [
-                kCIInputImageKey: difference,
-                "inputPoint1": CIVector(x: 0.25, y: y1),
-                "inputPoint2": CIVector(x: 0.5, y: y2),
-                "inputPoint3": CIVector(x: 0.75, y: y3)
-                ])
+        return verticalBlurredImage
+    }
+    
+    static func gaussian(x: CGFloat, sigma: CGFloat) -> CGFloat
+    {
+        let variance = max(sigma * sigma, 0.00001)
+        
+        return (1.0 / sqrt(CGFloat(M_PI) * 2 * variance)) * pow(CGFloat(M_E), -pow(x, 2) / (2 * variance))
     }
 }
 
@@ -859,6 +927,68 @@ class AdvancedMonochrome: CIFilter
         let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp]
         
         return kernel.applyWithExtent(extent, arguments: arguments)
+    }
+}
+
+// MARK: SmoothThreshold
+
+class SmoothThreshold: CIFilter
+{
+    var inputImage : CIImage?
+    var inputEdgeO: CGFloat = 0.25
+    var inputEdge1: CGFloat = 0.75
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Smooth Threshold Filter",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputEdgeO": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.25,
+                kCIAttributeDisplayName: "Edge 0",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputEdge1": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.75,
+                kCIAttributeDisplayName: "Edge 1",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar]
+        ]
+    }
+    
+    let colorKernel = CIColorKernel(string:
+        "kernel vec4 color(__sample pixel, float inputEdgeO, float inputEdge1)" +
+            "{" +
+            "    float luma = dot(pixel.rgb, vec3(0.2126, 0.7152, 0.0722));" +
+            "    float threshold = smoothstep(inputEdgeO, inputEdge1, luma);" +
+            "    return vec4(threshold, threshold, threshold, 1.0);" +
+        "}"
+    )
+    
+    override var outputImage: CIImage!
+    {
+        guard let inputImage = inputImage,
+            colorKernel = colorKernel else
+        {
+            return nil
+        }
+        
+        let extent = inputImage.extent
+        let arguments = [inputImage,
+                         min(inputEdgeO, inputEdge1),
+                         max(inputEdgeO, inputEdge1),]
+        
+        return colorKernel.applyWithExtent(extent,
+                                           arguments: arguments)
     }
 }
 

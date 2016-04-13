@@ -25,11 +25,16 @@ class OverlayWidgets
         case "CIToneCurve":
             return ToneCurveWidget()
             
+        case "CMYKToneCurves":
+            return CMYKChannelToneCurveWidget()
+            
         default:
             return nil
         }
     }
 }
+
+// MARK: ToneCurveWidget
 
 class ToneCurveWidget: UIView, FilterAttributesDisplayable
 {
@@ -76,6 +81,8 @@ class ToneCurveWidget: UIView, FilterAttributesDisplayable
         toneCurveLayer.frame = bounds
     }
 }
+
+// MARK: RGBChannelToneCurveWidget
 
 class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
 {
@@ -146,6 +153,85 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         blueLayer.frame = bounds
     }
 }
+
+// MARK: RGBChannelToneCurveWidget
+
+class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
+{
+    let cyanLayer: CAShapeLayer
+    let magentaLayer: CAShapeLayer
+    let yellowLayer: CAShapeLayer
+    let blackLayer: CAShapeLayer
+    
+    private var cmykToneCurves: CMYKToneCurves?
+    {
+        didSet
+        {
+            guard let cmykToneCurves = cmykToneCurves else
+            {
+                return
+            }
+            
+            cyanLayer.path = RGBChannelToneCurveWidget.pathForValues(cmykToneCurves.inputCyanValues, frame: frame)
+            magentaLayer.path = RGBChannelToneCurveWidget.pathForValues(cmykToneCurves.inputMagentaValues, frame: frame)
+            yellowLayer.path = RGBChannelToneCurveWidget.pathForValues(cmykToneCurves.inputYellowValues, frame: frame)
+            blackLayer.path = RGBChannelToneCurveWidget.pathForValues(cmykToneCurves.inputBlackValues, frame: frame)
+        }
+    }
+    
+    static func pathForValues(values: CIVector, frame: CGRect) -> CGPathRef
+    {
+        let xValues: [CGFloat] = [0, 0.25, 0.5, 0.75, 1.0]
+        
+        let points = zip(xValues, values.toArray()).map
+        {
+            CGPoint(x: $0 * frame.width, y: (1 - $1) * frame.height)
+        }
+        
+        let path = UIBezierPath()
+        path.interpolatePointsWithHermite(points)
+        
+        return path.CGPath
+    }
+    
+    func setFilter(filter: CIFilter)
+    {
+        if let cmykToneCurves = filter as? CMYKToneCurves
+        {
+            self.cmykToneCurves = cmykToneCurves
+        }
+    }
+    
+    override init(frame: CGRect)
+    {
+        cyanLayer = curveLayer(strokeColor: UIColor.cyanColor().CGColor)
+        magentaLayer = curveLayer(strokeColor: UIColor.magentaColor().CGColor)
+        yellowLayer = curveLayer(strokeColor: UIColor.yellowColor().CGColor)
+        blackLayer = curveLayer(strokeColor: UIColor.blackColor().CGColor)
+        
+        super.init(frame: frame)
+    
+        layer.addSublayer(cyanLayer)
+        layer.addSublayer(magentaLayer)
+        layer.addSublayer(yellowLayer)
+        layer.addSublayer(blackLayer)
+    }
+
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews()
+    {
+        cyanLayer.frame = bounds
+        magentaLayer.frame = bounds
+        yellowLayer.frame = bounds
+        blackLayer.frame = bounds
+    }
+}
+
+// MARK: Helper functions
 
 func curveLayer(strokeColor color: CGColorRef) -> CAShapeLayer
 {

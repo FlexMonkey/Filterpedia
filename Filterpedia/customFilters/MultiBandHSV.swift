@@ -181,20 +181,3 @@ class MultiBandHSV: CIFilter
     }
 }
 
-extension UIColor
-{
-    func hue()-> CGFloat
-    {
-        var hue: CGFloat = 0
-        var saturation: CGFloat = 0
-        var brightness: CGFloat = 0
-        var alpha: CGFloat = 0
-        
-        self.getHue(&hue,
-            saturation: &saturation,
-            brightness: &brightness,
-            alpha: &alpha)
-        
-        return hue
-    }
-}

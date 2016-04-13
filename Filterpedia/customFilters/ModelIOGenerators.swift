@@ -233,11 +233,3 @@ class ModelIOSkyGenerator: CIFilter
         ]
     }
 }
-
-extension CGFloat
-{
-    func toFloat() -> Float
-    {
-        return Float(self)
-    }
-}
