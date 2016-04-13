@@ -156,7 +156,7 @@
 			children = (
 				3E1E3E991C4F9FB000EEF0D8 /* overlayWidgets */,
 				3E0F65001C48BA0500852420 /* customFilters */,
-				3E9A72251C33A7B100CAD516 /* asssets */,
+				3E9A72251C33A7B100CAD516 /* assets */,
 				3E9A721C1C32660700CAD516 /* components */,
 				3E9A720A1C325E5600CAD516 /* AppDelegate.swift */,
 				3E9A720C1C325E5600CAD516 /* ViewController.swift */,
@@ -181,7 +181,7 @@
 			name = components;
 			sourceTree = "<group>";
 		};
-		3E9A72251C33A7B100CAD516 /* asssets */ = {
+		3E9A72251C33A7B100CAD516 /* assets */ = {
 			isa = PBXGroup;
 			children = (
 				3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */,
@@ -194,7 +194,7 @@
 				3E9A72261C33A8AB00CAD516 /* monalisa.jpg */,
 				3E9A72271C33A8AB00CAD516 /* sunflower.jpg */,
 			);
-			name = asssets;
+			name = assets;
 			sourceTree = "<group>";
 		};
 		3EF73A7D1C5490090071B584 /* metalFilters */ = {
