@@ -95,7 +95,7 @@
 		3EA75FE41CB6347E00831CC1 /* CMYKRegistrationMismatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CMYKRegistrationMismatch.swift; path = customFilters/CMYKRegistrationMismatch.swift; sourceTree = "<group>"; };
 		3EB3B0281CB395710053BB5F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = extensions/Extensions.swift; sourceTree = "<group>"; };
 		3EC5C9911C7987120053EAED /* CompoundEye.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundEye.swift; path = customFilters/CompoundEye.swift; sourceTree = "<group>"; };
-		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = coffeecup.jpg; sourceTree = "<group>"; };
+		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = coffeecup.jpg; path = assets/coffeecup.jpg; sourceTree = "<group>"; };
 		3ED828431CB8E38400F67BB2 /* CausticRefraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CausticRefraction.swift; path = customFilters/CausticRefraction.swift; sourceTree = "<group>"; };
 		3EF5C5941C67B229005071BF /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EightBit.swift; path = customFilters/EightBit.swift; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 				3EB3B0271CB3955B0053BB5F /* extensions */,
 				3E1E3E991C4F9FB000EEF0D8 /* overlayWidgets */,
 				3E0F65001C48BA0500852420 /* customFilters */,
-				3E9A72251C33A7B100CAD516 /* asssets */,
+				3E9A72251C33A7B100CAD516 /* assets */,
 				3E9A721C1C32660700CAD516 /* components */,
 				3E9A720A1C325E5600CAD516 /* AppDelegate.swift */,
 				3E9A720C1C325E5600CAD516 /* ViewController.swift */,
@@ -196,7 +196,7 @@
 			name = components;
 			sourceTree = "<group>";
 		};
-		3E9A72251C33A7B100CAD516 /* asssets */ = {
+		3E9A72251C33A7B100CAD516 /* assets */ = {
 			isa = PBXGroup;
 			children = (
 				3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */,
@@ -209,7 +209,7 @@
 				3E9A72261C33A8AB00CAD516 /* monalisa.jpg */,
 				3E9A72271C33A8AB00CAD516 /* sunflower.jpg */,
 			);
-			name = asssets;
+			name = assets;
 			sourceTree = "<group>";
 		};
 		3EB3B0271CB3955B0053BB5F /* extensions */ = {
