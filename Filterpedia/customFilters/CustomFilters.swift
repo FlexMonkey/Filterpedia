@@ -26,286 +26,335 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
 {
     static func registerFilters()
     {
-        CIFilter.registerFilterName("ThresholdFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("ThresholdToAlphaFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("CRTFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("VignetteNoirFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("MercurializeFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("VintageVignette",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("RGBChannelCompositing",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("RGBChannelGaussianBlur",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("RGBChannelToneCurve",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("PseudoColor",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("KuwaharaFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("MetalPixellateFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("MetalKuwaharaFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("MetalPerlinNoise",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
+      CIFilter.registerFilterName(
+        "ThresholdFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
         ])
-        
-        CIFilter.registerFilterName("StarBurstFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("ChromaticAberration",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("RGBChannelBrightnessAndContrast",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("VHSTrackingLines",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("EightBit",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("TechnicolorFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("BleachBypassFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("CarnivalMirror",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("BayerDitherFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("CompoundEye",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("DifferenceOfGaussians",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("AdvancedMonochrome",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("RefractedTextFilter",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("SobelEdgeDetection5x5",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-                
-        CIFilter.registerFilterName("SobelEdgeDetection3x3",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("MultiBandHSV",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("PolarPixellate",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("ModelIOSkyGenerator",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("ModelIOColorScalarNoise",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("ModelIOColorFromTemperature",
-            constructor: CustomFiltersVendor(),
-            classAttributes: [
-                kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("CausticRefraction",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("ColorDirectedBlur",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("CMYKRegistrationMismatch",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("CMYKLevels",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
+      
+      CIFilter.registerFilterName(
+        "ThresholdToAlphaFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CRTFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "VignetteNoirFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "MercurializeFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "VintageVignette",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "RGBChannelCompositing",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "RGBChannelGaussianBlur",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "RGBChannelToneCurve",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "PseudoColor",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "KuwaharaFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "MetalPixellateFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "MetalKuwaharaFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "MetalPerlinNoise",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "StarBurstFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "ChromaticAberration",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "RGBChannelBrightnessAndContrast",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "VHSTrackingLines",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "EightBit",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "TechnicolorFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "BleachBypassFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CarnivalMirror",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "BayerDitherFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CompoundEye",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "DifferenceOfGaussians",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "AdvancedMonochrome",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "RefractedTextFilter",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "SobelEdgeDetection5x5",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "SobelEdgeDetection3x3",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "MultiBandHSV",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "PolarPixellate",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "ModelIOSkyGenerator",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "ModelIOColorScalarNoise",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "ModelIOColorFromTemperature",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CausticRefraction",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
 
-        CIFilter.registerFilterName("CMYKToneCurves",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("SmoothThreshold",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-        CIFilter.registerFilterName("VoronoiNoise",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-        
-
-        CIFilter.registerFilterName("NormalMap",
-                                    constructor: CustomFiltersVendor(),
-                                    classAttributes: [
-                                        kCIAttributeFilterCategories: [CategoryCustomFilters]
-            ])
-
-    }
-    
+      CIFilter.registerFilterName(
+        "CausticNoise",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "ColorDirectedBlur",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CMYKRegistrationMismatch",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CMYKLevels",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "CMYKToneCurves",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "SmoothThreshold",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      CIFilter.registerFilterName(
+        "VoronoiNoise",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+      
+      CIFilter.registerFilterName(
+        "NormalMap",
+        constructor: CustomFiltersVendor(),
+        classAttributes: [
+          kCIAttributeFilterCategories: [CategoryCustomFilters]
+        ])
+      
+  }
+  
     func filterWithName(name: String) -> CIFilter?
     {
         switch name
         {
         case "ThresholdFilter":
             return ThresholdFilter()
-            
+          
         case "ThresholdToAlphaFilter":
             return ThresholdToAlphaFilter()
-            
+          
         case "CRTFilter":
             return CRTFilter()
-            
+          
         case "VignetteNoirFilter":
             return VignetteNoirFilter()
-            
+          
         case "MercurializeFilter":
             return MercurializeFilter()
-            
+          
         case "VintageVignette":
             return VintageVignette()
-            
+          
         case "RGBChannelCompositing":
             return RGBChannelCompositing()
-            
+          
         case "RGBChannelGaussianBlur":
             return RGBChannelGaussianBlur()
 
@@ -398,7 +447,10 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "CausticRefraction":
             return CausticRefraction()
-            
+
+        case "CausticNoise":
+          return CausticNoise()
+          
         case "NormalMap":
             return NormalMapFilter()
             
