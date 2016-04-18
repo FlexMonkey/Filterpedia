@@ -1249,7 +1249,7 @@ class NormalMapFilter: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Normap Map",
+            kCIAttributeFilterDisplayName: "Normal Map",
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
