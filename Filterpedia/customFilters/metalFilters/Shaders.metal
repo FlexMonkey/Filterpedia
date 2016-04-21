@@ -39,12 +39,12 @@ kernel void pixellate(
                       
                       uint2 gid [[thread_position_in_grid]])
 {
-    uint width = uint(pixelWidth);
-    uint height = uint(pixelHeight);
-    
-    const uint2 pixellatedGid = uint2((gid.x / width) * width, (gid.y / height) * height);
-    const float4 colorAtPixel = inTexture.read(pixellatedGid);
-    outTexture.write(colorAtPixel, gid);
+  uint width = uint(pixelWidth);
+  uint height = uint(pixelHeight);
+  
+  const uint2 pixellatedGid = uint2((gid.x / width) * width, (gid.y / height) * height);
+  const float4 colorAtPixel = inTexture.read(pixellatedGid);
+  outTexture.write(colorAtPixel, gid);
 }
 
 // MARK: Perlin Noise
