@@ -12,7 +12,7 @@ import Accelerate
 
 // MARK: Contrast Stretch
 
-class ContrastStretch: CIFilter
+class ContrastStretch: CIFilter, VImageFilter
 {
     var inputImage: CIImage?
     
