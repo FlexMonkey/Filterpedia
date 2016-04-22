@@ -222,7 +222,11 @@ class FilterDetail: UIView
             .filter({ $0 is FilterAttributesDisplayable})
             .forEach({ ($0 as? FilterAttributesDisplayable)?.setFilter(currentFilter) })
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
+        let queue = currentFilter is VImageFilter ?
+            dispatch_get_main_queue() :
+            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+ 
+        dispatch_async(queue)
         {
             let startTime = CFAbsoluteTimeGetCurrent()
             

@@ -5,11 +5,77 @@
 //  Created by Simon Gladman on 21/04/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
+// These filters don't work nicely in background threads! Execute in dispatch_get_main_queue()!
 
 import CoreImage
 import Accelerate
 
-class HistogramSpecification: CIFilter
+// MARK: Contrast Stretch
+
+class ContrastStretch: CIFilter
+{
+    var inputImage: CIImage?
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Contrast Stretch",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage]
+        ]
+    }
+    
+    lazy var ciContext: CIContext =
+        {
+            return CIContext()
+    }()
+    
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let imageRef = ciContext.createCGImage(
+            inputImage,
+            fromRect: inputImage.extent)
+        
+        var imageBuffer = vImage_Buffer()
+        
+        vImageBuffer_InitWithCGImage(
+            &imageBuffer,
+            &format,
+            nil,
+            imageRef,
+            UInt32(kvImageNoFlags))
+
+        let pixelBuffer = malloc(CGImageGetBytesPerRow(imageRef) * CGImageGetHeight(imageRef))
+        
+        var outBuffer = vImage_Buffer(
+            data: pixelBuffer,
+            height: UInt(CGImageGetHeight(imageRef)),
+            width: UInt(CGImageGetWidth(imageRef)),
+            rowBytes: CGImageGetBytesPerRow(imageRef))
+        
+        vImageContrastStretch_ARGB8888(
+            &imageBuffer,
+            &outBuffer,
+            UInt32(kvImageNoFlags))
+        
+        let outImage = CIImage(fromvImageBuffer: outBuffer)
+        
+        free(pixelBuffer)
+        
+        return outImage!
+    }
+}
+
+// MARK: HistogramSpecification
+
+class HistogramSpecification: CIFilter, VImageFilter
 {
     var inputImage: CIImage?
     var inputHistogramSource: CIImage?
@@ -91,6 +157,9 @@ class HistogramSpecification: CIFilter
 }
 
 // MARK Support
+
+protocol VImageFilter {
+}
 
 let bitmapInfo:CGBitmapInfo = CGBitmapInfo(
     rawValue: CGImageAlphaInfo.Last.rawValue)
