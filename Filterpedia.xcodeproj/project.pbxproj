@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3E08119C1CC93BB4001581D3 /* VImageFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E08119B1CC93BB4001581D3 /* VImageFilters.swift */; };
+		3E0811EF1CD27C93001581D3 /* CIKL_Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0811EE1CD27C93001581D3 /* CIKL_Sky.swift */; };
+		3E0811F11CD27CC6001581D3 /* cikl_sky.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 3E0811F01CD27CC6001581D3 /* cikl_sky.cikernel */; };
 		3E0CFC631C8C01EA005CBC64 /* RefractedTextFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0CFC621C8C01EA005CBC64 /* RefractedTextFilter.swift */; };
 		3E0F65021C48BA2000852420 /* CustomFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0F65011C48BA2000852420 /* CustomFilters.swift */; };
 		3E1B54561C69CB8700F57FF2 /* FilmicEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1B54551C69CB8700F57FF2 /* FilmicEffects.swift */; };
@@ -56,6 +58,8 @@
 
 /* Begin PBXFileReference section */
 		3E08119B1CC93BB4001581D3 /* VImageFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VImageFilters.swift; path = customFilters/VImageFilters.swift; sourceTree = "<group>"; };
+		3E0811EE1CD27C93001581D3 /* CIKL_Sky.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CIKL_Sky.swift; path = customFilters/CIKL_Sky.swift; sourceTree = "<group>"; };
+		3E0811F01CD27CC6001581D3 /* cikl_sky.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cikl_sky.cikernel; path = customFilters/cikl_sky.cikernel; sourceTree = "<group>"; };
 		3E0CFC621C8C01EA005CBC64 /* RefractedTextFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefractedTextFilter.swift; path = customFilters/RefractedTextFilter.swift; sourceTree = "<group>"; };
 		3E0F65011C48BA2000852420 /* CustomFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomFilters.swift; path = customFilters/CustomFilters.swift; sourceTree = "<group>"; };
 		3E1B54551C69CB8700F57FF2 /* FilmicEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilmicEffects.swift; path = customFilters/FilmicEffects.swift; sourceTree = "<group>"; };
@@ -140,6 +144,8 @@
 				3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */,
 				3E8B99CD1CB8B5BB007EA0CC /* Voronoi.cikernel */,
 				3E08119B1CC93BB4001581D3 /* VImageFilters.swift */,
+				3E0811EE1CD27C93001581D3 /* CIKL_Sky.swift */,
+				3E0811F01CD27CC6001581D3 /* cikl_sky.cikernel */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -293,6 +299,7 @@
 				3EC6D0C31CA4FDB0003B5E90 /* coffeecup.jpg in Resources */,
 				3E9A722F1C350E6A00CAD516 /* stop.jpg in Resources */,
 				3E9A72371C35250100CAD516 /* screenshot.jpg in Resources */,
+				3E0811F11CD27CC6001581D3 /* cikl_sky.cikernel in Resources */,
 				3E8B99CE1CB8B5BB007EA0CC /* Voronoi.cikernel in Resources */,
 				3E7505B11C5E0FA300248A3F /* carMascot.jpg in Resources */,
 				3E5928521C4D080D004BFA07 /* sunset.jpg in Resources */,
@@ -313,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E0811EF1CD27C93001581D3 /* CIKL_Sky.swift in Sources */,
 				3E08119C1CC93BB4001581D3 /* VImageFilters.swift in Sources */,
 				3E9CD5041C9C211100C67CB5 /* SobelEdgeDetection.swift in Sources */,
 				3E2760BE1CA5652C00C71B50 /* ModelIOGenerators.swift in Sources */,

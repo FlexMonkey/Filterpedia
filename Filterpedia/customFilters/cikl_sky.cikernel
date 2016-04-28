@@ -1,0 +1,42 @@
+// Based on https://www.shadertoy.com/view/Md3SDX
+
+#define pi 3.14
+
+
+vec2 rot(in vec2 p, in float a) {
+    return p*mat2(sin(a),cos(a),-cos(a),sin(a));
+}
+
+vec3 rot(in vec3 p, in vec2 a) {
+    vec3 rp = p;
+    rp.yz = rot(rp.yz,a.y);
+    rp.xz = rot(rp.xz,a.x);
+    return rp;
+}
+
+kernel vec4 skyShader(float width, float height, float sunDiameter, float albedo, float sunAzimuth,  float sunAlitude, float skyDarkness, float scattering)
+{
+    float x = (destCoord().x / width) - 0.5;
+    float y = (destCoord().y / height) - 0.5;
+
+    vec3 rd = normalize(vec3(x, y, 1.0));
+
+    rd = rot(rd, vec2(0.0, pi / 2.5));
+    
+    vec3 sunDirection;
+
+    sunDirection = normalize(vec3(sunAlitude, 0.5, sunAzimuth));
+
+    float sun = max(1.0 - (1.0 + scattering * max(0.0, sunDirection.y) + 1.0 * rd.y) * max(0.0, length(rd - sunDirection) - sunDiameter),0.0)
+        + albedo * pow(1.0 - rd.y, 12.0) * (1.6-max(0.,sunDirection.y));
+
+    vec4 pixelColor = vec4(mix(vec3(0.3984,0.5117,0.7305), vec3(0.7031,0.4687,0.1055), sun)
+              * ((0.5 + 1.0 * pow(max(0.,sunDirection.y),0.4)) * (skyDarkness - abs(sunDirection.y))+ pow(sun, 5.2)
+              * max(0.0,sunDirection.y) * (5.0 + 15.0 * max(0.,sunDirection.y))),1.0);
+
+    pixelColor = mix(pixelColor,
+                    vec4(.2),
+                    clamp((-rd.y+.01) * 100.0, 0.0, 1.0));
+    
+    return vec4(pixelColor.rgb, 1.0);
+}
