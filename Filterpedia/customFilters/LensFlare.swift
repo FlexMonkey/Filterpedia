@@ -5,6 +5,7 @@
 //  Created by Simon Gladman on 29/04/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
+// Thanks to: http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon
 
 import CoreImage
 
