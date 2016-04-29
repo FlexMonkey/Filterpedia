@@ -129,6 +129,13 @@ extension CIVector
         
         return CIVector(values: targetArray, count: n)
     }
+    
+    func interpolateTo(target: CIVector, value: CGFloat) -> CIVector
+    {
+        return CIVector(
+            x: self.X + ((target.X - self.X) * value),
+            y: self.Y + ((target.Y - self.Y) * value))
+    }
 }
 
 
