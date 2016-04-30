@@ -354,6 +354,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName(
+            "BokehFilter",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
   
     func filterWithName(name: String) -> CIFilter?
@@ -513,6 +520,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 return nil
             #endif
 
+        case "BokehFilter":
+            #if !arch(i386) && !arch(x86_64)
+                return BokehFilter()
+            #else
+                return nil
+            #endif
+            
         default:
             return nil
         }

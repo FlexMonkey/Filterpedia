@@ -274,7 +274,7 @@ class MetalImageFilter: MetalFilter
 /// parameters. Numeric parameters require a properly set `kCIAttributeIdentity` which
 /// defines their buffer index into the Metal kernel.
 
-class MetalFilter: CIFilter
+class MetalFilter: CIFilter, MetalRenderable
 {
     let device: MTLDevice = MTLCreateSystemDefaultDevice()!
     let colorSpace = CGColorSpaceCreateDeviceRGB()!
@@ -480,3 +480,7 @@ class MetalFilter: CIFilter
     }
     
 #endif
+
+protocol MetalRenderable {
+    
+}

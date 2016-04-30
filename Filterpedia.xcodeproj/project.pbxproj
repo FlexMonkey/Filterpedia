@@ -29,6 +29,7 @@
 		3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */; };
 		3E74E7D91C36D61000F0BCCF /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E74E7D81C36D61000F0BCCF /* Assets.swift */; };
 		3E7505B11C5E0FA300248A3F /* carMascot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E7505B01C5E0FA300248A3F /* carMascot.jpg */; };
+		3E7CBC221CD4B51900EBAB07 /* Bokeh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7CBC211CD4B51900EBAB07 /* Bokeh.swift */; };
 		3E8B99CC1CB8B54D007EA0CC /* VoronoiNoise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */; };
 		3E8B99CE1CB8B5BB007EA0CC /* Voronoi.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 3E8B99CD1CB8B5BB007EA0CC /* Voronoi.cikernel */; };
 		3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A720A1C325E5600CAD516 /* AppDelegate.swift */; };
@@ -80,6 +81,7 @@
 		3E74E7D61C36D5E100F0BCCF /* FilterInputItemRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterInputItemRenderer.swift; path = components/FilterInputItemRenderer.swift; sourceTree = "<group>"; };
 		3E74E7D81C36D61000F0BCCF /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = assets/Assets.swift; sourceTree = "<group>"; };
 		3E7505B01C5E0FA300248A3F /* carMascot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = carMascot.jpg; path = assets/carMascot.jpg; sourceTree = "<group>"; };
+		3E7CBC211CD4B51900EBAB07 /* Bokeh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bokeh.swift; path = customFilters/Bokeh.swift; sourceTree = "<group>"; };
 		3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoronoiNoise.swift; sourceTree = "<group>"; };
 		3E8B99CD1CB8B5BB007EA0CC /* Voronoi.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Voronoi.cikernel; path = customFilters/Voronoi.cikernel; sourceTree = "<group>"; };
 		3E9A72071C325E5600CAD516 /* Filterpedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterpedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,6 +151,7 @@
 				3E0811EE1CD27C93001581D3 /* CIKL_Sky.swift */,
 				3E0811F01CD27CC6001581D3 /* cikl_sky.cikernel */,
 				3E0811F21CD34BBA001581D3 /* LensFlare.swift */,
+				3E7CBC211CD4B51900EBAB07 /* Bokeh.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				3E74E7D71C36D5E100F0BCCF /* FilterInputItemRenderer.swift in Sources */,
 				3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */,
 				3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */,
+				3E7CBC221CD4B51900EBAB07 /* Bokeh.swift in Sources */,
 				3E1B54581C6A33EA00F57FF2 /* CarnivalMirror.swift in Sources */,
 				3E0F65021C48BA2000852420 /* CustomFilters.swift in Sources */,
 				3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */,

@@ -238,7 +238,7 @@ class FilterDetail: UIView
             let outputImage = currentFilter.outputImage!
             let finalImage: CGImageRef
   
-            let context = (currentFilter is MetalFilter) ? self.ciMetalContext : self.ciOpenGLESContext
+            let context = (currentFilter is MetalRenderable) ? self.ciMetalContext : self.ciOpenGLESContext
             
             if outputImage.extent.width == 1 || outputImage.extent.height == 1
             {
