@@ -82,7 +82,7 @@
 		3E74E7D81C36D61000F0BCCF /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = assets/Assets.swift; sourceTree = "<group>"; };
 		3E7505B01C5E0FA300248A3F /* carMascot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = carMascot.jpg; path = assets/carMascot.jpg; sourceTree = "<group>"; };
 		3E7CBC211CD4B51900EBAB07 /* Bokeh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bokeh.swift; path = customFilters/Bokeh.swift; sourceTree = "<group>"; };
-		3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoronoiNoise.swift; sourceTree = "<group>"; };
+		3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoronoiNoise.swift; path = customFilters/VoronoiNoise.swift; sourceTree = "<group>"; };
 		3E8B99CD1CB8B5BB007EA0CC /* Voronoi.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Voronoi.cikernel; path = customFilters/Voronoi.cikernel; sourceTree = "<group>"; };
 		3E9A72071C325E5600CAD516 /* Filterpedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterpedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9A720A1C325E5600CAD516 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
