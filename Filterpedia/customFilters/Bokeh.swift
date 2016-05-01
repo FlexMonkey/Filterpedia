@@ -30,6 +30,7 @@ class MaskedVariableHexagonalBokeh: MaskedVariableCircularBokeh
         return "Masked Variable Hexagonal Bokeh"
     }
     
+    // MaskedVariableHexagonalBokeh
     override func withinProbe() -> String
     {
         return "float withinProbe = ((xx > h || yy > v * 2.0) ? 1.0 : ((2.0 * v * h - v * xx - h * yy) >= 0.0) ? 0.0 : 1.0);"
@@ -118,6 +119,7 @@ class MaskedVariableCircularBokeh: CIFilter
         return "Masked Variable Circular Bokeh"
     }
     
+    // MaskedVariableCircularBokeh
     func withinProbe() -> String
     {
         return "float withinProbe = length(vec2(xx, yy)) < float(radius) ? 0.0 : 1.0; "
