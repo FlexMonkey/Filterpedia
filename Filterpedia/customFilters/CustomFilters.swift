@@ -361,6 +361,20 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName(
+            "MaskedVariableCircularBokeh",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName(
+            "MaskedVariableHexagonalBokeh",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
   
     func filterWithName(name: String) -> CIFilter?
@@ -498,6 +512,12 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "LensFlare":
             return LensFlare()
+            
+        case "MaskedVariableCircularBokeh":
+            return MaskedVariableCircularBokeh()
+            
+        case "MaskedVariableHexagonalBokeh":
+            return MaskedVariableHexagonalBokeh()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
