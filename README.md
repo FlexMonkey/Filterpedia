@@ -27,6 +27,10 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/bleach_bypass.png)
 
+### Bokeh
+
+![screenshot](/Filterpedia/assets/examples/bokeh.png)
+
 ### Carnival Mirror
 
 ![screenshot](/Filterpedia/assets/examples/carnival_mirror.png)
@@ -102,6 +106,14 @@ The UI is split into two sections: the table view on the left allows the user to
 ### Mercurialize
 
 ![screenshot](/Filterpedia/assets/examples/mercurialize.png)
+
+### Metal Perlin Noise
+
+![screenshot](/Filterpedia/assets/examples/metal_perlin_noise.png)
+
+### Metal Pixellate
+
+![screenshot](/Filterpedia/assets/examples/metal_pixellate.png)
 
 ### Multiband Hue, Saturation & Brightness Controls
 
