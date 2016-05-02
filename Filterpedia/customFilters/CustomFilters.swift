@@ -342,6 +342,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             ])
         
         CIFilter.registerFilterName(
+            "HistogramEqualization",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName(
             "SimpleSky",
             constructor: CustomFiltersVendor(),
             classAttributes: [
@@ -506,6 +513,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ContrastStretch":
             return ContrastStretch()
+            
+        case "HistogramEqualization":
+            return HistogramEqualization()
         
         case "SimpleSky":
             return SimpleSky()

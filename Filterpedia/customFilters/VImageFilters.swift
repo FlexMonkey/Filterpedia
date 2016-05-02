@@ -10,6 +10,70 @@
 import CoreImage
 import Accelerate
 
+// Histogram Equalization
+
+class HistogramEqualization: CIFilter, VImageFilter
+{
+    var inputImage: CIImage?
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Histogram Equalization",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage]
+        ]
+    }
+    
+    lazy var ciContext: CIContext =
+        {
+            return CIContext()
+    }()
+    
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let imageRef = ciContext.createCGImage(
+            inputImage,
+            fromRect: inputImage.extent)
+        
+        var imageBuffer = vImage_Buffer()
+        
+        vImageBuffer_InitWithCGImage(
+            &imageBuffer,
+            &format,
+            nil,
+            imageRef,
+            UInt32(kvImageNoFlags))
+        
+        let pixelBuffer = malloc(CGImageGetBytesPerRow(imageRef) * CGImageGetHeight(imageRef))
+        
+        var outBuffer = vImage_Buffer(
+            data: pixelBuffer,
+            height: UInt(CGImageGetHeight(imageRef)),
+            width: UInt(CGImageGetWidth(imageRef)),
+            rowBytes: CGImageGetBytesPerRow(imageRef))
+        
+        
+        vImageEqualization_ARGB8888(
+            &imageBuffer,
+            &outBuffer,
+            UInt32(kvImageNoFlags))
+        
+        let outImage = CIImage(fromvImageBuffer: outBuffer)
+        
+        free(pixelBuffer)
+        
+        return outImage!
+    }
+}
+
 // MARK: Contrast Stretch
 
 class ContrastStretch: CIFilter, VImageFilter
