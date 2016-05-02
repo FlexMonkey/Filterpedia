@@ -76,6 +76,7 @@
 		3E7CBCA11CD7355C00EBAB07 /* bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E7CBC9E1CD7355C00EBAB07 /* bokeh.png */; };
 		3E7CBCA21CD7355C00EBAB07 /* metal_perlin_noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E7CBC9F1CD7355C00EBAB07 /* metal_perlin_noise.png */; };
 		3E7CBCA31CD7355C00EBAB07 /* metal_pixellate.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E7CBCA01CD7355C00EBAB07 /* metal_pixellate.png */; };
+		3E7CBCA51CD765D100EBAB07 /* equalization.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E7CBCA41CD765D100EBAB07 /* equalization.png */; };
 		3E8B99CC1CB8B54D007EA0CC /* VoronoiNoise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */; };
 		3E8B99CE1CB8B5BB007EA0CC /* Voronoi.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 3E8B99CD1CB8B5BB007EA0CC /* Voronoi.cikernel */; };
 		3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A720A1C325E5600CAD516 /* AppDelegate.swift */; };
@@ -174,6 +175,7 @@
 		3E7CBC9E1CD7355C00EBAB07 /* bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bokeh.png; path = assets/examples/bokeh.png; sourceTree = "<group>"; };
 		3E7CBC9F1CD7355C00EBAB07 /* metal_perlin_noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = metal_perlin_noise.png; path = assets/examples/metal_perlin_noise.png; sourceTree = "<group>"; };
 		3E7CBCA01CD7355C00EBAB07 /* metal_pixellate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = metal_pixellate.png; path = assets/examples/metal_pixellate.png; sourceTree = "<group>"; };
+		3E7CBCA41CD765D100EBAB07 /* equalization.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = equalization.png; path = assets/examples/equalization.png; sourceTree = "<group>"; };
 		3E8B99CB1CB8B54C007EA0CC /* VoronoiNoise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoronoiNoise.swift; path = customFilters/VoronoiNoise.swift; sourceTree = "<group>"; };
 		3E8B99CD1CB8B5BB007EA0CC /* Voronoi.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Voronoi.cikernel; path = customFilters/Voronoi.cikernel; sourceTree = "<group>"; };
 		3E9A72071C325E5600CAD516 /* Filterpedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterpedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,6 +261,7 @@
 		3E7CBC291CD64A2600EBAB07 /* examples */ = {
 			isa = PBXGroup;
 			children = (
+				3E7CBCA41CD765D100EBAB07 /* equalization.png */,
 				3E7CBC9E1CD7355C00EBAB07 /* bokeh.png */,
 				3E7CBC9F1CD7355C00EBAB07 /* metal_perlin_noise.png */,
 				3E7CBCA01CD7355C00EBAB07 /* metal_pixellate.png */,
@@ -501,6 +504,7 @@
 				3E7CBC791CD64A3C00EBAB07 /* technocolor.png in Resources */,
 				3E7CBC671CD64A3C00EBAB07 /* eight_bit.png in Resources */,
 				3E7CBC781CD64A3C00EBAB07 /* starburst.png in Resources */,
+				3E7CBCA51CD765D100EBAB07 /* equalization.png in Resources */,
 				3E7CBC7D1CD64A3C00EBAB07 /* variable_hexagonal_bokeh.png in Resources */,
 				3E7CBC701CD64A3C00EBAB07 /* refracted_text.png in Resources */,
 				3E9A72351C35101A00CAD516 /* vegas.jpg in Resources */,
