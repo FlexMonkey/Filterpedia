@@ -91,6 +91,10 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/eight_bit.png)
 
+### Histogram Equalization
+
+![screenshot](/Filterpedia/assets/examples/equalization.png)
+
 ### Histogram Specification
 
 ![screenshot](/Filterpedia/assets/examples/histogram_specification.png)
