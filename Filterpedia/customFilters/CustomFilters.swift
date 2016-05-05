@@ -363,7 +363,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             ])
         
         CIFilter.registerFilterName(
-            "BokehFilter",
+            "HexagonalBokehFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
@@ -378,6 +378,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         
         CIFilter.registerFilterName(
             "MaskedVariableHexagonalBokeh",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerFilterName(
+            "CircularBokeh",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
@@ -523,6 +530,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
         case "LensFlare":
             return LensFlare()
             
+        case "CircularBokeh":
+            return CircularBokeh()
+            
         case "MaskedVariableCircularBokeh":
             return MaskedVariableCircularBokeh()
             
@@ -550,9 +560,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
                 return nil
             #endif
 
-        case "BokehFilter":
+        case "HexagonalBokehFilter":
             #if !arch(i386) && !arch(x86_64)
-                return BokehFilter()
+                return HexagonalBokehFilter()
             #else
                 return nil
             #endif

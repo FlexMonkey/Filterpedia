@@ -155,12 +155,12 @@ class MaskedVariableCircularBokeh: CIFilter
     
     import MetalPerformanceShaders
     
-    class BokehFilter: CIFilter, MetalRenderable
+    class HexagonalBokehFilter: CIFilter, MetalRenderable
     {
         override var attributes: [String : AnyObject]
         {
             return [
-                kCIAttributeFilterDisplayName: "Bokeh",
+                kCIAttributeFilterDisplayName: "Hexagonal Bokeh",
                 
                 "inputImage": [kCIAttributeIdentity: 0,
                     kCIAttributeClass: "CIImage",
@@ -342,7 +342,7 @@ class MaskedVariableCircularBokeh: CIFilter
     
 #else
     
-    class BokehFilter: CIFilter
+    class HexagonalBokehFilter: CIFilter
     {
     }
     

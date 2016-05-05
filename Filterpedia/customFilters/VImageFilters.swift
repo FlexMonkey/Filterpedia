@@ -10,6 +10,146 @@
 import CoreImage
 import Accelerate
 
+// Circular Bokeh
+
+class CircularBokeh: CIFilter, VImageFilter
+{
+    var inputImage: CIImage?
+    var inputBlurRadius: CGFloat = 2
+    
+    var inputBokehRadius: CGFloat = 15
+    {
+        didSet
+        {
+            probe = nil
+        }
+    }
+    
+    var inputBokehBias: CGFloat = 0.25
+    {
+        didSet
+        {
+            probe = nil
+        }
+    }
+    
+    private var probe: [UInt8]?
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Circular Bokeh",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputBokehRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 15,
+                kCIAttributeDisplayName: "Bokeh Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 20,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBlurRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 2,
+                kCIAttributeDisplayName: "Blur Radius",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 10,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputBokehBias": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.25,
+                kCIAttributeDisplayName: "Bokeh Bias",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+        ]
+    }
+    
+    lazy var ciContext: CIContext =
+    {
+        return CIContext()
+    }()
+    
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let imageRef = ciContext.createCGImage(
+            inputImage,
+            fromRect: inputImage.extent)
+        
+        var imageBuffer = vImage_Buffer()
+        
+        vImageBuffer_InitWithCGImage(
+            &imageBuffer,
+            &format,
+            nil,
+            imageRef,
+            UInt32(kvImageNoFlags))
+        
+        let pixelBuffer = malloc(CGImageGetBytesPerRow(imageRef) * CGImageGetHeight(imageRef))
+        
+        var outBuffer = vImage_Buffer(
+            data: pixelBuffer,
+            height: UInt(CGImageGetHeight(imageRef)),
+            width: UInt(CGImageGetWidth(imageRef)),
+            rowBytes: CGImageGetBytesPerRow(imageRef))
+        
+        let probeValue = UInt8((1 - inputBokehBias) * 30)
+        let radius = Int(inputBokehRadius)
+        let diameter = (radius * 2) + 1
+        
+        if probe == nil
+        {
+            probe = 0.stride(to: (diameter * diameter), by: 1).map
+            {
+                let x = Float(($0 % diameter) - radius)
+                let y = Float(($0 / diameter) - radius)
+                let r = Float(radius)
+                let length = hypot(Float(x), Float(y)) / r
+                
+                if length <= 1
+                {
+                    let distanceToEdge = 1 - length
+                    
+                    return UInt8(distanceToEdge * Float(probeValue))
+                }
+                
+                return 255
+            }
+        }
+        
+        vImageDilate_ARGB8888(
+            &imageBuffer,
+            &outBuffer,
+            0,
+            0,
+            probe!,
+            UInt(diameter),
+            UInt(diameter),
+            UInt32(kvImageEdgeExtend))
+        
+        let outImage = CIImage(fromvImageBuffer: outBuffer)
+        
+        free(pixelBuffer)
+        
+        return outImage!.imageByApplyingFilter(
+            "CIGaussianBlur",
+            withInputParameters: [kCIInputRadiusKey: inputBlurRadius])
+    }
+}
+
 // Histogram Equalization
 
 class HistogramEqualization: CIFilter, VImageFilter
@@ -28,8 +168,8 @@ class HistogramEqualization: CIFilter, VImageFilter
     }
     
     lazy var ciContext: CIContext =
-        {
-            return CIContext()
+    {
+        return CIContext()
     }()
     
     override var outputImage: CIImage?
@@ -92,8 +232,8 @@ class ContrastStretch: CIFilter, VImageFilter
     }
     
     lazy var ciContext: CIContext =
-        {
-            return CIContext()
+    {
+        return CIContext()
     }()
     
     override var outputImage: CIImage?
