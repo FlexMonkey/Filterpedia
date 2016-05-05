@@ -214,6 +214,136 @@ class HistogramEqualization: CIFilter, VImageFilter
     }
 }
 
+// MARK: EndsInContrastStretch
+
+class EndsInContrastStretch: CIFilter, VImageFilter
+{
+    var inputImage: CIImage?
+    
+    var inputPercentLowRed: CGFloat = 0
+    var inputPercentLowGreen: CGFloat = 0
+    var inputPercentLowBlue: CGFloat = 0
+    
+    var inputPercentHiRed: CGFloat = 0
+    var inputPercentHiGreen: CGFloat = 0
+    var inputPercentHiBlue: CGFloat = 0
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Ends In Contrast Stretch",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            
+            "inputPercentLowRed": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Percent Low Red",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 49,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPercentLowGreen": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Percent Low Green",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 49,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPercentLowBlue": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Percent Low Blue",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 49,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPercentHiRed": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Percent High Red",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 49,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPercentHiGreen": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Percent High Green",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 49,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            
+            "inputPercentHiBlue": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0,
+                kCIAttributeDisplayName: "Percent High Blue",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 49,
+                kCIAttributeType: kCIAttributeTypeScalar],
+        ]
+    }
+    
+    lazy var ciContext: CIContext =
+    {
+        return CIContext()
+    }()
+    
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let imageRef = ciContext.createCGImage(
+            inputImage,
+            fromRect: inputImage.extent)
+        
+        var imageBuffer = vImage_Buffer()
+        
+        vImageBuffer_InitWithCGImage(
+            &imageBuffer,
+            &format,
+            nil,
+            imageRef,
+            UInt32(kvImageNoFlags))
+        
+        let pixelBuffer = malloc(CGImageGetBytesPerRow(imageRef) * CGImageGetHeight(imageRef))
+        
+        var outBuffer = vImage_Buffer(
+            data: pixelBuffer,
+            height: UInt(CGImageGetHeight(imageRef)),
+            width: UInt(CGImageGetWidth(imageRef)),
+            rowBytes: CGImageGetBytesPerRow(imageRef))
+        
+        let low = [inputPercentLowRed, inputPercentLowGreen, inputPercentLowBlue, 0].map { return UInt32($0) }
+        let hi = [inputPercentHiRed, inputPercentHiGreen, inputPercentHiBlue, 0].map { return UInt32($0) }
+
+        vImageEndsInContrastStretch_ARGB8888(
+            &imageBuffer,
+            &outBuffer,
+            low,
+            hi,
+            UInt32(kvImageNoFlags))
+        
+        let outImage = CIImage(fromvImageBuffer: outBuffer)
+        
+        free(pixelBuffer)
+        
+        return outImage!
+    }
+}
+
 // MARK: Contrast Stretch
 
 class ContrastStretch: CIFilter, VImageFilter
