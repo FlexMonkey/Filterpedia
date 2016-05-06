@@ -143,6 +143,7 @@ class CircularBokeh: CIFilter, VImageFilter
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
         free(pixelBuffer)
+        free(imageBuffer.data)
         
         return outImage!.imageByApplyingFilter(
             "CIGaussianBlur",
@@ -208,6 +209,7 @@ class HistogramEqualization: CIFilter, VImageFilter
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
+        free(imageBuffer.data)
         free(pixelBuffer)
         
         return outImage!
@@ -338,6 +340,7 @@ class EndsInContrastStretch: CIFilter, VImageFilter
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
+        free(imageBuffer.data)
         free(pixelBuffer)
         
         return outImage!
@@ -401,6 +404,7 @@ class ContrastStretch: CIFilter, VImageFilter
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
+        free(imageBuffer.data)
         free(pixelBuffer)
         
         return outImage!
@@ -484,6 +488,8 @@ class HistogramSpecification: CIFilter, VImageFilter
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
+        free(imageBuffer.data)
+        free(histogramSourceBuffer.data)
         free(pixelBuffer)
 
         return outImage!

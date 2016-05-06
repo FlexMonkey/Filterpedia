@@ -51,6 +51,37 @@ class FilterDetail: UIView
     
     let scrollView = UIScrollView()
     
+    lazy var histogramToggleSwitch: UISwitch =
+    {
+        let toggle = UISwitch()
+        
+        toggle.on = !self.histogramDisplayHidden
+        toggle.addTarget(
+            self,
+            action: #selector(FilterDetail.toggleHistogramView),
+            forControlEvents: .ValueChanged)
+        
+        return toggle
+    }()
+    
+    let histogramDisplay = HistogramDisplay()
+    
+    var histogramDisplayHidden = true
+    {
+        didSet
+        {
+            if !histogramDisplayHidden
+            {
+                self.histogramDisplay.imageRef = imageView.image?.CGImage
+            }
+            
+            UIView.animateWithDuration(0.25)
+            {
+                self.histogramDisplay.alpha = self.histogramDisplayHidden ? 0 : 1
+            }
+        }
+    }
+    
     let imageView: UIImageView =
     {
         let imageView = UIImageView()
@@ -59,9 +90,6 @@ class FilterDetail: UIView
         
         imageView.layer.borderColor = UIColor.grayColor().CGColor
         imageView.layer.borderWidth = 1
-        imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        imageView.layer.shadowOpacity = 0.75
-        imageView.layer.shadowRadius = 5
         
         return imageView
     }()
@@ -122,6 +150,14 @@ class FilterDetail: UIView
         scrollView.maximumZoomScale = 6.0
         scrollView.delegate = self
         
+        histogramDisplay.alpha = histogramDisplayHidden ? 0 : 1
+        histogramDisplay.layer.shadowOffset = CGSize(width: 0, height: 0)
+        histogramDisplay.layer.shadowOpacity = 0.75
+        histogramDisplay.layer.shadowRadius = 5
+        addSubview(histogramDisplay)
+        
+        addSubview(histogramToggleSwitch)
+        
         imageView.addSubview(activityIndicator)
         
         layer.addSublayer(shapeLayer)
@@ -130,6 +166,11 @@ class FilterDetail: UIView
     required init?(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func toggleHistogramView()
+    {
+       histogramDisplayHidden = !histogramToggleSwitch.on
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
@@ -276,6 +317,11 @@ class FilterDetail: UIView
             
             dispatch_async(dispatch_get_main_queue())
             {
+                if !self.histogramDisplayHidden
+                {
+                    self.histogramDisplay.imageRef = finalImage
+                }
+                
                 self.imageView.image = UIImage(CGImage: finalImage)
                 self.busy = false
                 
@@ -308,6 +354,18 @@ class FilterDetail: UIView
             y: twoThirdHeight,
             width: frame.width,
             height: thirdHeight)
+        
+        histogramDisplay.frame = CGRect(
+            x: 0,
+            y: thirdHeight,
+            width: frame.width,
+            height: thirdHeight).insetBy(dx: 5, dy: 5)
+        
+        histogramToggleSwitch.frame = CGRect(
+            x: frame.width - histogramToggleSwitch.intrinsicContentSize().width,
+            y: 0,
+            width: intrinsicContentSize().width,
+            height: intrinsicContentSize().height)
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
