@@ -47,10 +47,10 @@ class HistogramDisplay: UIView
             imageRef,
             UInt32(kvImageNoFlags))
 
-        let red = [UInt](count: 256, repeatedValue: 10)
-        let green = [UInt](count: 256, repeatedValue: 10)
-        let blue = [UInt](count: 256, repeatedValue: 10)
-        let alpha = [UInt](count: 256, repeatedValue: 10)
+        let red = [UInt](count: 256, repeatedValue: 0)
+        let green = [UInt](count: 256, repeatedValue: 0)
+        let blue = [UInt](count: 256, repeatedValue: 0)
+        let alpha = [UInt](count: 256, repeatedValue: 0)
         
         let redPtr = UnsafeMutablePointer<vImagePixelCount>(red)
         let greenPtr = UnsafeMutablePointer<vImagePixelCount>(green)
