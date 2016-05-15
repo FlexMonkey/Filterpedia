@@ -396,6 +396,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName(
+            "HomogeneousColorBlur",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
   
     func filterWithName(name: String) -> CIFilter?
@@ -497,6 +504,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "ColorDirectedBlur":
             return ColorDirectedBlur()
+            
+        case "HomogeneousColorBlur":
+            return HomogeneousColorBlur()
 
         case "CMYKRegistrationMismatch":
             return CMYKRegistrationMismatch()

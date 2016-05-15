@@ -20,7 +20,91 @@
 
 import CoreImage
 
-/// **ColorDirectedBlur** 
+/// **HomogeneousColorBlur**
+///
+/// _A filter that applies a box filter with circular kernel to similar colors based
+/// on distance in a three dimensional  RGB configuration space_
+///
+/// - Authors: Simon Gladman
+/// - Date: May 2016
+
+class HomogeneousColorBlur: CIFilter
+{
+    var inputImage: CIImage?
+    var inputColorThreshold: CGFloat = 0.2
+    var inputRadius: CGFloat = 10
+    
+    override var attributes: [String : AnyObject]
+    {
+        return [
+            kCIAttributeFilterDisplayName: "Homogeneous Color Blur",
+            "inputImage": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "CIImage",
+                kCIAttributeDisplayName: "Image",
+                kCIAttributeType: kCIAttributeTypeImage],
+            "inputColorThreshold": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 0.2,
+                kCIAttributeDisplayName: "Color Threshold",
+                kCIAttributeMin: 0,
+                kCIAttributeSliderMin: 0,
+                kCIAttributeSliderMax: 1,
+                kCIAttributeType: kCIAttributeTypeScalar],
+            "inputRadius": [kCIAttributeIdentity: 0,
+                kCIAttributeClass: "NSNumber",
+                kCIAttributeDefault: 10,
+                kCIAttributeDisplayName: "Radius",
+                kCIAttributeMin: 1,
+                kCIAttributeSliderMin: 1,
+                kCIAttributeSliderMax: 40,
+                kCIAttributeType: kCIAttributeTypeScalar],
+        ]
+    }
+    
+    let kernel = CIKernel(string:
+        "kernel vec4 colorDirectedBlurKernel(sampler image, float radius, float threshold)" +
+            "{" +
+            "   int r = int(radius);" +
+            "   float n = 0.0;" +
+            "   vec2 d = destCoord();" +
+            "   vec3 thisPixel = sample(image, samplerCoord(image)).rgb;" +
+            "   vec3 accumulator = vec3(0.0, 0.0, 0.0);" +
+            "   for (int x = -r; x <= r; x++) " +
+            "   { " +
+            "       for (int y = -r; y <= r; y++) " +
+            "       { " +
+            "           vec3 offsetPixel = sample(image, samplerTransform(image, d + vec2(x ,y))).rgb; " +
+            "           if (length(vec2(x,y)) < radius  && distance(offsetPixel, thisPixel) < threshold) " +
+            "           {" +
+            "               accumulator += offsetPixel;" +
+            "               n += 1.0;" +
+            "           }" +
+            "       }" +
+            "   }" +
+            "   return vec4(accumulator / n, 1.0); " +
+    "}")
+    
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage, kernel = kernel else
+        {
+            return nil
+        }
+        
+        let arguments = [inputImage, inputRadius, inputColorThreshold * sqrt(3.0)]
+        
+        return kernel.applyWithExtent(
+            inputImage.extent,
+            roiCallback:
+            {
+            (index, rect) in
+            return rect
+            },
+            arguments: arguments)
+    }
+}
+
+/// **ColorDirectedBlur**
 ///
 /// _A filter that applies a box blur based on a surrounding quadrant of the nearest color._
 ///
@@ -33,6 +117,7 @@ import CoreImage
 ///
 /// - Authors: Simon Gladman
 /// - Date: April 2016
+
 class ColorDirectedBlur: CIFilter
 {
     var inputImage: CIImage?
