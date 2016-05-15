@@ -73,12 +73,13 @@ class HomogeneousColorBlur: CIFilter
             "   { " +
             "       for (int y = -r; y <= r; y++) " +
             "       { " +
-            "           vec3 offsetPixel = sample(image, samplerTransform(image, d + vec2(x ,y))).rgb; " +
-            "           if (length(vec2(x,y)) < radius  && distance(offsetPixel, thisPixel) < threshold) " +
-            "           {" +
-            "               accumulator += offsetPixel;" +
-            "               n += 1.0;" +
-            "           }" +
+            "           vec3 offsetPixel = sample(image, samplerTransform(image, d + vec2(x ,y))).rgb; \n" +
+            
+            "           float distanceMultiplier = step(length(vec2(x,y)), radius); \n" +
+            "           float colorMultiplier = step(distance(offsetPixel, thisPixel), threshold); \n" +
+        
+            "           accumulator += offsetPixel * distanceMultiplier * colorMultiplier; \n" +
+            "           n += distanceMultiplier * colorMultiplier; \n" +
             "       }" +
             "   }" +
             "   return vec4(accumulator / n, 1.0); " +
