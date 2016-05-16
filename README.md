@@ -26,10 +26,6 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/bleach_bypass.png)
 
-### Bokeh
-
-![screenshot](/Filterpedia/assets/examples/bokeh.png)
-
 ### Carnival Mirror
 
 ![screenshot](/Filterpedia/assets/examples/carnival_mirror.png)
@@ -45,6 +41,10 @@ The UI is split into two sections: the table view on the left allows the user to
 ### Chromatic Abberation
 
 ![screenshot](/Filterpedia/assets/examples/chromatic_abberation.png)
+
+### Circular Bokeh (with bias)
+
+![screenshot](/Filterpedia/assets/examples/circular_bokeh.jpg)
 
 ### CMYK Levels
 
@@ -89,6 +89,10 @@ The UI is split into two sections: the table view on the left allows the user to
 ### Eight Bit
 
 ![screenshot](/Filterpedia/assets/examples/eight_bit.png)
+
+### Hexagonal Bokeh
+
+![screenshot](/Filterpedia/assets/examples/bokeh.png)
 
 ### Histogram Equalization
 
