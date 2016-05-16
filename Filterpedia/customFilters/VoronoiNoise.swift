@@ -79,7 +79,8 @@ class VoronoiNoise: CIFilter
     
     override var outputImage: CIImage?
     {
-        return voronoiKernel.applyWithExtent(CGRect(origin: CGPointZero, size: CGSize(width: inputWidth, height: inputHeight)),
-                                     arguments: [inputSeed, inputSize, inputDensity])
+        return voronoiKernel.applyWithExtent(
+            CGRect(origin: CGPointZero, size: CGSize(width: inputWidth, height: inputHeight)),
+            arguments: [inputSeed, inputSize, inputDensity])
     }
 }

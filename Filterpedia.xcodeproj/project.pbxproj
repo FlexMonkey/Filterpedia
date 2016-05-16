@@ -104,6 +104,7 @@
 		3EC6D0C31CA4FDB0003B5E90 /* coffeecup.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */; };
 		3ED828441CB8E38400F67BB2 /* CausticRefraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED828431CB8E38400F67BB2 /* CausticRefraction.swift */; };
 		3EF5C5951C67B229005071BF /* EightBit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5C5941C67B229005071BF /* EightBit.swift */; };
+		3EF65A9B1CEA2B0200EC2EF7 /* SimplePlasma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF65A9A1CEA2B0200EC2EF7 /* SimplePlasma.swift */; };
 		3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A7E1C54902B0071B584 /* Shaders.metal */; };
 		3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A801C5490540071B584 /* MetalFilters.swift */; };
 /* End PBXBuildFile section */
@@ -208,6 +209,7 @@
 		3EC6D0C21CA4FDB0003B5E90 /* coffeecup.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = coffeecup.jpg; path = assets/coffeecup.jpg; sourceTree = "<group>"; };
 		3ED828431CB8E38400F67BB2 /* CausticRefraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CausticRefraction.swift; path = customFilters/CausticRefraction.swift; sourceTree = "<group>"; };
 		3EF5C5941C67B229005071BF /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EightBit.swift; path = customFilters/EightBit.swift; sourceTree = "<group>"; };
+		3EF65A9A1CEA2B0200EC2EF7 /* SimplePlasma.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimplePlasma.swift; path = customFilters/SimplePlasma.swift; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -252,6 +254,7 @@
 				3E0811F01CD27CC6001581D3 /* cikl_sky.cikernel */,
 				3E0811F21CD34BBA001581D3 /* LensFlare.swift */,
 				3E7CBC211CD4B51900EBAB07 /* Bokeh.swift */,
+				3EF65A9A1CEA2B0200EC2EF7 /* SimplePlasma.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				3EA75FE51CB6347E00831CC1 /* CMYKRegistrationMismatch.swift in Sources */,
 				3E9A721E1C32662B00CAD516 /* FilterNavigator.swift in Sources */,
 				3E1B54561C69CB8700F57FF2 /* FilmicEffects.swift in Sources */,
+				3EF65A9B1CEA2B0200EC2EF7 /* SimplePlasma.swift in Sources */,
 				3E9A720D1C325E5600CAD516 /* ViewController.swift in Sources */,
 				3E0811F31CD34BBA001581D3 /* LensFlare.swift in Sources */,
 				3E9A72221C32FCF000CAD516 /* LabelledSlider.swift in Sources */,

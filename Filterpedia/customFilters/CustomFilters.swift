@@ -403,6 +403,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName(
+            "SimplePlasma",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
   
     func filterWithName(name: String) -> CIFilter?
@@ -558,6 +565,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "EndsInContrastStretch":
             return EndsInContrastStretch()
+            
+        case "SimplePlasma":
+            return SimplePlasma()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)
