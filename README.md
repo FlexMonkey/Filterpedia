@@ -13,7 +13,6 @@ The UI is split into two sections: the table view on the left allows the user to
 
 * [*Core Image for Swift* from iBooks Store](https://itunes.apple.com/us/book/core-image-for-swift/id1073029980?mt=13)
 * [*Core Image For Swift* from Gumroad](https://gumroad.com/l/CoreImageForSwift)
-* 
 
 ## Custom Filters
 
@@ -98,6 +97,10 @@ The UI is split into two sections: the table view on the left allows the user to
 ### Histogram Specification
 
 ![screenshot](/Filterpedia/assets/examples/histogram_specification.png)
+
+### Homogeneous Color Blur
+
+![screenshot](/Filterpedia/assets/examples/homogeneous_color_blur.jpg)
 
 ### Kuwahara
 
