@@ -410,6 +410,13 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        
+        CIFilter.registerFilterName(
+            "ConcentricSineWaves",
+            constructor: CustomFiltersVendor(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
     }
   
     func filterWithName(name: String) -> CIFilter?
@@ -568,6 +575,9 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             
         case "SimplePlasma":
             return SimplePlasma()
+            
+        case "ConcentricSineWaves":
+            return ConcentricSineWaves()
             
         case "MetalPixellateFilter":
             #if !arch(i386) && !arch(x86_64)

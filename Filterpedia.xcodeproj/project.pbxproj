@@ -108,6 +108,7 @@
 		3EF65A9D1CEA309700EC2EF7 /* simple_plasma.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EF65A9C1CEA309700EC2EF7 /* simple_plasma.jpg */; };
 		3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A7E1C54902B0071B584 /* Shaders.metal */; };
 		3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A801C5490540071B584 /* MetalFilters.swift */; };
+		3EFF282B1CEB42ED008FA17D /* ConcentricSineWaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF282A1CEB42ED008FA17D /* ConcentricSineWaves.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -214,6 +215,7 @@
 		3EF65A9C1CEA309700EC2EF7 /* simple_plasma.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = simple_plasma.jpg; path = assets/examples/simple_plasma.jpg; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
+		3EFF282A1CEB42ED008FA17D /* ConcentricSineWaves.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConcentricSineWaves.swift; path = customFilters/ConcentricSineWaves.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +259,7 @@
 				3E0811F21CD34BBA001581D3 /* LensFlare.swift */,
 				3E7CBC211CD4B51900EBAB07 /* Bokeh.swift */,
 				3EF65A9A1CEA2B0200EC2EF7 /* SimplePlasma.swift */,
+				3EFF282A1CEB42ED008FA17D /* ConcentricSineWaves.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				3E1E3EA41C509A1500EEF0D8 /* KuwaharaFilter.swift in Sources */,
 				3E74E7D51C36D3ED00F0BCCF /* CompositeOverBlackFilter.swift in Sources */,
 				3EC5C9921C7987120053EAED /* CompoundEye.swift in Sources */,
+				3EFF282B1CEB42ED008FA17D /* ConcentricSineWaves.swift in Sources */,
 				3E1E3E961C4F85D800EEF0D8 /* RGBChannelCompositing.swift in Sources */,
 				3E39C7FB1CA0726C00D06D86 /* MultiBandHSV.swift in Sources */,
 				3E1E3E6E1C4DF75E00EEF0D8 /* MercurializeFilter.swift in Sources */,
