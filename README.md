@@ -162,6 +162,10 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/rgb_one_curve.png)
 
+### Scatter
+
+![screenshot](/Filterpedia/assets/examples/scatter.jpg)
+
 ### Simple Plasma
 
 ![screenshot](/Filterpedia/assets/examples/simple_plasma.jpg)
