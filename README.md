@@ -74,6 +74,10 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/compound_eye.png)
 
+### Concentric Sine Waves
+
+![screenshot](/Filterpedia/assets/examples/concentric_sine_waves.jpg)
+
 ### Contast Stretch
 
 ![screenshot](/Filterpedia/assets/examples/contrast_stretch.png)
