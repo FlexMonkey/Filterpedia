@@ -113,6 +113,7 @@
 		3EFF282F1CEB53FF008FA17D /* Scatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF282E1CEB53FF008FA17D /* Scatter.swift */; };
 		3EFF28311CEB5B9D008FA17D /* scatter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF28301CEB5B9D008FA17D /* scatter.jpg */; };
 		3EFF28331CEE0245008FA17D /* TransverseChromaticAberration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF28321CEE0245008FA17D /* TransverseChromaticAberration.swift */; };
+		3EFF28351CEE0D16008FA17D /* transverse_chromatic_aberration.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF28341CEE0D16008FA17D /* transverse_chromatic_aberration.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -224,6 +225,7 @@
 		3EFF282E1CEB53FF008FA17D /* Scatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Scatter.swift; path = customFilters/Scatter.swift; sourceTree = "<group>"; };
 		3EFF28301CEB5B9D008FA17D /* scatter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = scatter.jpg; path = assets/examples/scatter.jpg; sourceTree = "<group>"; };
 		3EFF28321CEE0245008FA17D /* TransverseChromaticAberration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransverseChromaticAberration.swift; path = customFilters/TransverseChromaticAberration.swift; sourceTree = "<group>"; };
+		3EFF28341CEE0D16008FA17D /* transverse_chromatic_aberration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = transverse_chromatic_aberration.png; path = assets/transverse_chromatic_aberration.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,6 +287,7 @@
 		3E7CBC291CD64A2600EBAB07 /* examples */ = {
 			isa = PBXGroup;
 			children = (
+				3EFF28341CEE0D16008FA17D /* transverse_chromatic_aberration.png */,
 				3EFF28301CEB5B9D008FA17D /* scatter.jpg */,
 				3EFF282C1CEB4A69008FA17D /* concentric_sine_waves.jpg */,
 				3EF65A9C1CEA309700EC2EF7 /* simple_plasma.jpg */,
@@ -515,6 +518,7 @@
 				3E7CBC591CD64A3C00EBAB07 /* carnival_mirror.png in Resources */,
 				3E7CBC5A1CD64A3C00EBAB07 /* caustic_noise.png in Resources */,
 				3E7CBC5F1CD64A3C00EBAB07 /* cmyk_tone_curve.png in Resources */,
+				3EFF28351CEE0D16008FA17D /* transverse_chromatic_aberration.png in Resources */,
 				3E7CBC5D1CD64A3C00EBAB07 /* cmyk_levels.png in Resources */,
 				3E7CBC5E1CD64A3C00EBAB07 /* cmyk_registration_mismatch.png in Resources */,
 				3E7CBC561CD64A3C00EBAB07 /* 5x5_sobel.png in Resources */,
