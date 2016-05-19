@@ -112,6 +112,7 @@
 		3EFF282D1CEB4A69008FA17D /* concentric_sine_waves.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF282C1CEB4A69008FA17D /* concentric_sine_waves.jpg */; };
 		3EFF282F1CEB53FF008FA17D /* Scatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF282E1CEB53FF008FA17D /* Scatter.swift */; };
 		3EFF28311CEB5B9D008FA17D /* scatter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF28301CEB5B9D008FA17D /* scatter.jpg */; };
+		3EFF28331CEE0245008FA17D /* TransverseChromaticAberration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF28321CEE0245008FA17D /* TransverseChromaticAberration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -222,6 +223,7 @@
 		3EFF282C1CEB4A69008FA17D /* concentric_sine_waves.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = concentric_sine_waves.jpg; path = assets/examples/concentric_sine_waves.jpg; sourceTree = "<group>"; };
 		3EFF282E1CEB53FF008FA17D /* Scatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Scatter.swift; path = customFilters/Scatter.swift; sourceTree = "<group>"; };
 		3EFF28301CEB5B9D008FA17D /* scatter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = scatter.jpg; path = assets/examples/scatter.jpg; sourceTree = "<group>"; };
+		3EFF28321CEE0245008FA17D /* TransverseChromaticAberration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransverseChromaticAberration.swift; path = customFilters/TransverseChromaticAberration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,6 +269,7 @@
 				3EF65A9A1CEA2B0200EC2EF7 /* SimplePlasma.swift */,
 				3EFF282A1CEB42ED008FA17D /* ConcentricSineWaves.swift */,
 				3EFF282E1CEB53FF008FA17D /* Scatter.swift */,
+				3EFF28321CEE0245008FA17D /* TransverseChromaticAberration.swift */,
 			);
 			name = customFilters;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				3E9A72201C329CFE00CAD516 /* FilterDetail.swift in Sources */,
 				3E7CBC221CD4B51900EBAB07 /* Bokeh.swift in Sources */,
 				3E1B54581C6A33EA00F57FF2 /* CarnivalMirror.swift in Sources */,
+				3EFF28331CEE0245008FA17D /* TransverseChromaticAberration.swift in Sources */,
 				3E0F65021C48BA2000852420 /* CustomFilters.swift in Sources */,
 				3E9A720B1C325E5600CAD516 /* AppDelegate.swift in Sources */,
 				3E1E3E9B1C4FA01200EEF0D8 /* OverlayWidgets.swift in Sources */,
