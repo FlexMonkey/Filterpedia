@@ -88,7 +88,7 @@ class VHSTrackingLines: CIFilter
         let kernel = CIColorKernel(string:
             "kernel vec4 thresholdFilter(__sample image, __sample noise, float time, float spacing, float stripeHeight, float backgroundNoise)" +
                 "{" +
-                "   vec2 uv = samplerCoord(image);" +
+                "   vec2 uv = destCoord();" +
                 
                 "   float stripe = smoothstep(1.0 - stripeHeight, 1.0, sin((time + uv.y) / spacing)); " +
                 
