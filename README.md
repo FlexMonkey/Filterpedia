@@ -118,6 +118,14 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/lens_flare.png)
 
+### Masked Variable Circular Bokeh 
+
+![screenshot](/Filterpedia/assets/examples/variable_circular_bokeh.png)
+
+### Masked Variable Hexagonal Bokeh 
+
+![screenshot](/Filterpedia/assets/examples/variable_hexagonal_bokeh.png)
+
 ### Mercurialize
 
 ![screenshot](/Filterpedia/assets/examples/mercurialize.png)
@@ -198,13 +206,9 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/threshold_to_alpha.png)
 
-### Masked Variable Circular Bokeh 
+### Transverse Chromatic Aberration
 
-![screenshot](/Filterpedia/assets/examples/variable_circular_bokeh.png)
-
-### Masked Variable Hexagonal Bokeh 
-
-![screenshot](/Filterpedia/assets/examples/variable_hexagonal_bokeh.png)
+![screenshot](/Filterpedia/assets/transverse_chromatic_aberration.png)
 
 ### VHS Tracking Lines
 
