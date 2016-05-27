@@ -110,6 +110,7 @@
 		3EF65A9D1CEA309700EC2EF7 /* simple_plasma.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EF65A9C1CEA309700EC2EF7 /* simple_plasma.jpg */; };
 		3EF73A7F1C54902B0071B584 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A7E1C54902B0071B584 /* Shaders.metal */; };
 		3EF73A811C5490540071B584 /* MetalFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF73A801C5490540071B584 /* MetalFilters.swift */; };
+		3EFDBE051CF82034008E6BEA /* flame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EFDBE041CF82034008E6BEA /* flame.jpg */; };
 		3EFF282B1CEB42ED008FA17D /* ConcentricSineWaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF282A1CEB42ED008FA17D /* ConcentricSineWaves.swift */; };
 		3EFF282D1CEB4A69008FA17D /* concentric_sine_waves.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF282C1CEB4A69008FA17D /* concentric_sine_waves.jpg */; };
 		3EFF282F1CEB53FF008FA17D /* Scatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF282E1CEB53FF008FA17D /* Scatter.swift */; };
@@ -224,6 +225,7 @@
 		3EF65A9C1CEA309700EC2EF7 /* simple_plasma.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = simple_plasma.jpg; path = assets/examples/simple_plasma.jpg; sourceTree = "<group>"; };
 		3EF73A7E1C54902B0071B584 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = customFilters/metalFilters/Shaders.metal; sourceTree = "<group>"; };
 		3EF73A801C5490540071B584 /* MetalFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalFilters.swift; path = customFilters/metalFilters/MetalFilters.swift; sourceTree = "<group>"; };
+		3EFDBE041CF82034008E6BEA /* flame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = flame.jpg; path = assets/examples/flame.jpg; sourceTree = "<group>"; };
 		3EFF282A1CEB42ED008FA17D /* ConcentricSineWaves.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConcentricSineWaves.swift; path = customFilters/ConcentricSineWaves.swift; sourceTree = "<group>"; };
 		3EFF282C1CEB4A69008FA17D /* concentric_sine_waves.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = concentric_sine_waves.jpg; path = assets/examples/concentric_sine_waves.jpg; sourceTree = "<group>"; };
 		3EFF282E1CEB53FF008FA17D /* Scatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Scatter.swift; path = customFilters/Scatter.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 		3E7CBC291CD64A2600EBAB07 /* examples */ = {
 			isa = PBXGroup;
 			children = (
+				3EFDBE041CF82034008E6BEA /* flame.jpg */,
 				3EFF28341CEE0D16008FA17D /* transverse_chromatic_aberration.png */,
 				3EFF28301CEB5B9D008FA17D /* scatter.jpg */,
 				3EFF282C1CEB4A69008FA17D /* concentric_sine_waves.jpg */,
@@ -538,6 +541,7 @@
 				3E7CBC6E1CD64A3C00EBAB07 /* polar_pixellate.png in Resources */,
 				3E9A72121C325E5600CAD516 /* Assets.xcassets in Resources */,
 				3E9A72101C325E5600CAD516 /* Main.storyboard in Resources */,
+				3EFDBE051CF82034008E6BEA /* flame.jpg in Resources */,
 				3E6343E51CE981DB002F7D6A /* circular_bokeh.jpg in Resources */,
 				3E9A72291C33A8AB00CAD516 /* sunflower.jpg in Resources */,
 				3E7CBC681CD64A3C00EBAB07 /* histogram_specification.png in Resources */,
