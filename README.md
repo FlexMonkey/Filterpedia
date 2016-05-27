@@ -94,6 +94,10 @@ The UI is split into two sections: the table view on the left allows the user to
 
 ![screenshot](/Filterpedia/assets/examples/eight_bit.png)
 
+### Flame
+
+![screenshot](/Filterpedia/assets/examples/flame.jpg)
+
 ### Hexagonal Bokeh
 
 ![screenshot](/Filterpedia/assets/examples/bokeh.png)
