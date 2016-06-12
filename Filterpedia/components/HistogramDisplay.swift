@@ -31,7 +31,7 @@ class HistogramDisplay: UIView
         bitsPerPixel: 32,
         colorSpace: nil,
         bitmapInfo: CGBitmapInfo(
-            rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue),
+            rawValue: CGImageAlphaInfo.First.rawValue),
         version: 0,
         decode: nil,
         renderingIntent: .RenderingIntentDefault)
@@ -57,9 +57,9 @@ class HistogramDisplay: UIView
         let bluePtr = UnsafeMutablePointer<vImagePixelCount>(blue)
         let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(alpha)
         
-        let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
+        let argb = [alphaPtr, redPtr, greenPtr, bluePtr]
 
-        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>>(rgba)
+        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>>(argb)
         
         vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
 
