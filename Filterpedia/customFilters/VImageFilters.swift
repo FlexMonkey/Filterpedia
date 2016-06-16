@@ -151,7 +151,7 @@ class CircularBokeh: CIFilter, VImageFilter
             probe!,
             UInt(diameter),
             UInt(diameter),
-            UInt32(kvImageEdgeExtend))
+            UInt32(kvImageEdgeExtend + kvImageLeaveAlphaUnchanged))
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
@@ -218,7 +218,7 @@ class HistogramEqualization: CIFilter, VImageFilter
         vImageEqualization_ARGB8888(
             &imageBuffer,
             &outBuffer,
-            UInt32(kvImageNoFlags))
+            UInt32(kvImageLeaveAlphaUnchanged))
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
@@ -341,15 +341,15 @@ class EndsInContrastStretch: CIFilter, VImageFilter
             width: UInt(CGImageGetWidth(imageRef)),
             rowBytes: CGImageGetBytesPerRow(imageRef))
         
-        let low = [inputPercentLowRed, inputPercentLowGreen, inputPercentLowBlue, 0].map { return UInt32($0) }
-        let hi = [inputPercentHiRed, inputPercentHiGreen, inputPercentHiBlue, 0].map { return UInt32($0) }
+        let low = [0, inputPercentLowRed, inputPercentLowGreen, inputPercentLowBlue].map { return UInt32($0) }
+        let hi = [0, inputPercentHiRed, inputPercentHiGreen, inputPercentHiBlue].map { return UInt32($0) }
 
         vImageEndsInContrastStretch_ARGB8888(
             &imageBuffer,
             &outBuffer,
             low,
             hi,
-            UInt32(kvImageNoFlags))
+            UInt32(kvImageLeaveAlphaUnchanged))
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
@@ -413,7 +413,7 @@ class ContrastStretch: CIFilter, VImageFilter
         vImageContrastStretch_ARGB8888(
             &imageBuffer,
             &outBuffer,
-            UInt32(kvImageNoFlags))
+            UInt32(kvImageLeaveAlphaUnchanged))
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
@@ -476,11 +476,11 @@ class HistogramSpecification: CIFilter, VImageFilter
         let greenMutablePointer = UnsafeMutablePointer<vImagePixelCount>(green)
         let blueMutablePointer = UnsafeMutablePointer<vImagePixelCount>(blue)
         
-        let rgba = [redMutablePointer, greenMutablePointer, blueMutablePointer, alphaMutablePointer]
+        let argb = [alphaMutablePointer, redMutablePointer, greenMutablePointer, blueMutablePointer]
         
-        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>>(rgba)
+        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>>(argb)
         
-        vImageHistogramCalculation_ARGB8888(&histogramSourceBuffer, histogram, UInt32(kvImageNoFlags))
+        vImageHistogramCalculation_ARGB8888(&histogramSourceBuffer, histogram, UInt32(kvImageLeaveAlphaUnchanged))
         
         let pixelBuffer = malloc(CGImageGetBytesPerRow(imageRef) * CGImageGetHeight(imageRef))
         
@@ -495,9 +495,9 @@ class HistogramSpecification: CIFilter, VImageFilter
         let greenPointer = UnsafePointer<vImagePixelCount>(green)
         let bluePointer = UnsafePointer<vImagePixelCount>(blue)
         
-        let rgbaMutablePointer = UnsafeMutablePointer<UnsafePointer<vImagePixelCount>>([redPointer, greenPointer, bluePointer, alphaPointer])
+        let argbMutablePointer = UnsafeMutablePointer<UnsafePointer<vImagePixelCount>>([alphaPointer, redPointer, greenPointer, bluePointer])
         
-        vImageHistogramSpecification_ARGB8888(&imageBuffer, &outBuffer, rgbaMutablePointer, UInt32(kvImageNoFlags))
+        vImageHistogramSpecification_ARGB8888(&imageBuffer, &outBuffer, argbMutablePointer, UInt32(kvImageLeaveAlphaUnchanged))
         
         let outImage = CIImage(fromvImageBuffer: outBuffer)
         
@@ -514,8 +514,9 @@ class HistogramSpecification: CIFilter, VImageFilter
 protocol VImageFilter {
 }
 
-let bitmapInfo:CGBitmapInfo = CGBitmapInfo(
-    rawValue: CGImageAlphaInfo.Last.rawValue)
+// The _ARGB8888 version of the vImage functions are used, so bitmapInfo should keep alpha channel before rgb channels (ARGB)
+let bitmapInfo: CGBitmapInfo = CGBitmapInfo(
+    rawValue: CGImageAlphaInfo.First.rawValue)
 
 var format = vImage_CGImageFormat(
     bitsPerComponent: 8,
