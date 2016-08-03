@@ -184,7 +184,7 @@ class CausticRefraction: CIFilter
     override var outputImage: CIImage!
     {
       guard let inputImage = inputImage,
-        refractingKernel = refractingKernel else
+        let refractingKernel = refractingKernel else
       {
         return nil
       }

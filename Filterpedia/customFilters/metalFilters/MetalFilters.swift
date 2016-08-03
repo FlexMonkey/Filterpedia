@@ -238,7 +238,7 @@ class MetalGeneratorFilter: MetalFilter
     
     override func textureInvalid() -> Bool
     {
-        if let textureDescriptor = textureDescriptor where
+        if let textureDescriptor = textureDescriptor ,
             textureDescriptor.width != Int(inputWidth)  ||
                 textureDescriptor.height != Int(inputHeight)
         {
@@ -256,7 +256,7 @@ class MetalImageFilter: MetalFilter
     override func textureInvalid() -> Bool
     {
         if let textureDescriptor = textureDescriptor,
-            inputImage = inputImage where
+            let inputImage = inputImage where
             textureDescriptor.width != Int(inputImage.extent.width)  ||
                 textureDescriptor.height != Int(inputImage.extent.height)
         {
@@ -320,7 +320,7 @@ class MetalFilter: CIFilter, MetalRenderable
         }
         
         if let imageFilter = self as? MetalImageFilter,
-            inputImage = imageFilter.inputImage
+            let inputImage = imageFilter.inputImage
         {
             return imageFromComputeShader(width: inputImage.extent.width,
                 height: inputImage.extent.height,
@@ -406,7 +406,7 @@ class MetalFilter: CIFilter, MetalRenderable
         let commandBuffer = commandQueue.commandBuffer()
 
         if let imageFilter = self as? MetalImageFilter,
-            inputImage = imageFilter.inputImage
+            let inputImage = imageFilter.inputImage
         {
             ciContext.render(inputImage,
                 toMTLTexture: kernelInputTexture!,
@@ -437,7 +437,7 @@ class MetalFilter: CIFilter, MetalRenderable
         for inputKey in inputKeys where attributes[inputKey]?[kCIAttributeClass] == "CIColor"
         {
             if let bufferIndex = (attributes[inputKey] as! [String:AnyObject])[kCIAttributeIdentity] as? Int,
-                bufferValue = valueForKey(inputKey) as? CIColor
+                let bufferValue = valueForKey(inputKey) as? CIColor
             {
                 var color = float4(Float(bufferValue.red),
                     Float(bufferValue.green),

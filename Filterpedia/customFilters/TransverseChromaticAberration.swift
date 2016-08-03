@@ -97,7 +97,7 @@ class TransverseChromaticAberration: CIFilter
     override var outputImage: CIImage?
     {
         guard let inputImage = inputImage,
-            kernel = transverseChromaticAberrationKernel else
+            let kernel = transverseChromaticAberrationKernel else
         {
             return nil
         }

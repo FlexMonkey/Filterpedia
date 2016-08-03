@@ -87,7 +87,7 @@ class HomogeneousColorBlur: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }
@@ -218,7 +218,7 @@ class ColorDirectedBlur: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }

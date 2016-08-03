@@ -114,7 +114,7 @@ class KuwaharaFilter: CIFilter
     override var outputImage : CIImage!
     {
         if let inputImage = inputImage,
-            kuwaharaKernel = kuwaharaKernel
+            let kuwaharaKernel = kuwaharaKernel
         {
             let arguments = [inputImage, inputRadius]
             let extent = inputImage.extent

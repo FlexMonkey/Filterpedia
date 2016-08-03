@@ -64,8 +64,8 @@ class BayerDitherFilter: CIFilter
         let CIKernel_DitherBayer = Bundle.main.path(forResource: "DitherBayer", ofType: "cikernel")
         
         guard let path = CIKernel_DitherBayer,
-            code = try? String(contentsOfFile: path),
-            ditherKernel = CIColorKernel(string: code) else { return nil }
+            let code = try? String(contentsOfFile: path),
+            let ditherKernel = CIColorKernel(string: code) else { return nil }
         guard let inputImage = inputImage else { return nil }
         
         let extent = inputImage.extent

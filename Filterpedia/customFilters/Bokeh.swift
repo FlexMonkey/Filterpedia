@@ -127,7 +127,7 @@ class MaskedVariableCircularBokeh: CIFilter
     
     override var outputImage: CIImage!
     {
-        guard let inputImage = inputImage, inputBlurMask = inputBokehMask else
+        guard let inputImage = inputImage, let inputBlurMask = inputBokehMask else
         {
             return nil
         }
@@ -254,9 +254,9 @@ class MaskedVariableCircularBokeh: CIFilter
         override var outputImage: CIImage?
         {
             guard let inputImage = inputImage,
-                inputTexture = sourceTexture,
-                outputTexture = destinationTexture,
-                intermediateTexture = intermediateTexture else
+                let inputTexture = sourceTexture,
+                let outputTexture = destinationTexture,
+                let intermediateTexture = intermediateTexture else
             {
                 return nil
             }

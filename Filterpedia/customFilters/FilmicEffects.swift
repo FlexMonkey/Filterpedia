@@ -72,7 +72,7 @@ class BleachBypassFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            bleachBypassKernel = bleachBypassKernel else
+            let bleachBypassKernel = bleachBypassKernel else
         {
             return nil
         }
@@ -136,7 +136,7 @@ class TechnicolorFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            technicolorKernel = technicolorKernel else
+            let technicolorKernel = technicolorKernel else
         {
             return nil
         }

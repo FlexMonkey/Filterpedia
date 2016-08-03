@@ -754,7 +754,7 @@ class PseudoColor: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            pseudoColorKernel = pseudoColorKernel else
+            let pseudoColorKernel = pseudoColorKernel else
         {
             return nil
         }
@@ -1152,7 +1152,7 @@ class AdvancedMonochrome: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            kernel = kernel else
+            let kernel = kernel else
         {
             return nil
         }
@@ -1211,7 +1211,7 @@ class SmoothThreshold: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            colorKernel = colorKernel else
+            let colorKernel = colorKernel else
         {
             return nil
         }
@@ -1282,7 +1282,7 @@ class ThresholdFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            thresholdKernel = thresholdKernel else
+            let thresholdKernel = thresholdKernel else
         {
             return nil
         }
@@ -1366,7 +1366,7 @@ class PolarPixellate: CIFilter
     
     override var outputImage : CIImage!
     {
-        if let inputImage = inputImage, kernel = warpKernel
+        if let inputImage = inputImage, let kernel = warpKernel
         {
             let extent = inputImage.extent
             let pixelSize = CIVector(x: inputPixelLength, y: inputPixelArc)
@@ -1520,7 +1520,7 @@ class NormalMapFilter: CIFilter
     override var outputImage: CIImage?
     {
         guard let inputImage = inputImage,
-            normalMapKernel = normalMapKernel else
+            let normalMapKernel = normalMapKernel else
         {
             return nil
         }

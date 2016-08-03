@@ -160,8 +160,8 @@ class Flame: CIFilter
         let shaderPath = Bundle.main.path(forResource: "flame", ofType: "cikernel")
         
         guard let path = shaderPath,
-            code = try? String(contentsOfFile: path),
-            kernel = CIColorKernel(string: code) else
+            let code = try? String(contentsOfFile: path),
+            let kernel = CIColorKernel(string: code) else
         {
             fatalError("Unable to build Flame shader")
         }

@@ -120,8 +120,8 @@ class CompoundEye: CIFilter
     override var outputImage : CIImage!
     {
         if let inputImage = inputImage,
-            warpKernel = warpKernel,
-            colorKernel = colorKernel
+            let warpKernel = warpKernel,
+            let colorKernel = colorKernel
         {
             let halfWidth = inputWidth / 2
             let height = sqrt(3.0) / 2.0 * inputWidth

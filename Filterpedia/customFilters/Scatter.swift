@@ -67,7 +67,7 @@ class ScatterWarp: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let kernel = kernel, inputImage = inputImage else
+        guard let kernel = kernel, let inputImage = inputImage else
         {
             return nil
         }
@@ -132,7 +132,7 @@ class Scatter: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let kernel = kernel, inputImage = inputImage else
+        guard let kernel = kernel, let inputImage = inputImage else
         {
             return nil
         }

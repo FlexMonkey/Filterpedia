@@ -43,10 +43,10 @@ class ToneCurveWidget: UIView, FilterAttributesDisplayable
     func setFilter(_ filter: CIFilter)
     {
         if let inputPoint0 = filter.value(forKey: "inputPoint0") as? CIVector,
-            inputPoint1 = filter.value(forKey: "inputPoint1") as? CIVector,
-            inputPoint2 = filter.value(forKey: "inputPoint2") as? CIVector,
-            inputPoint3 = filter.value(forKey: "inputPoint3") as? CIVector,
-            inputPoint4 = filter.value(forKey: "inputPoint4") as? CIVector
+            let inputPoint1 = filter.value(forKey: "inputPoint1") as? CIVector,
+            let inputPoint2 = filter.value(forKey: "inputPoint2") as? CIVector,
+            let inputPoint3 = filter.value(forKey: "inputPoint3") as? CIVector,
+            let inputPoint4 = filter.value(forKey: "inputPoint4") as? CIVector
         {
             let points =  [inputPoint0, inputPoint1, inputPoint2, inputPoint3, inputPoint4].map
             {

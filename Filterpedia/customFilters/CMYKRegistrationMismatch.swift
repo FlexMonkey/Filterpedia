@@ -265,7 +265,7 @@ class CMYKLevels: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            kernel = kernel else
+            let kernel = kernel else
         {
             return nil
         }
@@ -368,7 +368,7 @@ class CMYKRegistrationMismatch: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }

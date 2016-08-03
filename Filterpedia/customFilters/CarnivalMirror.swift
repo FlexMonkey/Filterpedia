@@ -101,7 +101,7 @@ class CarnivalMirror: CIFilter
     override var outputImage : CIImage!
     {
         if let inputImage = inputImage,
-            kernel = carnivalMirrorKernel
+            let kernel = carnivalMirrorKernel
         {
             let arguments = [
                 inputHorizontalWavelength, inputHorizontalAmount,

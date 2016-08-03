@@ -21,7 +21,7 @@ extension UIBezierPath
             
             if ii == 0
             {
-                self.move(to: int erpolationPoints[0])
+                self.move(to: interpolationPoints[0])
             }
             
             var nextii = (ii + 1) % interpolationPoints.count

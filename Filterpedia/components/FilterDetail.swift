@@ -173,13 +173,13 @@ class FilterDetail: UIView
        histogramDisplayHidden = !histogramToggleSwitch.isOn
     }
     
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    @objc(viewForZoomingInScrollView:) func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
     func updateFromFilterName()
     {
-        guard let filterName = filterName, filter = CIFilter(name: filterName) else
+        guard let filterName = filterName, let filter = CIFilter(name: filterName) else
         {
             return
         }
@@ -220,23 +220,23 @@ class FilterDetail: UIView
             {
                 // default image
                 if let className = attribute[kCIAttributeClass] as? String
-                    where className == "CIImage" && filterParameterValues[inputKey] == nil
+                    , className == "CIImage" && filterParameterValues[inputKey] == nil
                 {
                     filterParameterValues[inputKey] = assets.first!.ciImage
                 }
                 
                 // ensure previous values don't exceed kCIAttributeSliderMax for this filter
                 if let maxValue = attribute[kCIAttributeSliderMax] as? Float,
-                    filterParameterValue = filterParameterValues[inputKey] as? Float
-                    where filterParameterValue > maxValue
+                    let filterParameterValue = filterParameterValues[inputKey] as? Float
+                    , filterParameterValue > maxValue
                 {
                     filterParameterValues[inputKey] = maxValue
                 }
                 
                 // ensure vector is correct length
                 if let defaultVector = attribute[kCIAttributeDefault] as? CIVector,
-                    filterParameterValue = filterParameterValues[inputKey] as? CIVector
-                    where defaultVector.count != filterParameterValue.count
+                    let filterParameterValue = filterParameterValues[inputKey] as? CIVector
+                    , defaultVector.count != filterParameterValue.count
                 {
                     filterParameterValues[inputKey] = defaultVector
                 }
@@ -404,7 +404,7 @@ extension FilterDetail: UITableViewDataSource
             for: indexPath) as! FilterInputItemRenderer
  
         if let inputKey = currentFilter?.inputKeys[(indexPath as NSIndexPath).row],
-            attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
+            let attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
             cell.detail = (inputKey: inputKey,
                 attribute: attribute,
@@ -423,7 +423,7 @@ extension FilterDetail: FilterInputItemRendererDelegate
 {
     func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
     {
-        if let key = forKey, value = didChangeValue
+        if let key = forKey, let value = didChangeValue
         {
             filterParameterValues[key] = value
             
@@ -431,7 +431,7 @@ extension FilterDetail: FilterInputItemRendererDelegate
         }
     }
     
-    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
+    @objc(tableView:shouldHighlightRowAtIndexPath:) func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
     {
         return false
     }

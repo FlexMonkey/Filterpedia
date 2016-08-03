@@ -103,8 +103,8 @@ class SimpleSky: CIFilter
         let shaderPath = Bundle.main.path(forResource: "cikl_sky", ofType: "cikernel")
         
         guard let path = shaderPath,
-            code = try? String(contentsOfFile: path),
-            kernel = CIColorKernel(string: code) else
+            let code = try? String(contentsOfFile: path),
+            let kernel = CIColorKernel(string: code) else
         {
             fatalError("Unable to build Sky shader")
         }

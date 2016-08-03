@@ -211,7 +211,7 @@ class CRTFilter: CIFilter
         override var outputImage: CIImage!
         {
             if let inputImage = inputImage,
-                crtColorKernel = crtColorKernel
+                let crtColorKernel = crtColorKernel
             {
                 let dod = inputImage.extent
                 let args = [inputImage, pixelWidth, pixelHeight]
@@ -243,7 +243,7 @@ class CRTFilter: CIFilter
         override var outputImage : CIImage!
             {
                 if let inputImage = inputImage,
-                    crtWarpKernel = crtWarpKernel
+                    let crtWarpKernel = crtWarpKernel
                 {
                     let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend]
                     let extent = inputImage.extent.insetBy(dx: -1, dy: -1)

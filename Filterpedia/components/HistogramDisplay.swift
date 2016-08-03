@@ -228,7 +228,7 @@ extension UIBezierPath
     func interpolatePointsWithHermite(_ interpolationPoints : [CGPoint], alpha : CGFloat = 1.0/3.0)
     {
         guard !interpolationPoints.isEmpty else { return }
-        self.move(to: int erpolationPoints[0])
+        self.move(to: interpolationPoints[0])
         
         let n = interpolationPoints.count - 1
         

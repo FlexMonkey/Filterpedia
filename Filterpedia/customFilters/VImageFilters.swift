@@ -454,7 +454,7 @@ class HistogramSpecification: CIFilter, VImageFilter
     override var outputImage: CIImage?
     {
         guard let inputImage = inputImage,
-            inputHistogramSource = inputHistogramSource else
+            let inputHistogramSource = inputHistogramSource else
         {
             return nil
         }

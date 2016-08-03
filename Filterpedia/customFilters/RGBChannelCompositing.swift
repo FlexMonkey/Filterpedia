@@ -63,9 +63,9 @@ class RGBChannelCompositing: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputRedImage = inputRedImage,
-            inputGreenImage = inputGreenImage,
-            inputBlueImage = inputBlueImage,
-            rgbChannelCompositingKernel = rgbChannelCompositingKernel else
+            let inputGreenImage = inputGreenImage,
+            let inputBlueImage = inputBlueImage,
+            let rgbChannelCompositingKernel = rgbChannelCompositingKernel else
         {
             return nil
         }
