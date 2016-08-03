@@ -39,7 +39,7 @@ class ViewController: UIViewController
 
 extension ViewController: FilterNavigatorDelegate
 {
-    func filterNavigator(filterNavigator: FilterNavigator, didSelectFilterName: String)
+    func filterNavigator(_ filterNavigator: FilterNavigator, didSelectFilterName: String)
     {
         filterDetail.filterName = didSelectFilterName
     }

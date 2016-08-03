@@ -168,7 +168,7 @@ class MultiBandHSV: CIFilter
             return nil
         }
         
-        return multiBandHSVKernel.applyWithExtent(inputImage.extent,
+        return multiBandHSVKernel.apply(withExtent: inputImage.extent,
             arguments: [inputImage,
                 inputRedShift,
                 inputOrangeShift,

@@ -386,7 +386,7 @@ class MetalFilter: CIFilter, MetalRenderable
         fatalError("textureInvalid() not implemented in MetalFilter")
     }
     
-    func imageFromComputeShader(width width: CGFloat, height: CGFloat, inputImage: CIImage?) -> CIImage
+    func imageFromComputeShader(width: CGFloat, height: CGFloat, inputImage: CIImage?) -> CIImage
     {
         if textureDescriptor == nil
         {

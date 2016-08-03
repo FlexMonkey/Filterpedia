@@ -93,7 +93,7 @@ class CausticNoise: CIFilter
     
     let extent = CGRect(x: 0, y: 0, width: inputWidth, height: inputHeight)
     
-    return causticNoiseKernel.applyWithExtent(extent, arguments: [inputTime, inputTileSize])
+    return causticNoiseKernel.apply(withExtent: extent, arguments: [inputTime, inputTileSize])
   }
 }
 
@@ -194,7 +194,7 @@ class CausticRefraction: CIFilter
       let refractingImage = CIFilter(
           name: "CausticNoise",
           withInputParameters: ["inputTime": inputTime, "inputTileSize": inputTileSize])?.outputImage!
-        .imageByApplyingFilter(
+        .applyingFilter(
           "CIGaussianBlur",
           withInputParameters: [kCIInputRadiusKey: inputSoftening])
       
@@ -205,8 +205,8 @@ class CausticRefraction: CIFilter
         inputLensScale,
         inputLightingAmount]
       
-      return refractingKernel.applyWithExtent(
-        extent,
+      return refractingKernel.apply(
+        withExtent: extent,
         roiCallback:
         {
           (index, rect) in

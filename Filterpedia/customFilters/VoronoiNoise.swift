@@ -65,7 +65,7 @@ class VoronoiNoise: CIFilter
     
     let voronoiKernel: CIColorKernel =
     {
-        let shaderPath = NSBundle.mainBundle().pathForResource("Voronoi", ofType: "cikernel")
+        let shaderPath = Bundle.main.path(forResource: "Voronoi", ofType: "cikernel")
         
         guard let path = shaderPath,
             code = try? String(contentsOfFile: path),
@@ -79,8 +79,8 @@ class VoronoiNoise: CIFilter
     
     override var outputImage: CIImage?
     {
-        return voronoiKernel.applyWithExtent(
-            CGRect(origin: CGPointZero, size: CGSize(width: inputWidth, height: inputHeight)),
+        return voronoiKernel.apply(
+            withExtent: CGRect(origin: CGPoint.zero, size: CGSize(width: inputWidth, height: inputHeight)),
             arguments: [inputSeed, inputSize, inputDensity])
     }
 }

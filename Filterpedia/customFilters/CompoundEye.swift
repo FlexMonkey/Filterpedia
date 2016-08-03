@@ -129,7 +129,7 @@ class CompoundEye: CIFilter
             
             let extent = inputImage.extent
             
-            let warpedImage = warpKernel.applyWithExtent(extent,
+            let warpedImage = warpKernel.apply(withExtent: extent,
                 roiCallback:
                 {
                     (index, rect) in
@@ -138,11 +138,11 @@ class CompoundEye: CIFilter
                 inputImage: inputImage,
                 arguments: [inputWidth, halfWidth, height, diameter, inputBend])!
             
-            let maskImage =  colorKernel.applyWithExtent(extent,
+            let maskImage =  colorKernel.apply(withExtent: extent,
                 arguments: [inputWidth, halfWidth, height, diameter])!
             
             let backgroundImage = CIImage(color: inputBackgroundColor)
-                .imageByCroppingToRect(extent)
+                .cropping(to: extent)
             
             return CIFilter(name: "CIBlendWithMask",
                 withInputParameters: [

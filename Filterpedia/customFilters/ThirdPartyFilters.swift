@@ -61,7 +61,7 @@ class BayerDitherFilter: CIFilter
     
     override var outputImage: CIImage!
     {
-        let CIKernel_DitherBayer = NSBundle.mainBundle().pathForResource("DitherBayer", ofType: "cikernel")
+        let CIKernel_DitherBayer = Bundle.main.path(forResource: "DitherBayer", ofType: "cikernel")
         
         guard let path = CIKernel_DitherBayer,
             code = try? String(contentsOfFile: path),
@@ -71,6 +71,6 @@ class BayerDitherFilter: CIFilter
         let extent = inputImage.extent
         let arguments = [inputImage, inputIntensity, inputMatrix, inputPalette]
         
-        return ditherKernel.applyWithExtent(extent, arguments: arguments)
+        return ditherKernel.apply(withExtent: extent, arguments: arguments)
     }
 }

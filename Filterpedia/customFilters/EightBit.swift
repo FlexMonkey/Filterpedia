@@ -100,8 +100,8 @@ class EightBit: CIFilter
         let extent = inputImage.extent
         
         
-        let final = kernel.applyWithExtent(extent,
-            arguments: [inputImage.imageByApplyingFilter("CIPixellate", withInputParameters: [kCIInputScaleKey: inputScale])])
+        let final = kernel.apply(withExtent: extent,
+            arguments: [inputImage.applyingFilter("CIPixellate", withInputParameters: [kCIInputScaleKey: inputScale])])
         
         return final
     }

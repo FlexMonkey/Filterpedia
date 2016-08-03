@@ -134,8 +134,8 @@ class MaskedVariableCircularBokeh: CIFilter
         
         let extent = inputImage.extent
         
-        let blur = maskedVariableBokeh.applyWithExtent(
-            inputImage.extent,
+        let blur = maskedVariableBokeh.apply(
+            withExtent: inputImage.extent,
             roiCallback:
             {
                 (index, rect) in
@@ -144,8 +144,8 @@ class MaskedVariableCircularBokeh: CIFilter
             arguments: [inputImage, inputBlurMask, inputMaxBokehRadius])
         
         return blur!
-            .imageByApplyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputMask": inputBlurMask, "inputRadius": inputBlurRadius])
-            .imageByCroppingToRect(extent)
+            .applyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputMask": inputBlurMask, "inputRadius": inputBlurRadius])
+            .cropping(to: extent)
     }
 }
 

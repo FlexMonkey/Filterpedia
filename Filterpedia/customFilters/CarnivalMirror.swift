@@ -109,7 +109,7 @@ class CarnivalMirror: CIFilter
             
             let extent = inputImage.extent
             
-            return kernel.applyWithExtent(extent,
+            return kernel.apply(withExtent: extent,
                 roiCallback:
                 {
                     (index, rect) in

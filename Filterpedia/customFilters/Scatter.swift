@@ -72,8 +72,8 @@ class ScatterWarp: CIFilter
             return nil
         }
         
-        return  kernel.applyWithExtent(
-            inputImage.extent,
+        return  kernel.apply(
+            withExtent: inputImage.extent,
             roiCallback:
             {
                 (index, rect) in
@@ -138,13 +138,13 @@ class Scatter: CIFilter
         }
         
         let noise = CIFilter(name: "CIRandomGenerator")!.outputImage!
-            .imageByApplyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputScatterSmoothness])
-            .imageByCroppingToRect(inputImage.extent)
+            .applyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputScatterSmoothness])
+            .cropping(to: inputImage.extent)
         
         let arguments = [inputImage, noise, inputScatterRadius]
 
-        return kernel.applyWithExtent(
-            inputImage.extent,
+        return kernel.apply(
+            withExtent: inputImage.extent,
             roiCallback:
             {
                 (index, rect) in

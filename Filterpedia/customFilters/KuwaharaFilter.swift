@@ -119,7 +119,7 @@ class KuwaharaFilter: CIFilter
             let arguments = [inputImage, inputRadius]
             let extent = inputImage.extent
             
-            return kuwaharaKernel.applyWithExtent(extent,
+            return kuwaharaKernel.apply(withExtent: extent,
                 roiCallback:
                 {
                     (index, rect) in

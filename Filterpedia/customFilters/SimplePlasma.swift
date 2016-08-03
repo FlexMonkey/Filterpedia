@@ -94,10 +94,10 @@ class SimplePlasma: CIFilter
             return nil
         }
         
-        let extent = CGRect(origin: CGPointZero, size: CGSize(width: inputSize.X, height: inputSize.Y))
+        let extent = CGRect(origin: CGPoint.zero, size: CGSize(width: inputSize.x, height: inputSize.y))
         
-        return kernel.applyWithExtent(
-            extent,
+        return kernel.apply(
+            withExtent: extent,
             arguments: [inputTime / 10, inputIterations, inputSharpness, inputScale])
     }
     

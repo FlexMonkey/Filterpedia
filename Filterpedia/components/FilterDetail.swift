@@ -23,7 +23,7 @@ import UIKit
 class FilterDetail: UIView
 {
     let rect640x640 = CGRect(x: 0, y: 0, width: 640, height: 640)
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     let compositeOverBlackFilter = CompositeOverBlackFilter()
     
@@ -31,7 +31,7 @@ class FilterDetail: UIView
     {
         let layer = CAShapeLayer()
         
-        layer.strokeColor = UIColor.lightGrayColor().CGColor
+        layer.strokeColor = UIColor.lightGray.cgColor
         layer.fillColor = nil
         layer.lineWidth = 0.5
         
@@ -40,10 +40,10 @@ class FilterDetail: UIView
     
     let tableView: UITableView =
     {
-        let tableView = UITableView(frame: CGRectZero,
-            style: UITableViewStyle.Plain)
+        let tableView = UITableView(frame: CGRect.zero,
+            style: UITableViewStyle.plain)
         
-        tableView.registerClass(FilterInputItemRenderer.self,
+        tableView.register(FilterInputItemRenderer.self,
             forCellReuseIdentifier: "FilterInputItemRenderer")
         
         return tableView
@@ -55,11 +55,11 @@ class FilterDetail: UIView
     {
         let toggle = UISwitch()
         
-        toggle.on = !self.histogramDisplayHidden
+        toggle.isOn = !self.histogramDisplayHidden
         toggle.addTarget(
             self,
             action: #selector(FilterDetail.toggleHistogramView),
-            forControlEvents: .ValueChanged)
+            for: .valueChanged)
         
         return toggle
     }()
@@ -72,10 +72,10 @@ class FilterDetail: UIView
         {
             if !histogramDisplayHidden
             {
-                self.histogramDisplay.imageRef = imageView.image?.CGImage
+                self.histogramDisplay.imageRef = imageView.image?.cgImage
             }
             
-            UIView.animateWithDuration(0.25)
+            UIView.animate(withDuration: 0.25)
             {
                 self.histogramDisplay.alpha = self.histogramDisplayHidden ? 0 : 1
             }
@@ -86,9 +86,9 @@ class FilterDetail: UIView
     {
         let imageView = UIImageView()
         
-        imageView.backgroundColor = UIColor.blackColor()
+        imageView.backgroundColor = UIColor.black
         
-        imageView.layer.borderColor = UIColor.grayColor().CGColor
+        imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 1
         
         return imageView
@@ -170,10 +170,10 @@ class FilterDetail: UIView
     
     func toggleHistogramView()
     {
-       histogramDisplayHidden = !histogramToggleSwitch.on
+       histogramDisplayHidden = !histogramToggleSwitch.isOn
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
@@ -264,10 +264,10 @@ class FilterDetail: UIView
             .forEach({ ($0 as? FilterAttributesDisplayable)?.setFilter(currentFilter) })
         
         let queue = currentFilter is VImageFilter ?
-            dispatch_get_main_queue() :
-            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+            DispatchQueue.main :
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
  
-        dispatch_async(queue)
+        queue.async
         {
             let startTime = CFAbsoluteTimeGetCurrent()
             
@@ -277,7 +277,7 @@ class FilterDetail: UIView
             }
             
             let outputImage = currentFilter.outputImage!
-            let finalImage: CGImageRef
+            let finalImage: CGImage
   
             let context = (currentFilter is MetalRenderable) ? self.ciMetalContext : self.ciOpenGLESContext
             
@@ -293,7 +293,7 @@ class FilterDetail: UIView
                         kCIInputImageKey: outputImage])!
                 
                 finalImage = context.createCGImage(stretch.outputImage!,
-                    fromRect: self.rect640x640)
+                    from: self.rect640x640)!
             }
             else if outputImage.extent.width < 640 || outputImage.extent.height < 640
             {
@@ -304,25 +304,25 @@ class FilterDetail: UIView
                     forKey: kCIInputImageKey)
                 
                 finalImage = context.createCGImage(self.compositeOverBlackFilter.outputImage!,
-                    fromRect: self.rect640x640)
+                    from: self.rect640x640)!
             }
             else
             {
                 finalImage = context.createCGImage(outputImage,
-                    fromRect: self.rect640x640)
+                    from: self.rect640x640)!
             }
             
             let endTime = (CFAbsoluteTimeGetCurrent() - startTime)
             print(self.filterName!, "execution time", endTime)
             
-            dispatch_async(dispatch_get_main_queue())
+            DispatchQueue.main.async
             {
                 if !self.histogramDisplayHidden
                 {
                     self.histogramDisplay.imageRef = finalImage
                 }
                 
-                self.imageView.image = UIImage(CGImage: finalImage)
+                self.imageView.image = UIImage(cgImage: finalImage)
                 self.busy = false
                 
                 if self.pending
@@ -362,20 +362,20 @@ class FilterDetail: UIView
             height: thirdHeight).insetBy(dx: 5, dy: 5)
         
         histogramToggleSwitch.frame = CGRect(
-            x: frame.width - histogramToggleSwitch.intrinsicContentSize().width,
+            x: frame.width - histogramToggleSwitch.intrinsicContentSize.width,
             y: 0,
-            width: intrinsicContentSize().width,
-            height: intrinsicContentSize().height)
+            width: intrinsicContentSize.width,
+            height: intrinsicContentSize.height)
         
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         
         activityIndicator.frame = imageView.bounds
         
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: 0, y: 0))
-        path.addLineToPoint(CGPoint(x: 0, y: frame.height))
+        path.move(to: CGPoint(x: 0, y: 0))
+        path.addLine(to: CGPoint(x: 0, y: frame.height))
         
-        shapeLayer.path = path.CGPath
+        shapeLayer.path = path.cgPath
     }
 }
 
@@ -383,7 +383,7 @@ class FilterDetail: UIView
 
 extension FilterDetail: UITableViewDelegate
 {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
         return 85
     }
@@ -393,17 +393,17 @@ extension FilterDetail: UITableViewDelegate
 
 extension FilterDetail: UITableViewDataSource
 {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return currentFilter?.inputKeys.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FilterInputItemRenderer",
-            forIndexPath: indexPath) as! FilterInputItemRenderer
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FilterInputItemRenderer",
+            for: indexPath) as! FilterInputItemRenderer
  
-        if let inputKey = currentFilter?.inputKeys[indexPath.row],
+        if let inputKey = currentFilter?.inputKeys[(indexPath as NSIndexPath).row],
             attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
         {
             cell.detail = (inputKey: inputKey,
@@ -421,7 +421,7 @@ extension FilterDetail: UITableViewDataSource
 
 extension FilterDetail: FilterInputItemRendererDelegate
 {
-    func filterInputItemRenderer(filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
     {
         if let key = forKey, value = didChangeValue
         {
@@ -431,7 +431,7 @@ extension FilterDetail: FilterInputItemRendererDelegate
         }
     }
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
     {
         return false
     }

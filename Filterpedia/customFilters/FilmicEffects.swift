@@ -80,7 +80,7 @@ class BleachBypassFilter: CIFilter
         let extent = inputImage.extent
         let arguments = [inputImage, inputAmount]
         
-        return bleachBypassKernel.applyWithExtent(extent, arguments: arguments)
+        return bleachBypassKernel.apply(withExtent: extent, arguments: arguments)
     }
 }
 
@@ -144,6 +144,6 @@ class TechnicolorFilter: CIFilter
         let extent = inputImage.extent
         let arguments = [inputImage, inputAmount]
         
-        return technicolorKernel.applyWithExtent(extent, arguments: arguments)
+        return technicolorKernel.apply(withExtent: extent, arguments: arguments)
     }
 }
