@@ -59,7 +59,7 @@ class HistogramDisplay: UIView
         
         let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
 
-        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>>(rgba)
+        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(rgba)
         
         vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
 

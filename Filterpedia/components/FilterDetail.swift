@@ -265,7 +265,7 @@ class FilterDetail: UIView
         
         let queue = currentFilter is VImageFilter ?
             DispatchQueue.main :
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default)
  
         queue.async
         {

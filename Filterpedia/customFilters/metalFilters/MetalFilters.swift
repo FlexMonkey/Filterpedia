@@ -256,7 +256,7 @@ class MetalImageFilter: MetalFilter
     override func textureInvalid() -> Bool
     {
         if let textureDescriptor = textureDescriptor,
-            let inputImage = inputImage where
+            let inputImage = inputImage ,
             textureDescriptor.width != Int(inputImage.extent.width)  ||
                 textureDescriptor.height != Int(inputImage.extent.height)
         {
