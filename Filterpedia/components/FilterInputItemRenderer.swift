@@ -157,7 +157,7 @@ class FilterInputItemRenderer: UITableViewCell
     func vectorSliderChangeHandler()
     {
         guard let attributeType = attribute[kCIAttributeClass] as? String,
-            vector = vectorSlider.vector else
+            let vector = vectorSlider.vector else
         {
             return
         }
