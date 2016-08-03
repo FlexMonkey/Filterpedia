@@ -32,7 +32,7 @@ class SobelEdgeDetection3x3: SobelEdgeDetectionBase
             horizontalWeights: horizontalSobel,
             verticalWeights: verticalSobel)
         
-        return makeOpaqueKernel?.applyWithExtent(inputImage.extent, arguments: [final])
+        return makeOpaqueKernel?.apply(withExtent: inputImage.extent, arguments: [final])
     }
     
     override func displayName() -> String
@@ -69,7 +69,7 @@ class SobelEdgeDetection5x5: SobelEdgeDetectionBase
             horizontalWeights: horizontalSobel,
             verticalWeights: verticalSobel)
 
-        return makeOpaqueKernel?.applyWithExtent(inputImage.extent, arguments: [final])
+        return makeOpaqueKernel?.apply(withExtent: inputImage.extent, arguments: [final])
     }
     
     override func displayName() -> String
@@ -82,18 +82,18 @@ class SobelEdgeDetectionBase: CIFilter
 {
     let makeOpaqueKernel = CIColorKernel(string: "kernel vec4 xyz(__sample pixel) { return vec4(pixel.rgb, 1.0); }")
     
-    private func sobel(sourceImage: CIImage, filterName: String, horizontalWeights: CIVector, verticalWeights: CIVector) -> CIImage
+    private func sobel(_ sourceImage: CIImage, filterName: String, horizontalWeights: CIVector, verticalWeights: CIVector) -> CIImage
     {
         return sourceImage
-            .imageByApplyingFilter(filterName,
+            .applyingFilter(filterName,
                 withInputParameters: [
                     kCIInputWeightsKey: horizontalWeights.multiply(inputWeight),
                     kCIInputBiasKey: inputBias])
-            .imageByApplyingFilter(filterName,
+            .applyingFilter(filterName,
                 withInputParameters: [
                     kCIInputWeightsKey: verticalWeights.multiply(inputWeight),
                     kCIInputBiasKey: inputBias])
-            .imageByCroppingToRect(sourceImage.extent)
+            .cropping(to: sourceImage.extent)
     }
     
     var inputImage : CIImage?

@@ -19,7 +19,7 @@ class CompositeOverBlackFilter: CIFilter
     override init()
     {
         black = CIFilter(name: "CIConstantColorGenerator",
-            withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.blackColor())])!
+            withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.black)])!
         
         composite = CIFilter(name: "CISourceAtopCompositing",
             withInputParameters: [kCIInputBackgroundImageKey: black.outputImage!])!
