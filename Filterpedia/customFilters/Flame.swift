@@ -157,11 +157,11 @@ class Flame: CIFilter
     
     let flameKernel: CIColorKernel =
     {
-        let shaderPath = NSBundle.mainBundle().pathForResource("flame", ofType: "cikernel")
+        let shaderPath = Bundle.main.path(forResource: "flame", ofType: "cikernel")
         
         guard let path = shaderPath,
-            code = try? String(contentsOfFile: path),
-            kernel = CIColorKernel(string: code) else
+            let code = try? String(contentsOfFile: path),
+            let kernel = CIColorKernel(string: code) else
         {
             fatalError("Unable to build Flame shader")
         }
@@ -179,8 +179,8 @@ class Flame: CIFilter
                          inputBlueMultiplier, inputBlueExponent,
                          inputStrength]
         
-        return flameKernel.applyWithExtent(
-            CGRect(origin: CGPointZero, size: CGSize(width: inputWidth, height: inputHeight)),
+        return flameKernel.apply(
+            withExtent: CGRect(origin: CGPoint.zero, size: CGSize(width: inputWidth, height: inputHeight)),
             arguments: arguments)
     }
     

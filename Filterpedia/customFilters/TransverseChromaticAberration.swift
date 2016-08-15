@@ -97,7 +97,7 @@ class TransverseChromaticAberration: CIFilter
     override var outputImage: CIImage?
     {
         guard let inputImage = inputImage,
-            kernel = transverseChromaticAberrationKernel else
+            let kernel = transverseChromaticAberrationKernel else
         {
             return nil
         }
@@ -108,8 +108,8 @@ class TransverseChromaticAberration: CIFilter
                     inputFalloff,
                     inputBlur]
         
-        return kernel.applyWithExtent(
-            inputImage.extent,
+        return kernel.apply(
+            withExtent: inputImage.extent,
             roiCallback: {
                 (index, rect) in
                 return rect.insetBy(dx: -1, dy: -1)

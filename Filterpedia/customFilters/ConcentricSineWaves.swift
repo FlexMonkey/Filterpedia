@@ -117,11 +117,11 @@ class ConcentricSineWaves: CIFilter
         }
         
         let extent = CGRect(
-            origin: CGPointZero,
-            size: CGSize(width: inputSize.X, height: inputSize.Y))
+            origin: CGPoint.zero,
+            size: CGSize(width: inputSize.x, height: inputSize.y))
 
-        return kernel.applyWithExtent(
-            extent,
+        return kernel.apply(
+            withExtent: extent,
             arguments: [inputWidth, inputCenter, inputAmplitude, Int(inputFrequency), inputColor0, inputColor1])
     }
 }

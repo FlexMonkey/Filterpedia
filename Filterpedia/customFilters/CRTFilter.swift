@@ -75,14 +75,14 @@ class VHSTrackingLines: CIFilter
             return nil
         }
         
-        let tx = NSValue(CGAffineTransform: CGAffineTransformMakeTranslation(CGFloat(drand48() * 100), CGFloat(drand48() * 100)))
+        let tx = NSValue(cgAffineTransform: CGAffineTransform(translationX: CGFloat(drand48() * 100), y: CGFloat(drand48() * 100)))
         
         let noise = CIFilter(name: "CIRandomGenerator")!.outputImage!
-            .imageByApplyingFilter("CIAffineTransform",
+            .applyingFilter("CIAffineTransform",
                 withInputParameters: [kCIInputTransformKey: tx])
-            .imageByApplyingFilter("CILanczosScaleTransform",
+            .applyingFilter("CILanczosScaleTransform",
                 withInputParameters: [kCIInputAspectRatioKey: 5])
-            .imageByCroppingToRect(inputImage.extent)
+            .cropping(to: inputImage.extent)
         
         
         let kernel = CIColorKernel(string:
@@ -100,8 +100,8 @@ class VHSTrackingLines: CIFilter
         let extent = inputImage.extent
         let arguments = [inputImage, noise, inputTime, inputSpacing, inputStripeHeight, inputBackgroundNoise]
         
-        let final = kernel.applyWithExtent(extent, arguments: arguments)?
-            .imageByApplyingFilter("CIPhotoEffectNoir", withInputParameters: nil)
+        let final = kernel.apply(withExtent: extent, arguments: arguments)?
+            .applyingFilter("CIPhotoEffectNoir", withInputParameters: nil)
         
         return final
     }
@@ -211,11 +211,11 @@ class CRTFilter: CIFilter
         override var outputImage: CIImage!
         {
             if let inputImage = inputImage,
-                crtColorKernel = crtColorKernel
+                let crtColorKernel = crtColorKernel
             {
                 let dod = inputImage.extent
                 let args = [inputImage, pixelWidth, pixelHeight]
-                return crtColorKernel.applyWithExtent(dod, arguments: args)
+                return crtColorKernel.apply(withExtent: dod, arguments: args)
             }
             return nil
         }
@@ -243,12 +243,12 @@ class CRTFilter: CIFilter
         override var outputImage : CIImage!
             {
                 if let inputImage = inputImage,
-                    crtWarpKernel = crtWarpKernel
+                    let crtWarpKernel = crtWarpKernel
                 {
                     let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend]
                     let extent = inputImage.extent.insetBy(dx: -1, dy: -1)
                     
-                    return crtWarpKernel.applyWithExtent(extent,
+                    return crtWarpKernel.apply(withExtent: extent,
                         roiCallback:
                         {
                             (index, rect) in
