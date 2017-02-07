@@ -20,7 +20,7 @@
 
 import CoreImage
 
-let tau = CGFloat(M_PI * 2)
+let tau = CGFloat(Double.pi * 2)
 
 /// `RGBChannelCompositing` filter takes three input images and composites them together
 /// by their color channels, the output RGB is `(inputRed.r, inputGreen.g, inputBlue.b)`

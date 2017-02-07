@@ -421,7 +421,7 @@ class MetalFilter: CIFilter, MetalRenderable
       
       func attributeInputKeyHasAttributeClass(inputKey:String,typeName:String) -> Bool {
         if
-        let x = attributes[inputKey] as? [String:[String:Any]],
+        let x = attributes[inputKey] as? [String:Any],
           let attClass = x[kCIAttributeClass] as? String,
           attClass == typeName {
           return true
@@ -437,7 +437,7 @@ class MetalFilter: CIFilter, MetalRenderable
                 var bufferValue = value(forKey: inputKey) as? Float
             {
                 let buffer = device.makeBuffer(bytes: &bufferValue,
-                    length: sizeof(Float),
+                    length: MemoryLayout<Float>.size,
                     options: MTLResourceOptions())
                 
                 commandEncoder.setBuffer(buffer, offset: 0, at: bufferIndex)
@@ -456,7 +456,7 @@ class MetalFilter: CIFilter, MetalRenderable
                     Float(bufferValue.alpha))
                 
                 let buffer = device.makeBuffer(bytes: &color,
-                    length: sizeof(float4),
+                    length: MemoryLayout<float4>.size,
                     options: MTLResourceOptions())
                 
                 commandEncoder.setBuffer(buffer, offset: 0, at: bufferIndex)
