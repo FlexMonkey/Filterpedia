@@ -48,10 +48,10 @@ class MetalPixellateFilter: MetalImageFilter
         inputPixelHeight = 25
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Metal Pixellate" as AnyObject,
+            kCIAttributeFilterDisplayName: "Metal Pixellate" as Any,
         
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -112,10 +112,10 @@ class MetalPerlinNoise: MetalGeneratorFilter
         inputColor1 = CIColor(red: 0, green: 0, blue: 0.15)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Metal Perlin Noise" as AnyObject,
+            kCIAttributeFilterDisplayName: "Metal Perlin Noise" as Any,
             
             "inputReciprocalScale": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
@@ -207,10 +207,10 @@ class MetalKuwaharaFilter: MetalImageFilter
         inputRadius = 15
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Metal Kuwahara" as AnyObject,
+            kCIAttributeFilterDisplayName: "Metal Kuwahara" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -418,11 +418,22 @@ class MetalFilter: CIFilter, MetalRenderable
         let commandEncoder = commandBuffer.makeComputeCommandEncoder()
         
         commandEncoder.setComputePipelineState(pipelineState)
-        
+      
+      func attributeInputKeyHasAttributeClass(inputKey:String,typeName:String) -> Bool {
+        if
+        let x = attributes[inputKey] as? [String:[String:Any]],
+          let attClass = x[kCIAttributeClass] as? String,
+          attClass == typeName {
+          return true
+        }
+        else {
+          return false
+        }
+      }
         // populate float buffers using kCIAttributeIdentity as buffer index
-        for inputKey in inputKeys where attributes[inputKey]?[kCIAttributeClass] == "NSNumber"
+        for inputKey in inputKeys where attributeInputKeyHasAttributeClass(inputKey: inputKey, typeName: "NSNumber")
         {
-            if let bufferIndex = (attributes[inputKey] as! [String:AnyObject])[kCIAttributeIdentity] as? Int,
+            if let bufferIndex = (attributes[inputKey] as! [String:Any])[kCIAttributeIdentity] as? Int,
                 var bufferValue = value(forKey: inputKey) as? Float
             {
                 let buffer = device.makeBuffer(bytes: &bufferValue,
@@ -434,9 +445,9 @@ class MetalFilter: CIFilter, MetalRenderable
         }
         
         // populate color buffers using kCIAttributeIdentity as buffer index
-        for inputKey in inputKeys where attributes[inputKey]?[kCIAttributeClass] == "CIColor"
+        for inputKey in inputKeys where attributeInputKeyHasAttributeClass(inputKey: inputKey, typeName: "CIColor")
         {
-            if let bufferIndex = (attributes[inputKey] as! [String:AnyObject])[kCIAttributeIdentity] as? Int,
+            if let bufferIndex = (attributes[inputKey] as! [String:Any])[kCIAttributeIdentity] as? Int,
                 let bufferValue = value(forKey: inputKey) as? CIColor
             {
                 var color = float4(Float(bufferValue.red),

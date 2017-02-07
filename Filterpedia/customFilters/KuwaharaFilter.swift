@@ -25,10 +25,10 @@ class KuwaharaFilter: CIFilter
     var inputImage: CIImage?
     var inputRadius: CGFloat = 15
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Kuwahara Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Kuwahara Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

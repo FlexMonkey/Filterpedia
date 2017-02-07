@@ -30,10 +30,10 @@ class Flame: CIFilter
     var inputWidth: CGFloat = 640
     var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Flame" as AnyObject,
+            kCIAttributeFilterDisplayName: "Flame" as Any,
             
             "inputTime": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",

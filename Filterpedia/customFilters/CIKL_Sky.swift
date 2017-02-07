@@ -19,10 +19,10 @@ class SimpleSky: CIFilter
     var inputWidth: CGFloat = 640
     var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Simple Sky" as AnyObject,
+            kCIAttributeFilterDisplayName: "Simple Sky" as Any,
             
             "inputSunDiameter": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",

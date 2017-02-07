@@ -25,10 +25,10 @@ class VHSTrackingLines: CIFilter
         inputBackgroundNoise = 0.05
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "VHS Tracking Lines" as AnyObject,
+            kCIAttributeFilterDisplayName: "VHS Tracking Lines" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -114,10 +114,10 @@ class CRTFilter: CIFilter
     var inputPixelHeight: CGFloat = 12
     var inputBend: CGFloat = 3.2
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "CRT Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "CRT Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",

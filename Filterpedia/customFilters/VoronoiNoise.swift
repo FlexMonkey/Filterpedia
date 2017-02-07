@@ -16,10 +16,10 @@ class VoronoiNoise: CIFilter
     var inputWidth: CGFloat = 640
     var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Voronoi Noise" as AnyObject,
+            kCIAttributeFilterDisplayName: "Voronoi Noise" as Any,
             "inputSeed": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 1,

@@ -63,10 +63,10 @@ class RefractedTextFilter: CIFilter
     fileprivate var refractingImage: CIImage?
     fileprivate var rawTextImage: CIImage?
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Refracted Text" as AnyObject,
+            kCIAttributeFilterDisplayName: "Refracted Text" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

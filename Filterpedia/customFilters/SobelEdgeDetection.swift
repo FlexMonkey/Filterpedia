@@ -111,10 +111,10 @@ class SobelEdgeDetectionBase: CIFilter
         fatalError("SobelEdgeDetectionBase must be sublassed")
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: displayName() as AnyObject,
+            kCIAttributeFilterDisplayName: displayName() as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

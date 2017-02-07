@@ -29,10 +29,10 @@ class BleachBypassFilter: CIFilter
     var inputImage : CIImage?
     var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Bleach Bypass Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Bleach Bypass Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -92,10 +92,10 @@ class TechnicolorFilter: CIFilter
     var inputImage : CIImage?
     var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Technicolor Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Technicolor Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

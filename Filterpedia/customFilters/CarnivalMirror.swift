@@ -39,10 +39,10 @@ class CarnivalMirror: CIFilter
         inputVerticalAmount = 20
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Carnival Mirror" as AnyObject,
+            kCIAttributeFilterDisplayName: "Carnival Mirror" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

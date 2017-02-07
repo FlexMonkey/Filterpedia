@@ -27,10 +27,10 @@ class ScatterWarp: CIFilter
     var inputImage: CIImage?
     var inputScatterRadius: CGFloat = 25
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Scatter (Warp Kernel)" as AnyObject,
+            kCIAttributeFilterDisplayName: "Scatter (Warp Kernel)" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -92,10 +92,10 @@ class Scatter: CIFilter
     var inputScatterRadius: CGFloat = 25
     var inputScatterSmoothness: CGFloat = 1.0
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Scatter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Scatter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

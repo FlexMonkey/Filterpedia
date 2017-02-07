@@ -47,9 +47,9 @@ class LensFlare: CIFilter
     var inputReflectionSizeSix: CGFloat = 40
     var inputReflectionSizeSeven: CGFloat = 20
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
-        let positions: [String : AnyObject] = [
+        let positions: [String : Any] = [
             "inputPositionOne": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 0.15,
@@ -114,7 +114,7 @@ class LensFlare: CIFilter
                 kCIAttributeType: kCIAttributeTypeScalar],
         ]
         
-        let sizes: [String : AnyObject] = [
+        let sizes: [String : Any] = [
             "inputReflectionSizeZero": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 20,
@@ -194,8 +194,8 @@ class LensFlare: CIFilter
                 kCIAttributeType: kCIAttributeTypeOffset]
         ]
         
-        let attributes: [String : AnyObject] = [
-            kCIAttributeFilterDisplayName: "Lens Flare" as AnyObject,
+        let attributes: [String : Any] = [
+            kCIAttributeFilterDisplayName: "Lens Flare" as Any,
             
             "inputOrigin": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",
@@ -284,7 +284,7 @@ class LensFlare: CIFilter
             reflectionZero, reflectionOne, reflectionTwo, reflectionThree, reflectionFour, reflectionFive, reflectionSix, reflectionSeven,
             inputReflectionSizeZero, inputReflectionSizeOne, inputReflectionSizeTwo, inputReflectionSizeThree, inputReflectionSizeFour,
             inputReflectionSizeFive, inputReflectionSizeSix, inputReflectionSizeSeven,
-            inputColor, inputReflectionBrightness]
+            inputColor, inputReflectionBrightness] as [Any]
         
         let lensFlareImage = colorKernel.apply(
             withExtent: extent,

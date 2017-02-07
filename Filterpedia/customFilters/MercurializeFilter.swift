@@ -88,10 +88,10 @@ class MercurializeFilter: CIFilter
         inputScale = 10
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Mercurialize Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Mercurialize Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

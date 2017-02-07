@@ -673,10 +673,10 @@ class PseudoColor: CIFilter
     var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
     var inputColor4 = CIColor(red: 0, green: 1, blue: 1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Pseudo Color Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Pseudo Color Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -779,10 +779,10 @@ class VintageVignette: CIFilter
     var inputVignetteRadius: CGFloat = 1
     var inputSepiaToneIntensity: CGFloat = 1
     
-override var attributes: [String : AnyObject]
+override var attributes: [String : Any]
 {
     return [
-        kCIAttributeFilterDisplayName: "Vintage Vignette" as AnyObject,
+        kCIAttributeFilterDisplayName: "Vintage Vignette" as Any,
         
         "inputImage": [kCIAttributeIdentity: 0,
             kCIAttributeClass: "CIImage",
@@ -854,10 +854,10 @@ class DifferenceOfGaussians: CIFilter
     var inputSigma0: CGFloat = 0.75
     var inputSigma1: CGFloat = 3.25
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Difference of Gaussians" as AnyObject,
+            kCIAttributeFilterDisplayName: "Difference of Gaussians" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -947,10 +947,10 @@ class StarBurstFilter: CIFilter
     
     let thresholdFilter = ThresholdToAlphaFilter()
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Starburst Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Starburst Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1029,7 +1029,7 @@ class StarBurstFilter: CIFilter
                 .cropping(to: thresholdImage.extent)
                 .applyingFilter("CIAdditionCompositing",
                     withInputParameters: [
-                        kCIInputBackgroundImageKey: starBurstAccumulator?.image()])
+                        kCIInputBackgroundImageKey: starBurstAccumulator?.image() as Any])
             
             starBurstAccumulator?.setImage(starburst)
         }
@@ -1039,7 +1039,7 @@ class StarBurstFilter: CIFilter
                 withInputParameters: [kCIInputBrightnessKey: inputStarburstBrightness])
 
         let final = inputImage.applyingFilter("CIAdditionCompositing",
-            withInputParameters: [kCIInputBackgroundImageKey: adjustedStarBurst])
+            withInputParameters: [kCIInputBackgroundImageKey: adjustedStarBurst as Any])
         
         return final
     }
@@ -1050,11 +1050,11 @@ class StarBurstFilter: CIFilter
 
 class ThresholdToAlphaFilter: ThresholdFilter
 {
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         var superAttributes = super.attributes
         
-        superAttributes[kCIAttributeFilterDisplayName] = "Threshold To Alpha Filter" as AnyObject?
+        superAttributes[kCIAttributeFilterDisplayName] = "Threshold To Alpha Filter" as Any?
         
         return superAttributes
     }
@@ -1090,10 +1090,10 @@ class AdvancedMonochrome: CIFilter
     var inputBlueBalance: CGFloat = 1
     var inputClamp: CGFloat = 0
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Advanced Monochrome" as AnyObject,
+            kCIAttributeFilterDisplayName: "Advanced Monochrome" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1172,10 +1172,10 @@ class SmoothThreshold: CIFilter
     var inputEdgeO: CGFloat = 0.25
     var inputEdge1: CGFloat = 0.75
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Smooth Threshold Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Smooth Threshold Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1233,10 +1233,10 @@ class ThresholdFilter: CIFilter
     var inputImage : CIImage?
     var inputThreshold: CGFloat = 0.75
 
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Threshold Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Threshold Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1305,10 +1305,10 @@ class PolarPixellate: CIFilter
     var inputPixelArc = CGFloat(M_PI / 15)
     var inputPixelLength = CGFloat(50)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Polar Pixellate" as AnyObject,
+            kCIAttributeFilterDisplayName: "Polar Pixellate" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1393,10 +1393,10 @@ class VignetteNoirFilter: CIFilter
     var inputIntensity: CGFloat = 2
     var inputEdgeBrightness: CGFloat = -0.3
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Vignette Noir Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Vignette Noir Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1470,10 +1470,10 @@ class NormalMapFilter: CIFilter
     var inputImage: CIImage?
     var inputContrast = CGFloat(2)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Normal Map" as AnyObject,
+            kCIAttributeFilterDisplayName: "Normal Map" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

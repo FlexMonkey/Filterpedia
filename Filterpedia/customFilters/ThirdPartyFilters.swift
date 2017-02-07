@@ -21,10 +21,10 @@ class BayerDitherFilter: CIFilter
     var inputMatrix = CGFloat(8.0)
     var inputPalette = CGFloat(0.0)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Bayer Dither Filter" as AnyObject,
+            kCIAttributeFilterDisplayName: "Bayer Dither Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",

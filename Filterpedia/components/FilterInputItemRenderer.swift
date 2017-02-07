@@ -63,7 +63,7 @@ class FilterInputItemRenderer: UITableViewCell
     weak var delegate: FilterInputItemRendererDelegate?
     fileprivate(set) var inputKey: String = ""
     
-    var detail: (inputKey: String, attribute: [String : AnyObject], filterParameterValues: [String: AnyObject]) = ("", [String: AnyObject](), [String: AnyObject]())
+    var detail: (inputKey: String, attribute: [String : Any], filterParameterValues: [String: Any]) = ("", [String: Any](), [String: Any]())
     {
         didSet
         {
@@ -74,9 +74,9 @@ class FilterInputItemRenderer: UITableViewCell
     }
    
     fileprivate var title: String = ""
-    fileprivate var filterParameterValues = [String: AnyObject]()
+    fileprivate var filterParameterValues = [String: Any]()
     
-    fileprivate(set) var attribute = [String : AnyObject]()
+    fileprivate(set) var attribute = [String : Any]()
     {
         didSet
         {
@@ -93,7 +93,7 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
  
-    fileprivate(set) var value: AnyObject?
+    fileprivate(set) var value: Any?
     {
         didSet
         {
@@ -151,7 +151,7 @@ class FilterInputItemRenderer: UITableViewCell
     
     func sliderChangeHandler()
     {
-        value = slider.value as AnyObject?
+        value = slider.value as Any?
     }
     
     func vectorSliderChangeHandler()
@@ -195,7 +195,7 @@ class FilterInputItemRenderer: UITableViewCell
             
             if let updatedText = editTextController.textFields?.first?.text
             {
-                self.value = updatedText as AnyObject?
+                self.value = updatedText as Any?
                 
                 self.textEditButton.setTitle(updatedText, for: UIControlState())
             }
@@ -315,5 +315,5 @@ class FilterInputItemRenderer: UITableViewCell
 
 protocol FilterInputItemRendererDelegate: class
 {
-    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: Any?, forKey: String?)
 }
