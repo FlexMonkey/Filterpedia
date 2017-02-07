@@ -77,15 +77,15 @@ class CMYKToneCurves: CIFilter
         " return vec4(rgbToCMYK(pixel.rgb).www, 1.0);" +
         "}")
     
-    static func applyToneCurve(image: CIImage, values: CIVector) -> CIImage
+    static func applyToneCurve(_ image: CIImage, values: CIVector) -> CIImage
     {
-        return image.imageByApplyingFilter("CIToneCurve",
+        return image.applyingFilter("CIToneCurve",
             withInputParameters: [
-                "inputPoint0": CIVector(x: 0.0, y: values.valueAtIndex(0)),
-                "inputPoint1": CIVector(x: 0.25, y: values.valueAtIndex(1)),
-                "inputPoint2": CIVector(x: 0.5, y: values.valueAtIndex(2)),
-                "inputPoint3": CIVector(x: 0.75, y: values.valueAtIndex(3)),
-                "inputPoint4": CIVector(x: 1.0, y: values.valueAtIndex(4))
+                "inputPoint0": CIVector(x: 0.0, y: values.value(at: 0)),
+                "inputPoint1": CIVector(x: 0.25, y: values.value(at: 1)),
+                "inputPoint2": CIVector(x: 0.5, y: values.value(at: 2)),
+                "inputPoint3": CIVector(x: 0.75, y: values.value(at: 3)),
+                "inputPoint4": CIVector(x: 1.0, y: values.value(at: 4))
             ])
     }
     
@@ -106,7 +106,7 @@ class CMYKToneCurves: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "CMYK Tone Curve",
+            kCIAttributeFilterDisplayName: "CMYK Tone Curve" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -152,10 +152,10 @@ class CMYKToneCurves: CIFilter
         
         let extent = inputImage.extent
         
-        let cyanImage = CMYKToneCurves.toCyanKernel?.applyWithExtent(extent, arguments: [inputImage])
-        let magentaImage = CMYKToneCurves.toMagentaKernel?.applyWithExtent(extent, arguments: [inputImage])
-        let yellowImage = CMYKToneCurves.toYellowKernel?.applyWithExtent(extent, arguments: [inputImage])
-        let blackImage = CMYKToneCurves.toBlackKernel?.applyWithExtent(extent, arguments: [inputImage])
+        let cyanImage = CMYKToneCurves.toCyanKernel?.apply(withExtent: extent, arguments: [inputImage])
+        let magentaImage = CMYKToneCurves.toMagentaKernel?.apply(withExtent: extent, arguments: [inputImage])
+        let yellowImage = CMYKToneCurves.toYellowKernel?.apply(withExtent: extent, arguments: [inputImage])
+        let blackImage = CMYKToneCurves.toBlackKernel?.apply(withExtent: extent, arguments: [inputImage])
         
         let cyan = CMYKToneCurves.applyToneCurve(cyanImage!, values: inputCyanValues)
         let magenta = CMYKToneCurves.applyToneCurve(magentaImage!, values: inputMagentaValues)
@@ -163,7 +163,7 @@ class CMYKToneCurves: CIFilter
         let black = CMYKToneCurves.applyToneCurve(blackImage!, values: inputBlackValues)
         
         let final = CMYKToneCurves.cmykToRGBKernel?
-            .applyWithExtent(inputImage.extent, arguments: [cyan, magenta, yellow, black])
+            .apply(withExtent: inputImage.extent, arguments: [cyan, magenta, yellow, black])
         
         return final
     }
@@ -187,7 +187,7 @@ class CMYKLevels: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "CMYK Levels",
+            kCIAttributeFilterDisplayName: "CMYK Levels" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -265,15 +265,15 @@ class CMYKLevels: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            kernel = kernel else
+            let kernel = kernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputCyanMultiplier, inputMagentaMultiplier, inputYellowMultiplier, inputBlackMultiplier]
+        let arguments = [inputImage, inputCyanMultiplier, inputMagentaMultiplier, inputYellowMultiplier, inputBlackMultiplier] as [Any]
         
-        return kernel.applyWithExtent(extent, arguments: arguments)
+        return kernel.apply(withExtent: extent, arguments: arguments)
     }
 }
 
@@ -294,7 +294,7 @@ class CMYKRegistrationMismatch: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "CMYK Registration Mismatch",
+            kCIAttributeFilterDisplayName: "CMYK Registration Mismatch" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -368,12 +368,12 @@ class CMYKRegistrationMismatch: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }
         
-        let final = kernel.applyWithExtent(inputImage.extent,
+        let final = kernel.apply(withExtent: inputImage.extent,
                                            roiCallback:
             {
                 (index, rect) in

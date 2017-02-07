@@ -34,7 +34,7 @@ class FilterInputItemRenderer: UITableViewCell
     {
         let layer = CAShapeLayer()
         
-        layer.strokeColor = UIColor.lightGrayColor().CGColor
+        layer.strokeColor = UIColor.lightGray.cgColor
         layer.fillColor = nil
         layer.lineWidth = 0.5
         
@@ -46,7 +46,7 @@ class FilterInputItemRenderer: UITableViewCell
         let label = UILabel()
         
         label.numberOfLines = 2
-        label.font = UIFont.italicSystemFontOfSize(12)
+        label.font = UIFont.italicSystemFont(ofSize: 12)
         
         return label
     }()
@@ -55,13 +55,13 @@ class FilterInputItemRenderer: UITableViewCell
     {
         let stackView = UIStackView()
         
-        stackView.axis = UILayoutConstraintAxis.Vertical
+        stackView.axis = UILayoutConstraintAxis.vertical
         
         return stackView
     }()
     
     weak var delegate: FilterInputItemRendererDelegate?
-    private(set) var inputKey: String = ""
+    fileprivate(set) var inputKey: String = ""
     
     var detail: (inputKey: String, attribute: [String : AnyObject], filterParameterValues: [String: AnyObject]) = ("", [String: AnyObject](), [String: AnyObject]())
     {
@@ -73,10 +73,10 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
    
-    private var title: String = ""
-    private var filterParameterValues = [String: AnyObject]()
+    fileprivate var title: String = ""
+    fileprivate var filterParameterValues = [String: AnyObject]()
     
-    private(set) var attribute = [String : AnyObject]()
+    fileprivate(set) var attribute = [String : AnyObject]()
     {
         didSet
         {
@@ -93,7 +93,7 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
  
-    private(set) var value: AnyObject?
+    fileprivate(set) var value: AnyObject?
     {
         didSet
         {
@@ -115,8 +115,8 @@ class FilterInputItemRenderer: UITableViewCell
         contentView.addSubview(stackView)
         
         textEditButton.layer.cornerRadius = 5
-        textEditButton.layer.backgroundColor = UIColor(white: 0.8, alpha: 1.0).CGColor
-        textEditButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        textEditButton.layer.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
+        textEditButton.setTitleColor(UIColor.blue, for: UIControlState())
         
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
@@ -127,19 +127,19 @@ class FilterInputItemRenderer: UITableViewCell
       
         slider.addTarget(self,
             action: #selector(FilterInputItemRenderer.sliderChangeHandler),
-            forControlEvents: UIControlEvents.ValueChanged)
+            for: UIControlEvents.valueChanged)
         
         vectorSlider.addTarget(self,
             action: #selector(FilterInputItemRenderer.vectorSliderChangeHandler),
-            forControlEvents: UIControlEvents.ValueChanged)
+            for: UIControlEvents.valueChanged)
         
         imagesSegmentedControl.addTarget(self,
             action: #selector(FilterInputItemRenderer.imagesSegmentedControlChangeHandler),
-            forControlEvents: UIControlEvents.ValueChanged)
+            for: UIControlEvents.valueChanged)
         
         textEditButton.addTarget(self,
             action: #selector(FilterInputItemRenderer.textEditClicked),
-            forControlEvents: .TouchDown)
+            for: .touchDown)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -151,23 +151,23 @@ class FilterInputItemRenderer: UITableViewCell
     
     func sliderChangeHandler()
     {
-        value = slider.value
+        value = slider.value as AnyObject?
     }
     
     func vectorSliderChangeHandler()
     {
         guard let attributeType = attribute[kCIAttributeClass] as? String,
-            vector = vectorSlider.vector else
+            let vector = vectorSlider.vector else
         {
             return
         }
         
         if attributeType == "CIColor"
         {
-            value = CIColor(red: vector.X,
-                green: vector.Y,
-                blue: vector.Z,
-                alpha: vector.W)
+            value = CIColor(red: vector.x,
+                green: vector.y,
+                blue: vector.z,
+                alpha: vector.w)
         }
         else
         {
@@ -182,28 +182,28 @@ class FilterInputItemRenderer: UITableViewCell
     
     func textEditClicked()
     {
-        guard let rootController = UIApplication.sharedApplication().keyWindow!.rootViewController else
+        guard let rootController = UIApplication.shared.keyWindow!.rootViewController else
         {
             return
         }
         
-        let editTextController = UIAlertController(title: "Filterpedia", message: nil, preferredStyle: .Alert)
+        let editTextController = UIAlertController(title: "Filterpedia", message: nil, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default)
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
         {
             (_: UIAlertAction) in
             
             if let updatedText = editTextController.textFields?.first?.text
             {
-                self.value = updatedText
+                self.value = updatedText as AnyObject?
                 
-                self.textEditButton.setTitle(updatedText, forState: .Normal)
+                self.textEditButton.setTitle(updatedText, for: UIControlState())
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         
-        editTextController.addTextFieldWithConfigurationHandler
+        editTextController.addTextField
         {
             (textField: UITextField) in
             
@@ -213,7 +213,7 @@ class FilterInputItemRenderer: UITableViewCell
         editTextController.addAction(okAction)
         editTextController.addAction(cancelAction)
         
-        rootController.presentViewController(editTextController, animated: false, completion: nil)
+        rootController.present(editTextController, animated: false, completion: nil)
     }
     
     // MARK: Update user interface for attributes
@@ -228,10 +228,10 @@ class FilterInputItemRenderer: UITableViewCell
         switch attributeType
         {
         case "NSNumber":
-            slider.hidden = false
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = true
-            textEditButton.hidden = true
+            slider.isHidden = false
+            imagesSegmentedControl.isHidden = true
+            vectorSlider.isHidden = true
+            textEditButton.isHidden = true
      
             slider.min = attribute[kCIAttributeSliderMin] as? Float ?? 0
             slider.max = attribute[kCIAttributeSliderMax] as? Float ?? 1
@@ -242,20 +242,20 @@ class FilterInputItemRenderer: UITableViewCell
             sliderChangeHandler()
             
         case "CIImage":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = false
-            vectorSlider.hidden = true
-            textEditButton.hidden = true
+            slider.isHidden = true
+            imagesSegmentedControl.isHidden = false
+            vectorSlider.isHidden = true
+            textEditButton.isHidden = true
             
-            imagesSegmentedControl.selectedSegmentIndex = assets.indexOf({ $0.ciImage == filterParameterValues[inputKey] as? CIImage}) ?? 0
+            imagesSegmentedControl.selectedSegmentIndex = assets.index(where: { $0.ciImage == filterParameterValues[inputKey] as? CIImage}) ?? 0
             
             imagesSegmentedControlChangeHandler()
             
         case "CIVector":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = false
-            textEditButton.hidden = true
+            slider.isHidden = true
+            imagesSegmentedControl.isHidden = true
+            vectorSlider.isHidden = false
+            textEditButton.isHidden = true
          
             let max: CGFloat? = (attribute[kCIAttributeType] as? String == kCIAttributeTypePosition) ? 640 : nil
             let vector = filterParameterValues[inputKey] as? CIVector ?? attribute[kCIAttributeDefault] as? CIVector
@@ -265,10 +265,10 @@ class FilterInputItemRenderer: UITableViewCell
             vectorSliderChangeHandler()
             
         case "CIColor":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = false
-            textEditButton.hidden = true
+            slider.isHidden = true
+            imagesSegmentedControl.isHidden = true
+            vectorSlider.isHidden = false
+            textEditButton.isHidden = true
             
             if let color = filterParameterValues[inputKey] as? CIColor ?? attribute[kCIAttributeDefault] as? CIColor
             {
@@ -279,21 +279,21 @@ class FilterInputItemRenderer: UITableViewCell
             vectorSliderChangeHandler()
             
         case "NSString":
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = true
-            textEditButton.hidden = false
+            slider.isHidden = true
+            imagesSegmentedControl.isHidden = true
+            vectorSlider.isHidden = true
+            textEditButton.isHidden = false
       
             let text = filterParameterValues[inputKey] as? NSString ?? attribute[kCIAttributeDefault] as? NSString ?? ""
             
             value = text
-            textEditButton.setTitle(String(text), forState: .Normal)
+            textEditButton.setTitle(String(text), for: UIControlState())
             
         default:
-            slider.hidden = true
-            imagesSegmentedControl.hidden = true
-            vectorSlider.hidden = true
-            textEditButton.hidden = true
+            slider.isHidden = true
+            imagesSegmentedControl.isHidden = true
+            vectorSlider.isHidden = true
+            textEditButton.isHidden = true
             
         }
     }
@@ -303,10 +303,10 @@ class FilterInputItemRenderer: UITableViewCell
         stackView.frame = contentView.bounds.insetBy(dx: 5, dy: 5)
         
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: 5, y: contentView.bounds.height))
-        path.addLineToPoint(CGPoint(x: contentView.bounds.width, y: contentView.bounds.height))
+        path.move(to: CGPoint(x: 5, y: contentView.bounds.height))
+        path.addLine(to: CGPoint(x: contentView.bounds.width, y: contentView.bounds.height))
         
-        shapeLayer.path = path.CGPath
+        shapeLayer.path = path.cgPath
         
     }
 }
@@ -315,5 +315,5 @@ class FilterInputItemRenderer: UITableViewCell
 
 protocol FilterInputItemRendererDelegate: class
 {
-    func filterInputItemRenderer(filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
 }

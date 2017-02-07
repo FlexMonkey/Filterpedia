@@ -96,7 +96,7 @@ class MultiBandHSV: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "MultiBandHSV",
+            kCIAttributeFilterDisplayName: "MultiBandHSV" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -168,7 +168,7 @@ class MultiBandHSV: CIFilter
             return nil
         }
         
-        return multiBandHSVKernel.applyWithExtent(inputImage.extent,
+        return multiBandHSVKernel.apply(withExtent: inputImage.extent,
             arguments: [inputImage,
                 inputRedShift,
                 inputOrangeShift,

@@ -30,7 +30,7 @@ class ScatterWarp: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Scatter (Warp Kernel)",
+            kCIAttributeFilterDisplayName: "Scatter (Warp Kernel)" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -67,13 +67,13 @@ class ScatterWarp: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let kernel = kernel, inputImage = inputImage else
+        guard let kernel = kernel, let inputImage = inputImage else
         {
             return nil
         }
         
-        return  kernel.applyWithExtent(
-            inputImage.extent,
+        return  kernel.apply(
+            withExtent: inputImage.extent,
             roiCallback:
             {
                 (index, rect) in
@@ -95,7 +95,7 @@ class Scatter: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Scatter",
+            kCIAttributeFilterDisplayName: "Scatter" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -132,19 +132,19 @@ class Scatter: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let kernel = kernel, inputImage = inputImage else
+        guard let kernel = kernel, let inputImage = inputImage else
         {
             return nil
         }
         
         let noise = CIFilter(name: "CIRandomGenerator")!.outputImage!
-            .imageByApplyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputScatterSmoothness])
-            .imageByCroppingToRect(inputImage.extent)
+            .applyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputScatterSmoothness])
+            .cropping(to: inputImage.extent)
         
-        let arguments = [inputImage, noise, inputScatterRadius]
+        let arguments = [inputImage, noise, inputScatterRadius] as [Any]
 
-        return kernel.applyWithExtent(
-            inputImage.extent,
+        return kernel.apply(
+            withExtent: inputImage.extent,
             roiCallback:
             {
                 (index, rect) in

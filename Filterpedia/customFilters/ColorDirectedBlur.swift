@@ -37,7 +37,7 @@ class HomogeneousColorBlur: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Homogeneous Color Blur",
+            kCIAttributeFilterDisplayName: "Homogeneous Color Blur" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -87,15 +87,15 @@ class HomogeneousColorBlur: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }
         
-        let arguments = [inputImage, inputRadius, inputColorThreshold * sqrt(3.0)]
+        let arguments = [inputImage, inputRadius, inputColorThreshold * sqrt(3.0)] as [Any]
         
-        return kernel.applyWithExtent(
-            inputImage.extent,
+        return kernel.apply(
+            withExtent: inputImage.extent,
             roiCallback:
             {
             (index, rect) in
@@ -129,7 +129,7 @@ class ColorDirectedBlur: CIFilter
     override var attributes: [String : AnyObject]
     {
         return [
-            kCIAttributeFilterDisplayName: "Color Directed Blur",
+            kCIAttributeFilterDisplayName: "Color Directed Blur" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -218,28 +218,28 @@ class ColorDirectedBlur: CIFilter
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }
         
         let accumulator = CIImageAccumulator(extent: inputImage.extent, format: kCIFormatARGB8)
         
-        accumulator.setImage(inputImage)
+        accumulator?.setImage(inputImage)
         
         for _ in 0 ... Int(inputIterations)
         {
-            let final = kernel.applyWithExtent(inputImage.extent,
+            let final = kernel.apply(withExtent: inputImage.extent,
                                                roiCallback:
                 {
                     (index, rect) in
                     return rect
                 },
-                                               arguments: [accumulator.image(), inputRadius, 1 - inputThreshold])
+                                               arguments: [accumulator?.image(), inputRadius, 1 - inputThreshold])
             
-            accumulator.setImage(final!)
+            accumulator?.setImage(final!)
         }
         
-        return accumulator.image()
+        return accumulator?.image()
     }
 }
