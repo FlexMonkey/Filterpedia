@@ -202,33 +202,55 @@ class FilterDetail: UIView
         
         applyFilter()
     }
-    
-    /// Assign a default image if required and ensure existing
-    /// filterParameterValues won't break the new filter.
+  
+  /** Modifies the current filter parameter values if needed to ensure 
+   that they are compatible with the current filter.
+   
+   Namely, assigns a default image if none is present but one is required, and
+   clamps any float values to the maximumn value allowed by the current filter.
+ 
+   */
     func fixFilterParameterValues()
     {
         guard let currentFilter = currentFilter else
         {
             return
         }
-        
+      
+      // get attributes from CIFilter
         let attributes = currentFilter.attributes
         
         for inputKey in currentFilter.inputKeys
         {
+          // iterate through each of the input attribuets
             if let attribute = attributes[inputKey] as? [String : Any]
             {
-                // default image
+                /* if an attribute should contain a CIImage,
+               and we currently have a nil value for that attribute,
+               then make the first asset into the CIImage */
                 if let className = attribute[kCIAttributeClass] as? String, className == "CIImage" && filterParameterValues[inputKey] == nil
                 {
                     filterParameterValues[inputKey] = assets.first!.ciImage
                 }
                 
                 // ensure previous values don't exceed kCIAttributeSliderMax for this filter
-                if let maxValue = attribute[kCIAttributeSliderMax] as? Float,
-                    let filterParameterValue = filterParameterValues[inputKey] as? Float, filterParameterValue > maxValue
+              /*
+               if an attribute defines a maximum slider value, which casts to Float
+               and we have a value for this attribute, which casts to Float,
+               and our value for this attribute is higher than the slider max ...
+ 
+               */
+                if
+                  let maxValue = attribute[kCIAttributeSliderMax] as? Float,
+                  let filterParameterValue = filterParameterValues[inputKey] as? Float,
+                  filterParameterValue > maxValue
                 {
-                    filterParameterValues[inputKey] = maxValue as Any?
+                  // ... then clamp our value down to the max value
+                  
+                  // N.B. We assign a boxed value (NSNumber) rather than a raw Float,
+                  // because this dictionary will be consumed by CoreImage which
+                  // only understands Cocoa boxed object values
+                    filterParameterValues[inputKey] = maxValue as NSNumber
                 }
                 
                 // ensure vector is correct length
@@ -423,6 +445,17 @@ extension FilterDetail: FilterInputItemRendererDelegate
     {
         if let key = forKey, let value = didChangeValue
         {
+          /*
+           
+           TODO: should we cast Floats to NSNumber here ?
+           
+           At this point, do we need to ensure that we are not inserting a
+           raw Float value rather than a boxed NSNumber instance into the
+           filterParameterValues? CoreImage understants NSNumber but not
+           Float, so if the dictionary will be consumed by CoreImage downstream
+           then we might be inadvertently filling the dictionary with values
+           that CoreImage will ignore.
+           */
             filterParameterValues[key] = value
             
             applyFilter()
