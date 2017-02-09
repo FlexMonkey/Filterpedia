@@ -233,11 +233,20 @@ class FilterInputItemRenderer: UITableViewCell
             vectorSlider.isHidden = true
             textEditButton.isHidden = true
      
-            slider.min = attribute[kCIAttributeSliderMin] as? Float ?? 0
-            slider.max = attribute[kCIAttributeSliderMax] as? Float ?? 1
-            slider.value = filterParameterValues[inputKey] as? Float ??
-                attribute[kCIAttributeDefault] as? Float ??
-                attribute[kCIAttributeSliderMin] as? Float ?? 0
+            slider.min = (attribute[kCIAttributeSliderMin] as? Float) ?? 0
+            slider.max = (attribute[kCIAttributeSliderMax] as? Float) ?? 1
+            /* 
+             keep trying until we get a float:
+             - filterParametersValues, current value
+             - attribute, default value
+             - attribute, min value
+             - 0
+ 
+             */
+            slider.value =
+              (((filterParameterValues[inputKey] as? Float) ??
+                (attribute[kCIAttributeDefault] as? Float)) ??
+                attribute[kCIAttributeSliderMin] as? Float) ?? 0
             
             sliderChangeHandler()
             
