@@ -39,10 +39,10 @@ class CarnivalMirror: CIFilter
         inputVerticalAmount = 20
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Carnival Mirror",
+            kCIAttributeFilterDisplayName: "Carnival Mirror" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -101,7 +101,7 @@ class CarnivalMirror: CIFilter
     override var outputImage : CIImage!
     {
         if let inputImage = inputImage,
-            kernel = carnivalMirrorKernel
+            let kernel = carnivalMirrorKernel
         {
             let arguments = [
                 inputHorizontalWavelength, inputHorizontalAmount,
@@ -109,7 +109,7 @@ class CarnivalMirror: CIFilter
             
             let extent = inputImage.extent
             
-            return kernel.applyWithExtent(extent,
+            return kernel.apply(withExtent: extent,
                 roiCallback:
                 {
                     (index, rect) in

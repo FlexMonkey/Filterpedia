@@ -57,14 +57,14 @@ class LabelledSlider: UIControl
     {
         super.init(frame: frame)
 
-        minValueLabel.textAlignment = .Right
+        minValueLabel.textAlignment = .right
         
         addSubview(minValueLabel)
         addSubview(maxValueLabel)
         
         addSubview(slider)
  
-        slider.addTarget(self, action: #selector(LabelledSlider.sliderChangeHandler), forControlEvents: UIControlEvents.ValueChanged)
+        slider.addTarget(self, action: #selector(LabelledSlider.sliderChangeHandler), for: UIControlEvents.valueChanged)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -76,7 +76,7 @@ class LabelledSlider: UIControl
     {
         value = slider.value
 
-        sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        sendActions(for: UIControlEvents.valueChanged)
     }
     
     override func layoutSubviews()

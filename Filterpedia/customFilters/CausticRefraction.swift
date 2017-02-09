@@ -18,10 +18,10 @@ class CausticNoise: CIFilter
   var inputWidth: CGFloat = 640
   var inputHeight: CGFloat = 640
   
-  override var attributes: [String : AnyObject]
+  override var attributes: [String : Any]
   {
     return [
-      kCIAttributeFilterDisplayName: "Caustic Noise",
+      kCIAttributeFilterDisplayName: "Caustic Noise" as Any,
       
       "inputTime": [kCIAttributeIdentity: 0,
         kCIAttributeClass: "NSNumber",
@@ -93,7 +93,7 @@ class CausticNoise: CIFilter
     
     let extent = CGRect(x: 0, y: 0, width: inputWidth, height: inputHeight)
     
-    return causticNoiseKernel.applyWithExtent(extent, arguments: [inputTime, inputTileSize])
+    return causticNoiseKernel.apply(withExtent: extent, arguments: [inputTime, inputTileSize])
   }
 }
 
@@ -109,10 +109,10 @@ class CausticRefraction: CIFilter
     var inputTileSize: CGFloat = 640
     var inputSoftening: CGFloat = 3
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Caustic Refraction",
+            kCIAttributeFilterDisplayName: "Caustic Refraction" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -184,7 +184,7 @@ class CausticRefraction: CIFilter
     override var outputImage: CIImage!
     {
       guard let inputImage = inputImage,
-        refractingKernel = refractingKernel else
+        let refractingKernel = refractingKernel else
       {
         return nil
       }
@@ -194,7 +194,7 @@ class CausticRefraction: CIFilter
       let refractingImage = CIFilter(
           name: "CausticNoise",
           withInputParameters: ["inputTime": inputTime, "inputTileSize": inputTileSize])?.outputImage!
-        .imageByApplyingFilter(
+        .applyingFilter(
           "CIGaussianBlur",
           withInputParameters: [kCIInputRadiusKey: inputSoftening])
       
@@ -203,10 +203,10 @@ class CausticRefraction: CIFilter
         refractingImage!,
         inputRefractiveIndex,
         inputLensScale,
-        inputLightingAmount]
+        inputLightingAmount] as [Any]
       
-      return refractingKernel.applyWithExtent(
-        extent,
+      return refractingKernel.apply(
+        withExtent: extent,
         roiCallback:
         {
           (index, rect) in

@@ -23,7 +23,7 @@ import UIKit
 class FilterDetail: UIView
 {
     let rect640x640 = CGRect(x: 0, y: 0, width: 640, height: 640)
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     let compositeOverBlackFilter = CompositeOverBlackFilter()
     
@@ -31,7 +31,7 @@ class FilterDetail: UIView
     {
         let layer = CAShapeLayer()
         
-        layer.strokeColor = UIColor.lightGrayColor().CGColor
+        layer.strokeColor = UIColor.lightGray.cgColor
         layer.fillColor = nil
         layer.lineWidth = 0.5
         
@@ -40,10 +40,10 @@ class FilterDetail: UIView
     
     let tableView: UITableView =
     {
-        let tableView = UITableView(frame: CGRectZero,
-            style: UITableViewStyle.Plain)
+        let tableView = UITableView(frame: CGRect.zero,
+            style: UITableViewStyle.plain)
         
-        tableView.registerClass(FilterInputItemRenderer.self,
+        tableView.register(FilterInputItemRenderer.self,
             forCellReuseIdentifier: "FilterInputItemRenderer")
         
         return tableView
@@ -55,11 +55,11 @@ class FilterDetail: UIView
     {
         let toggle = UISwitch()
         
-        toggle.on = !self.histogramDisplayHidden
+        toggle.isOn = !self.histogramDisplayHidden
         toggle.addTarget(
             self,
             action: #selector(FilterDetail.toggleHistogramView),
-            forControlEvents: .ValueChanged)
+            for: .valueChanged)
         
         return toggle
     }()
@@ -72,13 +72,13 @@ class FilterDetail: UIView
         {
             if !histogramDisplayHidden
             {
-                self.histogramDisplay.imageRef = imageView.image?.CGImage
+                self.histogramDisplay.imageRef = imageView.image?.cgImage
             }
             
-            UIView.animateWithDuration(0.25)
-            {
+            UIView.animate(withDuration: 0.25, animations: {
                 self.histogramDisplay.alpha = self.histogramDisplayHidden ? 0 : 1
-            }
+            })
+            
         }
     }
     
@@ -86,16 +86,16 @@ class FilterDetail: UIView
     {
         let imageView = UIImageView()
         
-        imageView.backgroundColor = UIColor.blackColor()
+        imageView.backgroundColor = UIColor.black
         
-        imageView.layer.borderColor = UIColor.grayColor().CGColor
+        imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 1
         
         return imageView
     }()
     
     #if !arch(i386) && !arch(x86_64)
-        let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+        let ciMetalContext = CIContext(mtlDevice: MTLCreateSystemDefaultDevice()!)
     #else
         let ciMetalContext = CIContext()
     #endif
@@ -130,10 +130,10 @@ class FilterDetail: UIView
         }
     }
     
-    private var currentFilter: CIFilter?
+    fileprivate var currentFilter: CIFilter?
     
     /// User defined filter parameter values
-    private var filterParameterValues: [String: AnyObject] = [kCIInputImageKey: assets.first!.ciImage]
+    fileprivate var filterParameterValues: [String: Any] = [kCIInputImageKey: assets.first!.ciImage]
     
     override init(frame: CGRect)
     {
@@ -170,16 +170,16 @@ class FilterDetail: UIView
     
     func toggleHistogramView()
     {
-       histogramDisplayHidden = !histogramToggleSwitch.on
+       histogramDisplayHidden = !histogramToggleSwitch.isOn
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
     func updateFromFilterName()
     {
-        guard let filterName = filterName, filter = CIFilter(name: filterName) else
+        guard let filterName = filterName, let filter = CIFilter(name: filterName) else
         {
             return
         }
@@ -202,41 +202,60 @@ class FilterDetail: UIView
         
         applyFilter()
     }
-    
-    /// Assign a default image if required and ensure existing
-    /// filterParameterValues won't break the new filter.
+  
+  /** Modifies the current filter parameter values if needed to ensure 
+   that they are compatible with the current filter.
+   
+   Namely, assigns a default image if none is present but one is required, and
+   clamps any float values to the maximumn value allowed by the current filter.
+ 
+   */
     func fixFilterParameterValues()
     {
         guard let currentFilter = currentFilter else
         {
             return
         }
-        
+      
+      // get attributes from CIFilter
         let attributes = currentFilter.attributes
         
         for inputKey in currentFilter.inputKeys
         {
-            if let attribute = attributes[inputKey] as? [String : AnyObject]
+          // iterate through each of the input attribuets
+            if let attribute = attributes[inputKey] as? [String : Any]
             {
-                // default image
-                if let className = attribute[kCIAttributeClass] as? String
-                    where className == "CIImage" && filterParameterValues[inputKey] == nil
+                /* if an attribute should contain a CIImage,
+               and we currently have a nil value for that attribute,
+               then make the first asset into the CIImage */
+                if let className = attribute[kCIAttributeClass] as? String, className == "CIImage" && filterParameterValues[inputKey] == nil
                 {
                     filterParameterValues[inputKey] = assets.first!.ciImage
                 }
                 
                 // ensure previous values don't exceed kCIAttributeSliderMax for this filter
-                if let maxValue = attribute[kCIAttributeSliderMax] as? Float,
-                    filterParameterValue = filterParameterValues[inputKey] as? Float
-                    where filterParameterValue > maxValue
+              /*
+               if an attribute defines a maximum slider value, which casts to Float
+               and we have a value for this attribute, which casts to Float,
+               and our value for this attribute is higher than the slider max ...
+ 
+               */
+                if
+                  let maxValue = attribute[kCIAttributeSliderMax] as? Float,
+                  let filterParameterValue = filterParameterValues[inputKey] as? Float,
+                  filterParameterValue > maxValue
                 {
-                    filterParameterValues[inputKey] = maxValue
+                  // ... then clamp our value down to the max value
+                  
+                  // N.B. We assign a boxed value (NSNumber) rather than a raw Float,
+                  // because this dictionary will be consumed by CoreImage which
+                  // only understands Cocoa boxed object values
+                    filterParameterValues[inputKey] = maxValue as NSNumber
                 }
                 
                 // ensure vector is correct length
                 if let defaultVector = attribute[kCIAttributeDefault] as? CIVector,
-                    filterParameterValue = filterParameterValues[inputKey] as? CIVector
-                    where defaultVector.count != filterParameterValue.count
+                    let filterParameterValue = filterParameterValues[inputKey] as? CIVector, defaultVector.count != filterParameterValue.count
                 {
                     filterParameterValues[inputKey] = defaultVector
                 }
@@ -262,12 +281,13 @@ class FilterDetail: UIView
         imageView.subviews
             .filter({ $0 is FilterAttributesDisplayable})
             .forEach({ ($0 as? FilterAttributesDisplayable)?.setFilter(currentFilter) })
-        
+      
+      
         let queue = currentFilter is VImageFilter ?
-            dispatch_get_main_queue() :
-            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+            DispatchQueue.main :
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default)
  
-        dispatch_async(queue)
+        queue.async
         {
             let startTime = CFAbsoluteTimeGetCurrent()
             
@@ -277,7 +297,7 @@ class FilterDetail: UIView
             }
             
             let outputImage = currentFilter.outputImage!
-            let finalImage: CGImageRef
+            let finalImage: CGImage
   
             let context = (currentFilter is MetalRenderable) ? self.ciMetalContext : self.ciOpenGLESContext
             
@@ -293,7 +313,7 @@ class FilterDetail: UIView
                         kCIInputImageKey: outputImage])!
                 
                 finalImage = context.createCGImage(stretch.outputImage!,
-                    fromRect: self.rect640x640)
+                    from: self.rect640x640)!
             }
             else if outputImage.extent.width < 640 || outputImage.extent.height < 640
             {
@@ -304,25 +324,25 @@ class FilterDetail: UIView
                     forKey: kCIInputImageKey)
                 
                 finalImage = context.createCGImage(self.compositeOverBlackFilter.outputImage!,
-                    fromRect: self.rect640x640)
+                    from: self.rect640x640)!
             }
             else
             {
                 finalImage = context.createCGImage(outputImage,
-                    fromRect: self.rect640x640)
+                    from: self.rect640x640)!
             }
             
             let endTime = (CFAbsoluteTimeGetCurrent() - startTime)
             print(self.filterName!, "execution time", endTime)
             
-            dispatch_async(dispatch_get_main_queue())
+            DispatchQueue.main.async
             {
                 if !self.histogramDisplayHidden
                 {
                     self.histogramDisplay.imageRef = finalImage
                 }
                 
-                self.imageView.image = UIImage(CGImage: finalImage)
+                self.imageView.image = UIImage(cgImage: finalImage)
                 self.busy = false
                 
                 if self.pending
@@ -362,20 +382,20 @@ class FilterDetail: UIView
             height: thirdHeight).insetBy(dx: 5, dy: 5)
         
         histogramToggleSwitch.frame = CGRect(
-            x: frame.width - histogramToggleSwitch.intrinsicContentSize().width,
+            x: frame.width - histogramToggleSwitch.intrinsicContentSize.width,
             y: 0,
-            width: intrinsicContentSize().width,
-            height: intrinsicContentSize().height)
+            width: intrinsicContentSize.width,
+            height: intrinsicContentSize.height)
         
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         
         activityIndicator.frame = imageView.bounds
         
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: 0, y: 0))
-        path.addLineToPoint(CGPoint(x: 0, y: frame.height))
+        path.move(to: CGPoint(x: 0, y: 0))
+        path.addLine(to: CGPoint(x: 0, y: frame.height))
         
-        shapeLayer.path = path.CGPath
+        shapeLayer.path = path.cgPath
     }
 }
 
@@ -383,7 +403,7 @@ class FilterDetail: UIView
 
 extension FilterDetail: UITableViewDelegate
 {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
         return 85
     }
@@ -393,18 +413,18 @@ extension FilterDetail: UITableViewDelegate
 
 extension FilterDetail: UITableViewDataSource
 {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return currentFilter?.inputKeys.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FilterInputItemRenderer",
-            forIndexPath: indexPath) as! FilterInputItemRenderer
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FilterInputItemRenderer",
+            for: indexPath) as! FilterInputItemRenderer
  
         if let inputKey = currentFilter?.inputKeys[indexPath.row],
-            attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
+            let attribute = currentFilter?.attributes[inputKey] as? [String : Any]
         {
             cell.detail = (inputKey: inputKey,
                 attribute: attribute,
@@ -421,17 +441,28 @@ extension FilterDetail: UITableViewDataSource
 
 extension FilterDetail: FilterInputItemRendererDelegate
 {
-    func filterInputItemRenderer(filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: Any?, forKey: String?)
     {
-        if let key = forKey, value = didChangeValue
+        if let key = forKey, let value = didChangeValue
         {
+          /*
+           
+           TODO: should we cast Floats to NSNumber here ?
+           
+           At this point, do we need to ensure that we are not inserting a
+           raw Float value rather than a boxed NSNumber instance into the
+           filterParameterValues? CoreImage understants NSNumber but not
+           Float, so if the dictionary will be consumed by CoreImage downstream
+           then we might be inadvertently filling the dictionary with values
+           that CoreImage will ignore.
+           */
             filterParameterValues[key] = value
             
             applyFilter()
         }
     }
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
     {
         return false
     }

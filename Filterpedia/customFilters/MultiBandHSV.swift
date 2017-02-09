@@ -93,10 +93,10 @@ class MultiBandHSV: CIFilter
     var inputPurpleShift = CIVector(x: 0, y: 1, z: 1)
     var inputMagentaShift = CIVector(x: 0, y: 1, z: 1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "MultiBandHSV",
+            kCIAttributeFilterDisplayName: "MultiBandHSV" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -168,7 +168,7 @@ class MultiBandHSV: CIFilter
             return nil
         }
         
-        return multiBandHSVKernel.applyWithExtent(inputImage.extent,
+        return multiBandHSVKernel.apply(withExtent: inputImage.extent,
             arguments: [inputImage,
                 inputRedShift,
                 inputOrangeShift,

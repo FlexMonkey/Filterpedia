@@ -29,10 +29,10 @@ class BleachBypassFilter: CIFilter
     var inputImage : CIImage?
     var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Bleach Bypass Filter",
+            kCIAttributeFilterDisplayName: "Bleach Bypass Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -72,15 +72,15 @@ class BleachBypassFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            bleachBypassKernel = bleachBypassKernel else
+            let bleachBypassKernel = bleachBypassKernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputAmount]
+        let arguments = [inputImage, inputAmount] as [Any]
         
-        return bleachBypassKernel.applyWithExtent(extent, arguments: arguments)
+        return bleachBypassKernel.apply(withExtent: extent, arguments: arguments)
     }
 }
 
@@ -92,10 +92,10 @@ class TechnicolorFilter: CIFilter
     var inputImage : CIImage?
     var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Technicolor Filter",
+            kCIAttributeFilterDisplayName: "Technicolor Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -136,14 +136,14 @@ class TechnicolorFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            technicolorKernel = technicolorKernel else
+            let technicolorKernel = technicolorKernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputAmount]
+        let arguments = [inputImage, inputAmount] as [Any]
         
-        return technicolorKernel.applyWithExtent(extent, arguments: arguments)
+        return technicolorKernel.apply(withExtent: extent, arguments: arguments)
     }
 }

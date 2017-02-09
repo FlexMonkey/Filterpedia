@@ -26,420 +26,420 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
 {
     static func registerFilters()
     {
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ThresholdFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ThresholdToAlphaFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CRTFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "VignetteNoirFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MercurializeFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "VintageVignette",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "RGBChannelCompositing",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "RGBChannelGaussianBlur",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "RGBChannelToneCurve",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "PseudoColor",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "KuwaharaFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MetalPixellateFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MetalKuwaharaFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MetalPerlinNoise",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "StarBurstFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ChromaticAberration",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "RGBChannelBrightnessAndContrast",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "VHSTrackingLines",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "EightBit",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "TechnicolorFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "BleachBypassFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CarnivalMirror",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "BayerDitherFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CompoundEye",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "DifferenceOfGaussians",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "AdvancedMonochrome",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "RefractedTextFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "SobelEdgeDetection5x5",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "SobelEdgeDetection3x3",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MultiBandHSV",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "PolarPixellate",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ModelIOSkyGenerator",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ModelIOColorScalarNoise",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ModelIOColorFromTemperature",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CausticRefraction",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CausticNoise",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ColorDirectedBlur",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CMYKRegistrationMismatch",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CMYKLevels",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CMYKToneCurves",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "SmoothThreshold",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "VoronoiNoise",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "NormalMap",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "HistogramSpecification",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ContrastStretch",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "HistogramEqualization",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "SimpleSky",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "LensFlare",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "HexagonalBokehFilter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MaskedVariableCircularBokeh",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "MaskedVariableHexagonalBokeh",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "CircularBokeh",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "EndsInContrastStretch",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "HomogeneousColorBlur",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "SimplePlasma",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ConcentricSineWaves",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "Scatter",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "ScatterWarp",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "TransverseChromaticAberration",
             constructor: CustomFiltersVendor(),
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
-        CIFilter.registerFilterName(
+        CIFilter.registerName(
             "Flame",
             constructor: CustomFiltersVendor(),
             classAttributes: [
@@ -447,7 +447,7 @@ class CustomFiltersVendor: NSObject, CIFilterConstructor
             ])
     }
   
-    func filterWithName(name: String) -> CIFilter?
+    func filter(withName name: String) -> CIFilter?
     {
         switch name
         {
@@ -673,10 +673,10 @@ class PseudoColor: CIFilter
     var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
     var inputColor4 = CIColor(red: 0, green: 1, blue: 1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Pseudo Color Filter",
+            kCIAttributeFilterDisplayName: "Pseudo Color Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -754,15 +754,15 @@ class PseudoColor: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            pseudoColorKernel = pseudoColorKernel else
+            let pseudoColorKernel = pseudoColorKernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputSmoothness, inputColor0, inputColor1, inputColor2, inputColor3, inputColor4]
+        let arguments = [inputImage, inputSmoothness, inputColor0, inputColor1, inputColor2, inputColor3, inputColor4] as [Any]
         
-        return pseudoColorKernel.applyWithExtent(extent, arguments: arguments)
+        return pseudoColorKernel.apply(withExtent: extent, arguments: arguments)
     }
 }
 
@@ -779,10 +779,10 @@ class VintageVignette: CIFilter
     var inputVignetteRadius: CGFloat = 1
     var inputSepiaToneIntensity: CGFloat = 1
     
-override var attributes: [String : AnyObject]
+override var attributes: [String : Any]
 {
     return [
-        kCIAttributeFilterDisplayName: "Vintage Vignette",
+        kCIAttributeFilterDisplayName: "Vintage Vignette" as Any,
         
         "inputImage": [kCIAttributeIdentity: 0,
             kCIAttributeClass: "CIImage",
@@ -833,11 +833,11 @@ override var attributes: [String : AnyObject]
         }
         
         let finalImage = inputImage
-            .imageByApplyingFilter("CIVignette",
+            .applyingFilter("CIVignette",
                 withInputParameters: [
                     kCIInputIntensityKey: inputVignetteIntensity,
                     kCIInputRadiusKey: inputVignetteRadius])
-            .imageByApplyingFilter("CISepiaTone",
+            .applyingFilter("CISepiaTone",
                 withInputParameters: [
                     kCIInputIntensityKey: inputSepiaToneIntensity])
         
@@ -854,10 +854,10 @@ class DifferenceOfGaussians: CIFilter
     var inputSigma0: CGFloat = 0.75
     var inputSigma1: CGFloat = 3.25
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Difference of Gaussians",
+            kCIAttributeFilterDisplayName: "Difference of Gaussians" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -891,21 +891,21 @@ class DifferenceOfGaussians: CIFilter
         }
         
         let blurred0 = DifferenceOfGaussians.gaussianBlurWithSigma(inputSigma0, image: inputImage)
-            .imageByCroppingToRect(inputImage.extent)
+            .cropping(to: inputImage.extent)
         let blurred1 = DifferenceOfGaussians.gaussianBlurWithSigma(inputSigma1, image: inputImage)
-            .imageByCroppingToRect(inputImage.extent)
+            .cropping(to: inputImage.extent)
 
         return blurred0
-            .imageByApplyingFilter("CISubtractBlendMode",
+            .applyingFilter("CISubtractBlendMode",
                 withInputParameters: ["inputBackgroundImage": blurred1])
-            .imageByApplyingFilter("CIColorMatrix",
+            .applyingFilter("CIColorMatrix",
                 withInputParameters: ["inputBiasVector": CIVector(x: 0, y: 0, z: 0, w: 1)])
-            .imageByCroppingToRect(inputImage.extent)
+            .cropping(to: inputImage.extent)
     }
     
-    static func gaussianBlurWithSigma(sigma: CGFloat, image: CIImage) -> CIImage
+    static func gaussianBlurWithSigma(_ sigma: CGFloat, image: CIImage) -> CIImage
     {
-        let weightsArray: [CGFloat] = (-4).stride(through: 4, by: 1).map
+        let weightsArray: [CGFloat] = stride(from: (-4), through: 4, by: 1).map
         {
             CGFloat(DifferenceOfGaussians.gaussian(CGFloat($0), sigma: sigma))
         }
@@ -926,11 +926,11 @@ class DifferenceOfGaussians: CIFilter
         return verticalBlurredImage
     }
     
-    static func gaussian(x: CGFloat, sigma: CGFloat) -> CGFloat
+    static func gaussian(_ x: CGFloat, sigma: CGFloat) -> CGFloat
     {
         let variance = max(sigma * sigma, 0.00001)
         
-        return (1.0 / sqrt(CGFloat(M_PI) * 2 * variance)) * pow(CGFloat(M_E), -pow(x, 2) / (2 * variance))
+        return (1.0 / sqrt(CGFloat(Double.pi) * 2 * variance)) * pow(CGFloat(M_E), -pow(x, 2) / (2 * variance))
     }
 }
 
@@ -947,10 +947,10 @@ class StarBurstFilter: CIFilter
     
     let thresholdFilter = ThresholdToAlphaFilter()
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Starburst Filter",
+            kCIAttributeFilterDisplayName: "Starburst Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -980,7 +980,7 @@ class StarBurstFilter: CIFilter
                 kCIAttributeDisplayName: "Angle",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: M_PI,
+                kCIAttributeSliderMax: Double.pi,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
             "inputStarburstBrightness": [kCIAttributeIdentity: 0,
@@ -1020,26 +1020,26 @@ class StarBurstFilter: CIFilter
         
         for i in 0 ..< inputBeamCount
         {
-            let angle = CGFloat((M_PI / Double(inputBeamCount)) * Double(i))
+            let angle = CGFloat((Double.pi / Double(inputBeamCount)) * Double(i))
             
-            let starburst = thresholdImage.imageByApplyingFilter("CIMotionBlur",
+            let starburst = thresholdImage.applyingFilter("CIMotionBlur",
                     withInputParameters: [
                         kCIInputRadiusKey: inputRadius,
                         kCIInputAngleKey: inputAngle + angle])
-                .imageByCroppingToRect(thresholdImage.extent)
-                .imageByApplyingFilter("CIAdditionCompositing",
+                .cropping(to: thresholdImage.extent)
+                .applyingFilter("CIAdditionCompositing",
                     withInputParameters: [
-                        kCIInputBackgroundImageKey: starBurstAccumulator.image()])
+                        kCIInputBackgroundImageKey: starBurstAccumulator?.image() as Any])
             
-            starBurstAccumulator.setImage(starburst)
+            starBurstAccumulator?.setImage(starburst)
         }
         
-        let adjustedStarBurst = starBurstAccumulator.image()
-            .imageByApplyingFilter("CIColorControls",
+        let adjustedStarBurst = starBurstAccumulator?.image()
+            .applyingFilter("CIColorControls",
                 withInputParameters: [kCIInputBrightnessKey: inputStarburstBrightness])
 
-        let final = inputImage.imageByApplyingFilter("CIAdditionCompositing",
-            withInputParameters: [kCIInputBackgroundImageKey: adjustedStarBurst])
+        let final = inputImage.applyingFilter("CIAdditionCompositing",
+            withInputParameters: [kCIInputBackgroundImageKey: adjustedStarBurst as Any])
         
         return final
     }
@@ -1050,11 +1050,11 @@ class StarBurstFilter: CIFilter
 
 class ThresholdToAlphaFilter: ThresholdFilter
 {
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         var superAttributes = super.attributes
         
-        superAttributes[kCIAttributeFilterDisplayName] = "Threshold To Alpha Filter"
+        superAttributes[kCIAttributeFilterDisplayName] = "Threshold To Alpha Filter" as Any?
         
         return superAttributes
     }
@@ -1090,10 +1090,10 @@ class AdvancedMonochrome: CIFilter
     var inputBlueBalance: CGFloat = 1
     var inputClamp: CGFloat = 0
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Advanced Monochrome",
+            kCIAttributeFilterDisplayName: "Advanced Monochrome" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1152,15 +1152,15 @@ class AdvancedMonochrome: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            kernel = kernel else
+            let kernel = kernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp]
+        let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp] as [Any]
         
-        return kernel.applyWithExtent(extent, arguments: arguments)
+        return kernel.apply(withExtent: extent, arguments: arguments)
     }
 }
 
@@ -1172,10 +1172,10 @@ class SmoothThreshold: CIFilter
     var inputEdgeO: CGFloat = 0.25
     var inputEdge1: CGFloat = 0.75
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Smooth Threshold Filter",
+            kCIAttributeFilterDisplayName: "Smooth Threshold Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1211,7 +1211,7 @@ class SmoothThreshold: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            colorKernel = colorKernel else
+            let colorKernel = colorKernel else
         {
             return nil
         }
@@ -1219,9 +1219,9 @@ class SmoothThreshold: CIFilter
         let extent = inputImage.extent
         let arguments = [inputImage,
                          min(inputEdgeO, inputEdge1),
-                         max(inputEdgeO, inputEdge1),]
+                         max(inputEdgeO, inputEdge1),] as [Any]
         
-        return colorKernel.applyWithExtent(extent,
+        return colorKernel.apply(withExtent: extent,
                                            arguments: arguments)
     }
 }
@@ -1233,10 +1233,10 @@ class ThresholdFilter: CIFilter
     var inputImage : CIImage?
     var inputThreshold: CGFloat = 0.75
 
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Threshold Filter",
+            kCIAttributeFilterDisplayName: "Threshold Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1282,15 +1282,15 @@ class ThresholdFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            thresholdKernel = thresholdKernel else
+            let thresholdKernel = thresholdKernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputThreshold]
+        let arguments = [inputImage, inputThreshold] as [Any]
         
-        return thresholdKernel.applyWithExtent(extent, arguments: arguments)
+        return thresholdKernel.apply(withExtent: extent, arguments: arguments)
     }
 }
 
@@ -1302,13 +1302,13 @@ class PolarPixellate: CIFilter
     var inputImage : CIImage?
     var inputCenter = CIVector(x: 320, y: 320)
     
-    var inputPixelArc = CGFloat(M_PI / 15)
+    var inputPixelArc = CGFloat(Double.pi / 15)
     var inputPixelLength = CGFloat(50)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Polar Pixellate",
+            kCIAttributeFilterDisplayName: "Polar Pixellate" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1316,11 +1316,11 @@ class PolarPixellate: CIFilter
             
             "inputPixelArc": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: CGFloat(M_PI / 15),
+                kCIAttributeDefault: CGFloat(Double.pi / 15),
                 kCIAttributeDisplayName: "Pixel Arc",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: CGFloat(M_PI),
+                kCIAttributeSliderMax: CGFloat(Double.pi),
                 kCIAttributeType: kCIAttributeTypeScalar],
             
             "inputPixelLength": [kCIAttributeIdentity: 0,
@@ -1342,7 +1342,7 @@ class PolarPixellate: CIFilter
     
     override func setDefaults()
     {
-        inputPixelArc = CGFloat(M_PI / 15)
+        inputPixelArc = CGFloat(Double.pi / 15)
         inputPixelLength = 50
         inputCenter = CIVector(x: 320, y: 320)
     }
@@ -1366,12 +1366,12 @@ class PolarPixellate: CIFilter
     
     override var outputImage : CIImage!
     {
-        if let inputImage = inputImage, kernel = warpKernel
+        if let inputImage = inputImage, let kernel = warpKernel
         {
             let extent = inputImage.extent
             let pixelSize = CIVector(x: inputPixelLength, y: inputPixelArc)
             
-            return kernel.applyWithExtent(extent,
+            return kernel.apply(withExtent: extent,
                 roiCallback:
                 {
                     (index, rect) in
@@ -1393,10 +1393,10 @@ class VignetteNoirFilter: CIFilter
     var inputIntensity: CGFloat = 2
     var inputEdgeBrightness: CGFloat = -0.3
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Vignette Noir Filter",
+            kCIAttributeFilterDisplayName: "Vignette Noir Filter" as Any,
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
                 kCIAttributeDisplayName: "Image",
@@ -1443,14 +1443,14 @@ class VignetteNoirFilter: CIFilter
         }
         
         let mask = CIImage(color: CIColor(red: 1, green: 1, blue: 1))
-            .imageByCroppingToRect(inputImage.extent)
-            .imageByApplyingFilter("CIVignette", withInputParameters: [
+            .cropping(to: inputImage.extent)
+            .applyingFilter("CIVignette", withInputParameters: [
                 kCIInputRadiusKey: inputRadius,
                 kCIInputIntensityKey: inputIntensity])
         
         let noir = inputImage
-            .imageByApplyingFilter("CIPhotoEffectNoir",withInputParameters: nil)
-            .imageByApplyingFilter("CIColorControls", withInputParameters: [
+            .applyingFilter("CIPhotoEffectNoir",withInputParameters: nil)
+            .applyingFilter("CIColorControls", withInputParameters: [
                 kCIInputBrightnessKey: inputEdgeBrightness])
         
         let blendWithMaskFilter = CIFilter(name: "CIBlendWithMask", withInputParameters: [
@@ -1470,10 +1470,10 @@ class NormalMapFilter: CIFilter
     var inputImage: CIImage?
     var inputContrast = CGFloat(2)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Normal Map",
+            kCIAttributeFilterDisplayName: "Normal Map" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -1520,19 +1520,19 @@ class NormalMapFilter: CIFilter
     override var outputImage: CIImage?
     {
         guard let inputImage = inputImage,
-            normalMapKernel = normalMapKernel else
+            let normalMapKernel = normalMapKernel else
         {
             return nil
         }
         
-        return normalMapKernel.applyWithExtent(inputImage.extent,
+        return normalMapKernel.apply(withExtent: inputImage.extent,
             roiCallback:
             {
                 (index, rect) in
                 return rect
             },
             arguments: [inputImage])?
-            .imageByApplyingFilter("CIColorControls", withInputParameters: [kCIInputContrastKey: inputContrast])
+            .applyingFilter("CIColorControls", withInputParameters: [kCIInputContrastKey: inputContrast])
     }
 }
 

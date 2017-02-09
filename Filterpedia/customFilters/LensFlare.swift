@@ -47,9 +47,9 @@ class LensFlare: CIFilter
     var inputReflectionSizeSix: CGFloat = 40
     var inputReflectionSizeSeven: CGFloat = 20
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
-        let positions: [String : AnyObject] = [
+        let positions: [String : Any] = [
             "inputPositionOne": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 0.15,
@@ -114,7 +114,7 @@ class LensFlare: CIFilter
                 kCIAttributeType: kCIAttributeTypeScalar],
         ]
         
-        let sizes: [String : AnyObject] = [
+        let sizes: [String : Any] = [
             "inputReflectionSizeZero": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 20,
@@ -194,8 +194,8 @@ class LensFlare: CIFilter
                 kCIAttributeType: kCIAttributeTypeOffset]
         ]
         
-        let attributes: [String : AnyObject] = [
-            kCIAttributeFilterDisplayName: "Lens Flare",
+        let attributes: [String : Any] = [
+            kCIAttributeFilterDisplayName: "Lens Flare" as Any,
             
             "inputOrigin": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",
@@ -261,11 +261,11 @@ class LensFlare: CIFilter
             return nil
         }
         
-        let extent = CGRect(x: 0, y: 0, width: inputSize.X, height: inputSize.Y)
-        let center = CIVector(x: inputSize.X / 2, y: inputSize.Y / 2)
+        let extent = CGRect(x: 0, y: 0, width: inputSize.x, height: inputSize.y)
+        let center = CIVector(x: inputSize.x / 2, y: inputSize.y / 2)
         
-        let localOrigin = CIVector(x: center.X - inputOrigin.X, y: center.Y - inputOrigin.Y)
-        let reflectionZero = CIVector(x: center.X + localOrigin.X, y: center.Y + localOrigin.Y)
+        let localOrigin = CIVector(x: center.x - inputOrigin.x, y: center.y - inputOrigin.y)
+        let reflectionZero = CIVector(x: center.x + localOrigin.x, y: center.y + localOrigin.y)
 
         let reflectionOne = inputOrigin.interpolateTo(reflectionZero, value: inputPositionOne)
         let reflectionTwo = inputOrigin.interpolateTo(reflectionZero, value: inputPositionTwo)
@@ -284,15 +284,15 @@ class LensFlare: CIFilter
             reflectionZero, reflectionOne, reflectionTwo, reflectionThree, reflectionFour, reflectionFive, reflectionSix, reflectionSeven,
             inputReflectionSizeZero, inputReflectionSizeOne, inputReflectionSizeTwo, inputReflectionSizeThree, inputReflectionSizeFour,
             inputReflectionSizeFive, inputReflectionSizeSix, inputReflectionSizeSeven,
-            inputColor, inputReflectionBrightness]
+            inputColor, inputReflectionBrightness] as [Any]
         
-        let lensFlareImage = colorKernel.applyWithExtent(
-            extent,
-            arguments: arguments)?.imageByApplyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: 2])
+        let lensFlareImage = colorKernel.apply(
+            withExtent: extent,
+            arguments: arguments)?.applyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: 2])
         
-        return lensFlareImage?.imageByApplyingFilter(
+        return lensFlareImage?.applyingFilter(
             "CIAdditionCompositing",
-            withInputParameters: [kCIInputBackgroundImageKey: sunbeamsImage]).imageByCroppingToRect(extent)
+            withInputParameters: [kCIInputBackgroundImageKey: sunbeamsImage]).cropping(to: extent)
     }
 }
 
