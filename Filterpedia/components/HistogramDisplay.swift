@@ -52,14 +52,14 @@ class HistogramDisplay: UIView
         let blue = [UInt](repeating: 0, count: 256)
         let alpha = [UInt](repeating: 0, count: 256)
         
-        let redPtr = UnsafeMutablePointer<vImagePixelCount>(red)
-        let greenPtr = UnsafeMutablePointer<vImagePixelCount>(green)
-        let bluePtr = UnsafeMutablePointer<vImagePixelCount>(blue)
-        let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(alpha)
+        let alphaMutablePointer = UnsafeMutablePointer<vImagePixelCount>(mutating: alpha) as UnsafeMutablePointer<vImagePixelCount>?
+        let redMutablePointer = UnsafeMutablePointer<vImagePixelCount>(mutating: red) as UnsafeMutablePointer<vImagePixelCount>?
+        let greenMutablePointer = UnsafeMutablePointer<vImagePixelCount>(mutating: green) as UnsafeMutablePointer<vImagePixelCount>?
+        let blueMutablePointer = UnsafeMutablePointer<vImagePixelCount>(mutating: blue) as UnsafeMutablePointer<vImagePixelCount>?
         
-        let rgba = [redPtr, greenPtr, bluePtr, alphaPtr]
-
-        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(rgba)
+        let rgba = [redMutablePointer, greenMutablePointer, blueMutablePointer, alphaMutablePointer]
+        
+        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
         
         vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
 

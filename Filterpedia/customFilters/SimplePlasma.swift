@@ -18,7 +18,7 @@ class SimplePlasma: CIFilter
     var inputIterations: CGFloat = 7
     var inputScale: CGFloat = 100
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Simple Plasma",

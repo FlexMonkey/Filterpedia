@@ -673,7 +673,7 @@ class PseudoColor: CIFilter
     var inputColor3 = CIColor(red: 1, green: 0, blue: 1)
     var inputColor4 = CIColor(red: 0, green: 1, blue: 1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Pseudo Color Filter",
@@ -760,7 +760,7 @@ class PseudoColor: CIFilter
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputSmoothness, inputColor0, inputColor1, inputColor2, inputColor3, inputColor4]
+        let arguments = [inputImage, inputSmoothness, inputColor0, inputColor1, inputColor2, inputColor3, inputColor4] as [Any]
         
         return pseudoColorKernel.apply(withExtent: extent, arguments: arguments)
     }
@@ -779,7 +779,7 @@ class VintageVignette: CIFilter
     var inputVignetteRadius: CGFloat = 1
     var inputSepiaToneIntensity: CGFloat = 1
     
-override var attributes: [String : AnyObject]
+override var attributes: [String : Any]
 {
     return [
         kCIAttributeFilterDisplayName: "Vintage Vignette",
@@ -854,7 +854,7 @@ class DifferenceOfGaussians: CIFilter
     var inputSigma0: CGFloat = 0.75
     var inputSigma1: CGFloat = 3.25
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Difference of Gaussians",
@@ -947,7 +947,7 @@ class StarBurstFilter: CIFilter
     
     let thresholdFilter = ThresholdToAlphaFilter()
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Starburst Filter",
@@ -1050,7 +1050,7 @@ class StarBurstFilter: CIFilter
 
 class ThresholdToAlphaFilter: ThresholdFilter
 {
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         var superAttributes = super.attributes
         
@@ -1090,7 +1090,7 @@ class AdvancedMonochrome: CIFilter
     var inputBlueBalance: CGFloat = 1
     var inputClamp: CGFloat = 0
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Advanced Monochrome",
@@ -1158,7 +1158,7 @@ class AdvancedMonochrome: CIFilter
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp]
+        let arguments = [inputImage, inputRedBalance, inputGreenBalance, inputBlueBalance, inputClamp] as [Any]
         
         return kernel.apply(withExtent: extent, arguments: arguments)
     }
@@ -1172,7 +1172,7 @@ class SmoothThreshold: CIFilter
     var inputEdgeO: CGFloat = 0.25
     var inputEdge1: CGFloat = 0.75
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Smooth Threshold Filter",
@@ -1219,7 +1219,7 @@ class SmoothThreshold: CIFilter
         let extent = inputImage.extent
         let arguments = [inputImage,
                          min(inputEdgeO, inputEdge1),
-                         max(inputEdgeO, inputEdge1),]
+                         max(inputEdgeO, inputEdge1),] as [Any] as [Any]
         
         return colorKernel.apply(withExtent: extent,
                                            arguments: arguments)
@@ -1233,7 +1233,7 @@ class ThresholdFilter: CIFilter
     var inputImage : CIImage?
     var inputThreshold: CGFloat = 0.75
 
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Threshold Filter",
@@ -1288,7 +1288,7 @@ class ThresholdFilter: CIFilter
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputThreshold]
+        let arguments = [inputImage, inputThreshold] as [Any]
         
         return thresholdKernel.apply(withExtent: extent, arguments: arguments)
     }
@@ -1305,7 +1305,7 @@ class PolarPixellate: CIFilter
     var inputPixelArc = CGFloat(M_PI / 15)
     var inputPixelLength = CGFloat(50)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Polar Pixellate",
@@ -1393,7 +1393,7 @@ class VignetteNoirFilter: CIFilter
     var inputIntensity: CGFloat = 2
     var inputEdgeBrightness: CGFloat = -0.3
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Vignette Noir Filter",
@@ -1470,7 +1470,7 @@ class NormalMapFilter: CIFilter
     var inputImage: CIImage?
     var inputContrast = CGFloat(2)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Normal Map",

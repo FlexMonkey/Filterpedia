@@ -18,7 +18,7 @@ class CausticNoise: CIFilter
   var inputWidth: CGFloat = 640
   var inputHeight: CGFloat = 640
   
-  override var attributes: [String : AnyObject]
+  override var attributes: [String : Any]
   {
     return [
       kCIAttributeFilterDisplayName: "Caustic Noise",
@@ -109,7 +109,7 @@ class CausticRefraction: CIFilter
     var inputTileSize: CGFloat = 640
     var inputSoftening: CGFloat = 3
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Caustic Refraction",
@@ -203,7 +203,7 @@ class CausticRefraction: CIFilter
         refractingImage!,
         inputRefractiveIndex,
         inputLensScale,
-        inputLightingAmount]
+        inputLightingAmount] as [Any]
       
       return refractingKernel.apply(
         withExtent: extent,

@@ -25,7 +25,7 @@ class VHSTrackingLines: CIFilter
         inputBackgroundNoise = 0.05
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "VHS Tracking Lines",
@@ -98,7 +98,7 @@ class VHSTrackingLines: CIFilter
         
         
         let extent = inputImage.extent
-        let arguments = [inputImage, noise, inputTime, inputSpacing, inputStripeHeight, inputBackgroundNoise]
+        let arguments = [inputImage, noise, inputTime, inputSpacing, inputStripeHeight, inputBackgroundNoise] as [Any]
         
         let final = kernel.apply(withExtent: extent, arguments: arguments)?
             .applyingFilter("CIPhotoEffectNoir", withInputParameters: nil)
@@ -114,7 +114,7 @@ class CRTFilter: CIFilter
     var inputPixelHeight: CGFloat = 12
     var inputBend: CGFloat = 3.2
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "CRT Filter",
@@ -214,7 +214,7 @@ class CRTFilter: CIFilter
                 let crtColorKernel = crtColorKernel
             {
                 let dod = inputImage.extent
-                let args = [inputImage, pixelWidth, pixelHeight]
+                let args = [inputImage, pixelWidth, pixelHeight] as [Any]
                 return crtColorKernel.apply(withExtent: dod, arguments: args)
             }
             return nil
@@ -245,7 +245,7 @@ class CRTFilter: CIFilter
                 if let inputImage = inputImage,
                     let crtWarpKernel = crtWarpKernel
                 {
-                    let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend]
+                    let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend] as [Any]
                     let extent = inputImage.extent.insetBy(dx: -1, dy: -1)
                     
                     return crtWarpKernel.apply(withExtent: extent,

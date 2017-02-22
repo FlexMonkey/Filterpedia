@@ -38,7 +38,7 @@ class RGBChannelCompositing: CIFilter
         "}"
     )
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "RGB Compositing",
@@ -103,7 +103,7 @@ class RGBChannelToneCurve: CIFilter
         inputBlueValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "RGB Tone Curve",
@@ -207,7 +207,7 @@ class RGBChannelBrightnessAndContrast: CIFilter
         inputBlueContrast = 1
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "RGB Brightness And Contrast",
@@ -322,7 +322,7 @@ class ChromaticAberration: CIFilter
         inputRadius = 2
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Chromatic Abberation",
@@ -408,7 +408,7 @@ class RGBChannelGaussianBlur: CIFilter
         inputBlueRadius = 8
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "RGB Channel Gaussian Blur",

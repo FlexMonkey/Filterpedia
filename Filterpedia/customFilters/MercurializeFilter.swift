@@ -88,7 +88,7 @@ class MercurializeFilter: CIFilter
         inputScale = 10
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Mercurialize Filter",
@@ -241,7 +241,7 @@ class MercurializeFilter: CIFilter
         
         // Material
         
-        material.lightingModelName = SCNLightingModelPhong
+        material.lightingModel = SCNMaterial.LightingModel.phong
         material.specular.contents = UIColor.white
         material.diffuse.contents = UIColor.darkGray
         material.shininess = 0.15
@@ -259,7 +259,7 @@ class LightNode: SCNNode
         super.init()
         
         light = SCNLight()
-        light!.type = type.rawValue
+        light!.type = SCNLight.LightType(rawValue: type.rawValue)
     }
     
     required init?(coder aDecoder: NSCoder)

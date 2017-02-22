@@ -95,7 +95,7 @@ class FilterDetail: UIView
     }()
     
     #if !arch(i386) && !arch(x86_64)
-        let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+        let ciMetalContext = CIContext(mtlDevice: MTLCreateSystemDefaultDevice()!)
     #else
         let ciMetalContext = CIContext()
     #endif
@@ -130,10 +130,10 @@ class FilterDetail: UIView
         }
     }
     
-    private var currentFilter: CIFilter?
+    public var currentFilter: CIFilter?
     
     /// User defined filter parameter values
-    private var filterParameterValues: [String: AnyObject] = [kCIInputImageKey: assets.first!.ciImage]
+    public var filterParameterValues: [String: AnyObject] = [kCIInputImageKey: assets.first!.ciImage]
     
     override init(frame: CGRect)
     {
@@ -216,7 +216,7 @@ class FilterDetail: UIView
         
         for inputKey in currentFilter.inputKeys
         {
-            if let attribute = attributes[inputKey] as? [String : AnyObject]
+            if let attribute = attributes[inputKey] as? [String : Any]
             {
                 // default image
                 if let className = attribute[kCIAttributeClass] as? String
@@ -230,7 +230,7 @@ class FilterDetail: UIView
                     let filterParameterValue = filterParameterValues[inputKey] as? Float
                     , filterParameterValue > maxValue
                 {
-                    filterParameterValues[inputKey] = maxValue
+                    filterParameterValues[inputKey] = maxValue as AnyObject?
                 }
                 
                 // ensure vector is correct length
@@ -404,7 +404,7 @@ extension FilterDetail: UITableViewDataSource
             for: indexPath) as! FilterInputItemRenderer
  
         if let inputKey = currentFilter?.inputKeys[(indexPath as NSIndexPath).row],
-            let attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
+            let attribute = currentFilter?.attributes[inputKey] as? [String : Any]
         {
             cell.detail = (inputKey: inputKey,
                 attribute: attribute,
