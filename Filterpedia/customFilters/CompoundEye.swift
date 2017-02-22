@@ -31,7 +31,7 @@ class CompoundEye: CIFilter
     var inputBend: CGFloat = 4.0
     var inputBackgroundColor = CIColor(red: 0.2, green: 0.2, blue: 0.2)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Compound Eye",

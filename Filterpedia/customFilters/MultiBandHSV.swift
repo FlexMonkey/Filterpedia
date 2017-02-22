@@ -93,7 +93,7 @@ class MultiBandHSV: CIFilter
     var inputPurpleShift = CIVector(x: 0, y: 1, z: 1)
     var inputMagentaShift = CIVector(x: 0, y: 1, z: 1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "MultiBandHSV",

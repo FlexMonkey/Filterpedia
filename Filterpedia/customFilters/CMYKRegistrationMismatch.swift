@@ -103,7 +103,7 @@ class CMYKToneCurves: CIFilter
         inputBlackValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "CMYK Tone Curve",
@@ -184,7 +184,7 @@ class CMYKLevels: CIFilter
     var inputYellowMultiplier: CGFloat = 1
     var inputBlackMultiplier: CGFloat = 1
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "CMYK Levels",
@@ -271,7 +271,7 @@ class CMYKLevels: CIFilter
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputCyanMultiplier, inputMagentaMultiplier, inputYellowMultiplier, inputBlackMultiplier]
+        let arguments = [inputImage, inputCyanMultiplier, inputMagentaMultiplier, inputYellowMultiplier, inputBlackMultiplier] as [Any]
         
         return kernel.apply(withExtent: extent, arguments: arguments)
     }
@@ -291,7 +291,7 @@ class CMYKRegistrationMismatch: CIFilter
     var inputYellowOffset = CIVector(x: 3, y: 4)
     var inputBlackOffset = CIVector(x: 7, y: 2)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "CMYK Registration Mismatch",

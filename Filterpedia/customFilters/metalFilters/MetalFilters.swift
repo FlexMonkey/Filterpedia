@@ -48,7 +48,7 @@ class MetalPixellateFilter: MetalImageFilter
         inputPixelHeight = 25
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Metal Pixellate",
@@ -112,7 +112,7 @@ class MetalPerlinNoise: MetalGeneratorFilter
         inputColor1 = CIColor(red: 0, green: 0, blue: 0.15)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Metal Perlin Noise",
@@ -207,7 +207,7 @@ class MetalKuwaharaFilter: MetalImageFilter
         inputRadius = 15
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
             kCIAttributeFilterDisplayName: "Metal Kuwahara",
