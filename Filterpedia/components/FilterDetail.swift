@@ -95,7 +95,7 @@ class FilterDetail: UIView
     }()
     
     #if !arch(i386) && !arch(x86_64)
-        let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+        let ciMetalContext = CIContext(mtlDevice: MTLCreateSystemDefaultDevice()!)
     #else
         let ciMetalContext = CIContext()
     #endif
