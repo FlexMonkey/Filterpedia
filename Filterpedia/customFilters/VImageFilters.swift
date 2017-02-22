@@ -482,10 +482,6 @@ class HistogramSpecification: CIFilter, VImageFilter
         
         vImageHistogramCalculation_ARGB8888(&histogramSourceBuffer, histogram, UInt32(kvImageNoFlags))
         
-        
-        
-        
-        
         let pixelBuffer = malloc((imageRef?.bytesPerRow)! * (imageRef?.height)!)
         
         var outBuffer = vImage_Buffer(
@@ -494,12 +490,14 @@ class HistogramSpecification: CIFilter, VImageFilter
             width: UInt((imageRef?.width)!),
             rowBytes: (imageRef?.bytesPerRow)!)
 
-        let alphaPointer = UnsafePointer<vImagePixelCount>(alpha) as UnsafePointer<vImagePixelCount>?
-        let redPointer = UnsafePointer<vImagePixelCount>(red) as UnsafePointer<vImagePixelCount>?
-        let greenPointer = UnsafePointer<vImagePixelCount>(green) as UnsafePointer<vImagePixelCount>?
-        let bluePointer = UnsafePointer<vImagePixelCount>(blue) as UnsafePointer<vImagePixelCount>?
+        let alphaPointer = UnsafePointer<vImagePixelCount>?(alpha)
+        let redPointer = UnsafePointer<vImagePixelCount>?(red)
+        let greenPointer = UnsafePointer<vImagePixelCount>?(green)
+        let bluePointer = UnsafePointer<vImagePixelCount>?(blue)
         
-        let rgbaMutablePointer = UnsafeMutablePointer<UnsafePointer<vImagePixelCount>?>(mutating: [redPointer, greenPointer, bluePointer, alphaPointer])
+        let rgba2 = [redPointer, greenPointer, bluePointer, alphaPointer]
+        
+        let rgbaMutablePointer = UnsafeMutablePointer<UnsafePointer<vImagePixelCount>?>(mutating: rgba2)
         
         vImageHistogramSpecification_ARGB8888(&imageBuffer, &outBuffer, rgbaMutablePointer, UInt32(kvImageNoFlags))
         
