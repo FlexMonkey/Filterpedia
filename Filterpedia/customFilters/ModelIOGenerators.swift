@@ -30,10 +30,10 @@ class ModelIOColorFromTemperature: CIFilter
         return CIImage(cgImage: swatchImage)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "ModelIO Color From Temperature",
+            kCIAttributeFilterDisplayName: "ModelIO Color From Temperature" as Any,
 
             "inputSize": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",
@@ -79,10 +79,10 @@ class ModelIOColorScalarNoise: CIFilter
         return makeOpaqueKernel?.apply(withExtent: final.extent, arguments: [final])
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "ModelIO Color Scalar Noise",
+            kCIAttributeFilterDisplayName: "ModelIO Color Scalar Noise" as Any,
 
             "inputSize": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",
@@ -157,10 +157,10 @@ class ModelIOSkyGenerator: CIFilter
     }
     
         
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "ModelIO Sky Generator",
+            kCIAttributeFilterDisplayName: "ModelIO Sky Generator" as Any,
 
             "inputSize": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",

@@ -18,10 +18,10 @@ class SimplePlasma: CIFilter
     var inputIterations: CGFloat = 7
     var inputScale: CGFloat = 100
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Simple Plasma",
+            kCIAttributeFilterDisplayName: "Simple Plasma" as Any,
             
             "inputSize": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIVector",

@@ -136,12 +136,12 @@ extension FilterNavigator: UITableViewDelegate
         switch mode
         {
         case .Grouped:
-            filterName = supportedFilterNamesInCategory(filterCategories[(indexPath as NSIndexPath).section]).sorted()[(indexPath as NSIndexPath).row]
+            filterName = supportedFilterNamesInCategory(filterCategories[indexPath.section]).sorted()[indexPath.row]
         case .Flat:
             filterName = supportedFilterNamesInCategories(nil).sorted
             {
                 CIFilter.localizedName(forFilterName: $0) ?? $0 < CIFilter.localizedName(forFilterName: $1) ?? $1
-            }[(indexPath as NSIndexPath).row]
+            }[indexPath.row]
         }
         
         delegate?.filterNavigator(self, didSelectFilterName: filterName)
@@ -226,12 +226,12 @@ extension FilterNavigator: UITableViewDataSource
         switch mode
         {
         case .Grouped:
-            filterName = supportedFilterNamesInCategory(filterCategories[(indexPath as NSIndexPath).section]).sorted()[(indexPath as NSIndexPath).row]
+            filterName = supportedFilterNamesInCategory(filterCategories[indexPath.section]).sorted()[indexPath.row]
         case .Flat:
             filterName = supportedFilterNamesInCategories(nil).sorted
             {
                 CIFilter.localizedName(forFilterName: $0) ?? $0 < CIFilter.localizedName(forFilterName: $1) ?? $1
-            }[(indexPath as NSIndexPath).row]
+            }[indexPath.row]
         }
         
         cell.textLabel?.text = CIFilter.localizedName(forFilterName: filterName) ?? (CIFilter(name: filterName)?.attributes[kCIAttributeFilterDisplayName] as? String) ?? filterName

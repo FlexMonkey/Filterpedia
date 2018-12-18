@@ -37,10 +37,10 @@ class ConcentricSineWaves: CIFilter
         inputCenter = CIVector(x: 320, y: 320)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Concentric Sine Waves",
+            kCIAttributeFilterDisplayName: "Concentric Sine Waves" as Any,
             
             "inputWidth": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",

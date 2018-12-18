@@ -61,9 +61,9 @@ class FilterInputItemRenderer: UITableViewCell
     }()
     
     weak var delegate: FilterInputItemRendererDelegate?
-    private(set) var inputKey: String = ""
+    fileprivate(set) var inputKey: String = ""
     
-    var detail: (inputKey: String, attribute: [String : AnyObject], filterParameterValues: [String: AnyObject]) = ("", [String: AnyObject](), [String: AnyObject]())
+    var detail: (inputKey: String, attribute: [String : Any], filterParameterValues: [String: Any]) = ("", [String: Any](), [String: Any]())
     {
         didSet
         {
@@ -73,10 +73,10 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
    
-    private var title: String = ""
-    private var filterParameterValues = [String: AnyObject]()
+    fileprivate var title: String = ""
+    fileprivate var filterParameterValues = [String: Any]()
     
-    private(set) var attribute = [String : AnyObject]()
+    fileprivate(set) var attribute = [String : Any]()
     {
         didSet
         {
@@ -93,7 +93,7 @@ class FilterInputItemRenderer: UITableViewCell
         }
     }
  
-    private(set) var value: AnyObject?
+    fileprivate(set) var value: Any?
     {
         didSet
         {
@@ -151,7 +151,7 @@ class FilterInputItemRenderer: UITableViewCell
     
     func sliderChangeHandler()
     {
-        value = slider.value
+        value = slider.value as Any?
     }
     
     func vectorSliderChangeHandler()
@@ -195,7 +195,7 @@ class FilterInputItemRenderer: UITableViewCell
             
             if let updatedText = editTextController.textFields?.first?.text
             {
-                self.value = updatedText
+                self.value = updatedText as Any?
                 
                 self.textEditButton.setTitle(updatedText, for: UIControlState())
             }
@@ -232,12 +232,31 @@ class FilterInputItemRenderer: UITableViewCell
             imagesSegmentedControl.isHidden = true
             vectorSlider.isHidden = true
             textEditButton.isHidden = true
-     
-            slider.min = attribute[kCIAttributeSliderMin] as? Float ?? 0
-            slider.max = attribute[kCIAttributeSliderMax] as? Float ?? 1
-            slider.value = filterParameterValues[inputKey] as? Float ??
-                attribute[kCIAttributeDefault] as? Float ??
-                attribute[kCIAttributeSliderMin] as? Float ?? 0
+			
+			slider.min = (attribute[kCIAttributeSliderMin] as? Float) ?? 0
+			if let theMin = attribute[kCIAttributeSliderMin] as? NSNumber {
+				slider.min = theMin.floatValue
+			}
+			
+			slider.max = (attribute[kCIAttributeSliderMax] as? Float) ?? 1
+			if let theMax = attribute[kCIAttributeSliderMax] as? NSNumber {
+				slider.max = theMax.floatValue
+			}
+			
+			
+            /*
+             keep trying until we get a float:
+             - filterParametersValues, current value
+             - attribute, default value
+             - attribute, min value
+             - 0
+ 
+             */
+            slider.value =
+              (((filterParameterValues[inputKey] as? Float) ??
+                (attribute[kCIAttributeDefault] as? NSNumber)?.floatValue) ??
+                attribute[kCIAttributeSliderMin] as? Float) ?? 0
+			
             
             sliderChangeHandler()
             
@@ -315,5 +334,5 @@ class FilterInputItemRenderer: UITableViewCell
 
 protocol FilterInputItemRendererDelegate: class
 {
-    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: Any?, forKey: String?)
 }

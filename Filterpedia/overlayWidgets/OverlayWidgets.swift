@@ -90,7 +90,7 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     let greenLayer: CAShapeLayer
     let blueLayer: CAShapeLayer
     
-    private var rgbChannelToneCurve: RGBChannelToneCurve?
+    fileprivate var rgbChannelToneCurve: RGBChannelToneCurve?
     {
         didSet
         {
@@ -163,7 +163,7 @@ class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     let yellowLayer: CAShapeLayer
     let blackLayer: CAShapeLayer
     
-    private var cmykToneCurves: CMYKToneCurves?
+    fileprivate var cmykToneCurves: CMYKToneCurves?
     {
         didSet
         {

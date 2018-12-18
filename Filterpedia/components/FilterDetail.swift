@@ -75,10 +75,10 @@ class FilterDetail: UIView
                 self.histogramDisplay.imageRef = imageView.image?.cgImage
             }
             
-            UIView.animate(withDuration: 0.25)
-            {
+            UIView.animate(withDuration: 0.25, animations: {
                 self.histogramDisplay.alpha = self.histogramDisplayHidden ? 0 : 1
-            }
+            })
+            
         }
     }
     
@@ -95,7 +95,7 @@ class FilterDetail: UIView
     }()
     
     #if !arch(i386) && !arch(x86_64)
-        let ciMetalContext = CIContext(MTLDevice: MTLCreateSystemDefaultDevice()!)
+        let ciMetalContext = CIContext(mtlDevice: MTLCreateSystemDefaultDevice()!)
     #else
         let ciMetalContext = CIContext()
     #endif
@@ -130,10 +130,10 @@ class FilterDetail: UIView
         }
     }
     
-    private var currentFilter: CIFilter?
+    fileprivate var currentFilter: CIFilter?
     
     /// User defined filter parameter values
-    private var filterParameterValues: [String: AnyObject] = [kCIInputImageKey: assets.first!.ciImage]
+    fileprivate var filterParameterValues: [String: Any] = [kCIInputImageKey: assets.first!.ciImage]
     
     override init(frame: CGRect)
     {
@@ -173,7 +173,7 @@ class FilterDetail: UIView
        histogramDisplayHidden = !histogramToggleSwitch.isOn
     }
     
-    @objc(viewForZoomingInScrollView:) func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
@@ -202,41 +202,62 @@ class FilterDetail: UIView
         
         applyFilter()
     }
-    
-    /// Assign a default image if required and ensure existing
-    /// filterParameterValues won't break the new filter.
+  
+  /** Modifies the current filter parameter values if needed to ensure 
+   that they are compatible with the current filter.
+   
+   Namely, assigns a default image if none is present but one is required, and
+   clamps any float values to the maximumn value allowed by the current filter.
+ 
+   */
     func fixFilterParameterValues()
     {
         guard let currentFilter = currentFilter else
         {
             return
         }
-        
+      
+      // get attributes from CIFilter
         let attributes = currentFilter.attributes
+		
+		print(attributes, "\n\n", currentFilter.inputKeys)
         
         for inputKey in currentFilter.inputKeys
         {
-            if let attribute = attributes[inputKey] as? [String : AnyObject]
+          // iterate through each of the input attribuets
+            if let attribute = attributes[inputKey] as? [String : Any]
             {
-                // default image
-                if let className = attribute[kCIAttributeClass] as? String
-                    , className == "CIImage" && filterParameterValues[inputKey] == nil
+                /* if an attribute should contain a CIImage,
+               and we currently have a nil value for that attribute,
+               then make the first asset into the CIImage */
+                if let className = attribute[kCIAttributeClass] as? String, className == "CIImage" && filterParameterValues[inputKey] == nil
                 {
                     filterParameterValues[inputKey] = assets.first!.ciImage
                 }
                 
                 // ensure previous values don't exceed kCIAttributeSliderMax for this filter
-                if let maxValue = attribute[kCIAttributeSliderMax] as? Float,
-                    let filterParameterValue = filterParameterValues[inputKey] as? Float
-                    , filterParameterValue > maxValue
+              /*
+               if an attribute defines a maximum slider value, which casts to Float
+               and we have a value for this attribute, which casts to Float,
+               and our value for this attribute is higher than the slider max ...
+ 
+               */
+                if
+                  let maxValue = attribute[kCIAttributeSliderMax] as? Float,
+                  let filterParameterValue = filterParameterValues[inputKey] as? Float,
+                  filterParameterValue > maxValue
                 {
-                    filterParameterValues[inputKey] = maxValue
+                  // ... then clamp our value down to the max value
+                  
+                  // N.B. We assign a boxed value (NSNumber) rather than a raw Float,
+                  // because this dictionary will be consumed by CoreImage which
+                  // only understands Cocoa boxed object values
+                    filterParameterValues[inputKey] = maxValue as NSNumber
                 }
                 
                 // ensure vector is correct length
                 if let defaultVector = attribute[kCIAttributeDefault] as? CIVector,
-                    let filterParameterValue = filterParameterValues[inputKey] as? CIVector
-                    , defaultVector.count != filterParameterValue.count
+                    let filterParameterValue = filterParameterValues[inputKey] as? CIVector, defaultVector.count != filterParameterValue.count
                 {
                     filterParameterValues[inputKey] = defaultVector
                 }
@@ -262,7 +283,8 @@ class FilterDetail: UIView
         imageView.subviews
             .filter({ $0 is FilterAttributesDisplayable})
             .forEach({ ($0 as? FilterAttributesDisplayable)?.setFilter(currentFilter) })
-        
+      
+      
         let queue = currentFilter is VImageFilter ?
             DispatchQueue.main :
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default)
@@ -403,8 +425,8 @@ extension FilterDetail: UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "FilterInputItemRenderer",
             for: indexPath) as! FilterInputItemRenderer
  
-        if let inputKey = currentFilter?.inputKeys[(indexPath as NSIndexPath).row],
-            let attribute = currentFilter?.attributes[inputKey] as? [String : AnyObject]
+        if let inputKey = currentFilter?.inputKeys[indexPath.row],
+            let attribute = currentFilter?.attributes[inputKey] as? [String : Any]
         {
             cell.detail = (inputKey: inputKey,
                 attribute: attribute,
@@ -421,17 +443,28 @@ extension FilterDetail: UITableViewDataSource
 
 extension FilterDetail: FilterInputItemRendererDelegate
 {
-    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: AnyObject?, forKey: String?)
+    func filterInputItemRenderer(_ filterInputItemRenderer: FilterInputItemRenderer, didChangeValue: Any?, forKey: String?)
     {
         if let key = forKey, let value = didChangeValue
         {
+          /*
+           
+           TODO: should we cast Floats to NSNumber here ?
+           
+           At this point, do we need to ensure that we are not inserting a
+           raw Float value rather than a boxed NSNumber instance into the
+           filterParameterValues? CoreImage understants NSNumber but not
+           Float, so if the dictionary will be consumed by CoreImage downstream
+           then we might be inadvertently filling the dictionary with values
+           that CoreImage will ignore.
+           */
             filterParameterValues[key] = value
             
             applyFilter()
         }
     }
     
-    @objc(tableView:shouldHighlightRowAtIndexPath:) func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
     {
         return false
     }
