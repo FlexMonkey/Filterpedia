@@ -21,10 +21,10 @@ class BayerDitherFilter: CIFilter
     var inputMatrix = CGFloat(8.0)
     var inputPalette = CGFloat(0.0)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Bayer Dither Filter",
+            kCIAttributeFilterDisplayName: "Bayer Dither Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -69,7 +69,7 @@ class BayerDitherFilter: CIFilter
         guard let inputImage = inputImage else { return nil }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputIntensity, inputMatrix, inputPalette]
+        let arguments = [inputImage, inputIntensity, inputMatrix, inputPalette] as [Any]
         
         return ditherKernel.apply(withExtent: extent, arguments: arguments)
     }

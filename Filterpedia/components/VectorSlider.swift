@@ -55,7 +55,7 @@ class VectorSlider: UIControl
         }
     }
     
-    private(set) var vector: CIVector?
+    fileprivate(set) var vector: CIVector?
     {
         didSet
         {

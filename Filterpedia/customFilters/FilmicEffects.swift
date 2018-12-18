@@ -29,10 +29,10 @@ class BleachBypassFilter: CIFilter
     var inputImage : CIImage?
     var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Bleach Bypass Filter",
+            kCIAttributeFilterDisplayName: "Bleach Bypass Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -78,7 +78,7 @@ class BleachBypassFilter: CIFilter
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputAmount]
+        let arguments = [inputImage, inputAmount] as [Any]
         
         return bleachBypassKernel.apply(withExtent: extent, arguments: arguments)
     }
@@ -92,10 +92,10 @@ class TechnicolorFilter: CIFilter
     var inputImage : CIImage?
     var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Technicolor Filter",
+            kCIAttributeFilterDisplayName: "Technicolor Filter" as Any,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -142,7 +142,7 @@ class TechnicolorFilter: CIFilter
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputAmount]
+        let arguments = [inputImage, inputAmount] as [Any]
         
         return technicolorKernel.apply(withExtent: extent, arguments: arguments)
     }

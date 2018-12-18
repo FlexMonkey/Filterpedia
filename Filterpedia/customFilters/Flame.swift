@@ -30,10 +30,10 @@ class Flame: CIFilter
     var inputWidth: CGFloat = 640
     var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Flame",
+            kCIAttributeFilterDisplayName: "Flame" as Any,
             
             "inputTime": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
@@ -177,7 +177,7 @@ class Flame: CIFilter
                          inputRedMultiplier, inputRedExponent,
                          inputGreenMultiplier, inputGreenExponent,
                          inputBlueMultiplier, inputBlueExponent,
-                         inputStrength]
+                         inputStrength] as [Any]
         
         return flameKernel.apply(
             withExtent: CGRect(origin: CGPoint.zero, size: CGSize(width: inputWidth, height: inputHeight)),
