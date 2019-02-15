@@ -13,7 +13,7 @@ typealias NamedImage = (name: String, ciImage: CIImage)
 
 let gradientImage = CIFilter(
     name: "CIRadialGradient",
-    parameters: [
+    withInputParameters: [
         kCIInputCenterKey:
             CIVector(x: 320, y: 320),
         "inputRadius0": 200,
@@ -24,7 +24,7 @@ let gradientImage = CIFilter(
             CIColor(red: 1, green: 1, blue: 1)
     ])?
     .outputImage?
-    .cropped(to: CGRect(x: 0, y: 0, width: 640, height: 640))
+    .imageByCroppingToRect(CGRect(x: 0, y: 0, width: 640, height: 640))
 
 let assets = [
     NamedImage(name: "Mona Lisa", ciImage: CIImage(image: UIImage(named: "monalisa.jpg")!)!),
