@@ -22,25 +22,25 @@ import CoreImage
 
 class ConcentricSineWaves: CIFilter
 {
-    var inputWidth: CGFloat = 40
-    var inputAmplitude: CGFloat = 80
-    var inputFrequency: CGFloat = 6
+    @objc var inputWidth: CGFloat = 40
+    @objc var inputAmplitude: CGFloat = 80
+    @objc var inputFrequency: CGFloat = 6
     
-    var inputColor0 = CIColor(red: 0.6, green: 0.6, blue: 0.1)
-    var inputColor1 = CIColor(red: 0.1, green: 0.1, blue: 0.8)
+    @objc var inputColor0 = CIColor(red: 0.6, green: 0.6, blue: 0.1)
+    @objc var inputColor1 = CIColor(red: 0.1, green: 0.1, blue: 0.8)
     
-    var inputSize = CIVector(x: 640, y: 640)
-    var inputCenter = CIVector(x: 320, y: 320)
+    @objc var inputSize = CIVector(x: 640, y: 640)
+    @objc var inputCenter = CIVector(x: 320, y: 320)
     
     override func setDefaults()
     {
         inputCenter = CIVector(x: 320, y: 320)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Concentric Sine Waves",
+            kCIAttributeFilterDisplayName: "Concentric Sine Waves" as AnyObject,
             
             "inputWidth": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
@@ -95,7 +95,7 @@ class ConcentricSineWaves: CIFilter
         ]
     }
     
-    let kernel = CIColorKernel(string:
+    let kernel = CIColorKernel(source:
         "kernel vec4 concentricSineWaves(float ringWidth, vec2 center, float amplitude, float frequency, vec4 color0, vec4 color1)" +
             "{" +
 
@@ -117,11 +117,11 @@ class ConcentricSineWaves: CIFilter
         }
         
         let extent = CGRect(
-            origin: CGPointZero,
-            size: CGSize(width: inputSize.X, height: inputSize.Y))
+            origin: CGPoint.zero,
+            size: CGSize(width: inputSize.x, height: inputSize.y))
 
-        return kernel.applyWithExtent(
-            extent,
+        return kernel.apply(
+            extent: extent,
             arguments: [inputWidth, inputCenter, inputAmplitude, Int(inputFrequency), inputColor0, inputColor1])
     }
 }

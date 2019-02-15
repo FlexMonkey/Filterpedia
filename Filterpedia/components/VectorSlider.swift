@@ -28,8 +28,8 @@ class VectorSlider: UIControl
     {
         let stackView = UIStackView()
         
-        stackView.distribution = UIStackViewDistribution.FillEqually
-        stackView.axis = UILayoutConstraintAxis.Horizontal
+        stackView.distribution = UIStackView.Distribution.fillEqually
+        stackView.axis = NSLayoutConstraint.Axis.horizontal
         
         return stackView
     }()
@@ -55,7 +55,7 @@ class VectorSlider: UIControl
         }
     }
     
-    private(set) var vector: CIVector?
+    fileprivate(set) var vector: CIVector?
     {
         didSet
         {
@@ -69,11 +69,11 @@ class VectorSlider: UIControl
                 return
             }
 
-            for (index, slider) in stackView.arrangedSubviews.enumerate() where slider is UISlider
+            for (index, slider) in stackView.arrangedSubviews.enumerated() where slider is UISlider
             {
                 if let slider = slider as? UISlider
                 {
-                    slider.value = Float(vector.valueAtIndex(index))
+                    slider.value = Float(vector.value(at: index))
                 }
             }
         }
@@ -98,13 +98,13 @@ class VectorSlider: UIControl
             let slider = UISlider()
           
             slider.maximumValue = Float(sliderMax)
-            slider.addTarget(self, action: #selector(VectorSlider.sliderChangeHandler), forControlEvents: UIControlEvents.ValueChanged)
+            slider.addTarget(self, action: #selector(VectorSlider.sliderChangeHandler), for: UIControl.Event.valueChanged)
             
             stackView.addArrangedSubview(slider)
         }
     }
     
-    func sliderChangeHandler()
+    @objc func sliderChangeHandler()
     {
         let values = stackView.arrangedSubviews
             .filter({ $0 is UISlider })
@@ -113,7 +113,7 @@ class VectorSlider: UIControl
         vector = CIVector(values: values,
             count: values.count)
         
-        sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        sendActions(for: UIControl.Event.valueChanged)
     }
     
     override func layoutSubviews()
@@ -139,7 +139,7 @@ extension CIVector
         for i in 0 ..< self.count
         {
             maxValue = max(maxValue,
-                self.valueAtIndex(i) > 1 ? self.valueAtIndex(i) * 2 : 1)
+                self.value(at: i) > 1 ? self.value(at: i) * 2 : 1)
         }
         
         return maxValue

@@ -10,16 +10,16 @@ import CoreImage
 
 class VoronoiNoise: CIFilter
 {
-    var inputSeed: CGFloat = 20
-    var inputSize: CGFloat = 60
-    var inputDensity: CGFloat = 0.75
-    var inputWidth: CGFloat = 640
-    var inputHeight: CGFloat = 640
+    @objc var inputSeed: CGFloat = 20
+    @objc var inputSize: CGFloat = 60
+    @objc var inputDensity: CGFloat = 0.75
+    @objc var inputWidth: CGFloat = 640
+    @objc var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Voronoi Noise",
+            kCIAttributeFilterDisplayName: "Voronoi Noise" as AnyObject,
             "inputSeed": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
                 kCIAttributeDefault: 1,
@@ -65,11 +65,11 @@ class VoronoiNoise: CIFilter
     
     let voronoiKernel: CIColorKernel =
     {
-        let shaderPath = NSBundle.mainBundle().pathForResource("Voronoi", ofType: "cikernel")
+        let shaderPath = Bundle.main.path(forResource: "Voronoi", ofType: "cikernel")
         
         guard let path = shaderPath,
-            code = try? String(contentsOfFile: path),
-            kernel = CIColorKernel(string: code) else
+            let code = try? String(contentsOfFile: path),
+            let kernel = CIColorKernel(source: code) else
         {
             fatalError("Unable to build Voronoi shader")
         }
@@ -79,8 +79,8 @@ class VoronoiNoise: CIFilter
     
     override var outputImage: CIImage?
     {
-        return voronoiKernel.applyWithExtent(
-            CGRect(origin: CGPointZero, size: CGSize(width: inputWidth, height: inputHeight)),
+        return voronoiKernel.apply(
+            extent: CGRect(origin: CGPoint.zero, size: CGSize(width: inputWidth, height: inputHeight)),
             arguments: [inputSeed, inputSize, inputDensity])
     }
 }

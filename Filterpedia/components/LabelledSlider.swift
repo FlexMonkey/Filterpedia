@@ -57,14 +57,14 @@ class LabelledSlider: UIControl
     {
         super.init(frame: frame)
 
-        minValueLabel.textAlignment = .Right
+        minValueLabel.textAlignment = .right
         
         addSubview(minValueLabel)
         addSubview(maxValueLabel)
         
         addSubview(slider)
  
-        slider.addTarget(self, action: #selector(LabelledSlider.sliderChangeHandler), forControlEvents: UIControlEvents.ValueChanged)
+        slider.addTarget(self, action: #selector(LabelledSlider.sliderChangeHandler), for: UIControl.Event.valueChanged)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -72,11 +72,11 @@ class LabelledSlider: UIControl
         fatalError("init(coder:) has not been implemented")
     }
     
-    func sliderChangeHandler()
+    @objc func sliderChangeHandler()
     {
         value = slider.value
 
-        sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        sendActions(for: UIControl.Event.valueChanged)
     }
     
     override func layoutSubviews()

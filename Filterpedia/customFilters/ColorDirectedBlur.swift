@@ -30,38 +30,38 @@ import CoreImage
 
 class HomogeneousColorBlur: CIFilter
 {
-    var inputImage: CIImage?
-    var inputColorThreshold: CGFloat = 0.2
-    var inputRadius: CGFloat = 10
+    @objc var inputImage: CIImage?
+    @objc var inputColorThreshold: CGFloat = 0.2
+    @objc var inputRadius: CGFloat = 10
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Homogeneous Color Blur",
+            kCIAttributeFilterDisplayName: "Homogeneous Color Blur" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
+                           kCIAttributeClass: "CIImage",
+                           kCIAttributeDisplayName: "Image",
+                           kCIAttributeType: kCIAttributeTypeImage],
             "inputColorThreshold": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 0.2,
-                kCIAttributeDisplayName: "Color Threshold",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                                    kCIAttributeClass: "NSNumber",
+                                    kCIAttributeDefault: 0.2,
+                                    kCIAttributeDisplayName: "Color Threshold",
+                                    kCIAttributeMin: 0,
+                                    kCIAttributeSliderMin: 0,
+                                    kCIAttributeSliderMax: 1,
+                                    kCIAttributeType: kCIAttributeTypeScalar],
             "inputRadius": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 10,
-                kCIAttributeDisplayName: "Radius",
-                kCIAttributeMin: 1,
-                kCIAttributeSliderMin: 1,
-                kCIAttributeSliderMax: 40,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                            kCIAttributeClass: "NSNumber",
+                            kCIAttributeDefault: 10,
+                            kCIAttributeDisplayName: "Radius",
+                            kCIAttributeMin: 1,
+                            kCIAttributeSliderMin: 1,
+                            kCIAttributeSliderMax: 40,
+                            kCIAttributeType: kCIAttributeTypeScalar],
         ]
     }
     
-    let kernel = CIKernel(string:
+    let kernel = CIKernel(source:
         "kernel vec4 colorDirectedBlurKernel(sampler image, float radius, float threshold)" +
             "{" +
             "   int r = int(radius);" +
@@ -77,30 +77,30 @@ class HomogeneousColorBlur: CIFilter
             
             "           float distanceMultiplier = step(length(vec2(x,y)), radius); \n" +
             "           float colorMultiplier = step(distance(offsetPixel, thisPixel), threshold); \n" +
-        
+            
             "           accumulator += offsetPixel * distanceMultiplier * colorMultiplier; \n" +
             "           n += distanceMultiplier * colorMultiplier; \n" +
             "       }" +
             "   }" +
             "   return vec4(accumulator / n, 1.0); " +
-    "}")
+        "}")
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }
         
-        let arguments = [inputImage, inputRadius, inputColorThreshold * sqrt(3.0)]
+        let arguments = [inputImage, inputRadius, inputColorThreshold * sqrt(3.0)] as [Any]
         
-        return kernel.applyWithExtent(
-            inputImage.extent,
+        return kernel.apply(
+            extent: inputImage.extent,
             roiCallback:
             {
-            (index, rect) in
-            return rect
-            },
+                (index, rect) in
+                return rect
+        },
             arguments: arguments)
     }
 }
@@ -121,125 +121,125 @@ class HomogeneousColorBlur: CIFilter
 
 class ColorDirectedBlur: CIFilter
 {
-    var inputImage: CIImage?
-    var inputThreshold: CGFloat = 0.5
-    var inputIterations: CGFloat = 4
-    var inputRadius: CGFloat = 10
+    @objc var inputImage: CIImage?
+    @objc var inputThreshold: CGFloat = 0.5
+    @objc var inputIterations: CGFloat = 4
+    @objc var inputRadius: CGFloat = 10
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Color Directed Blur",
+            kCIAttributeFilterDisplayName: "Color Directed Blur" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
+                           kCIAttributeClass: "CIImage",
+                           kCIAttributeDisplayName: "Image",
+                           kCIAttributeType: kCIAttributeTypeImage],
             "inputThreshold": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 0.5,
-                kCIAttributeDisplayName: "Threshold",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                               kCIAttributeClass: "NSNumber",
+                               kCIAttributeDefault: 0.5,
+                               kCIAttributeDisplayName: "Threshold",
+                               kCIAttributeMin: 0,
+                               kCIAttributeSliderMin: 0,
+                               kCIAttributeSliderMax: 1,
+                               kCIAttributeType: kCIAttributeTypeScalar],
             "inputIterations": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 4,
-                kCIAttributeDisplayName: "Iterations",
-                kCIAttributeMin: 1,
-                kCIAttributeSliderMin: 1,
-                kCIAttributeSliderMax: 10,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                                kCIAttributeClass: "NSNumber",
+                                kCIAttributeDefault: 4,
+                                kCIAttributeDisplayName: "Iterations",
+                                kCIAttributeMin: 1,
+                                kCIAttributeSliderMin: 1,
+                                kCIAttributeSliderMax: 10,
+                                kCIAttributeType: kCIAttributeTypeScalar],
             "inputRadius": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 10,
-                kCIAttributeDisplayName: "Radius",
-                kCIAttributeMin: 3,
-                kCIAttributeSliderMin: 3,
-                kCIAttributeSliderMax: 20,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                            kCIAttributeClass: "NSNumber",
+                            kCIAttributeDefault: 10,
+                            kCIAttributeDisplayName: "Radius",
+                            kCIAttributeMin: 3,
+                            kCIAttributeSliderMin: 3,
+                            kCIAttributeSliderMax: 20,
+                            kCIAttributeType: kCIAttributeTypeScalar],
         ]
     }
     
-    let kernel = CIKernel(string:
+    let kernel = CIKernel(source:
         "kernel vec4 colorDirectedBlurKernel(sampler image, float radius, float threshold)" +
-        "{" +
-        
-        "   int r = int(radius);" +
-        "   float n = 0.0;" +
-        "   vec2 d = destCoord();" +
-        "   vec3 thisPixel = sample(image, samplerCoord(image)).rgb;" +
-        
-        "   vec3 nwAccumulator = vec3(0.0, 0.0, 0.0);" +
-        "   vec3 neAccumulator = vec3(0.0, 0.0, 0.0);" +
-        "   vec3 swAccumulator = vec3(0.0, 0.0, 0.0);" +
-        "   vec3 seAccumulator = vec3(0.0, 0.0, 0.0);" +
-        
-        "   for (int x = 0; x <= r; x++) " +
-        "   { " +
-        "       for (int y = 0; y <= r; y++) " +
-        "       { " +
-        "        nwAccumulator += sample(image, samplerTransform(image, d + vec2(-x ,-y))).rgb; " +
-        "        neAccumulator += sample(image, samplerTransform(image, d + vec2(x ,-y))).rgb; " +
-        "        swAccumulator += sample(image, samplerTransform(image, d + vec2(-x ,y))).rgb; " +
-        "        seAccumulator += sample(image, samplerTransform(image, d + vec2(x ,y))).rgb; " +
-        "        n = n + 1.0; " +
-        "       } " +
-        "   } " +
-        
-        "   nwAccumulator /= n;" +
-        "   neAccumulator /= n;" +
-        "   swAccumulator /= n;" +
-        "   seAccumulator /= n;" +
-        
-        "   float nwDiff = distance(thisPixel, nwAccumulator); " +
-        "   float neDiff = distance(thisPixel, neAccumulator); " +
-        "   float swDiff = distance(thisPixel, swAccumulator); " +
-        "   float seDiff = distance(thisPixel, seAccumulator); " +
-
-        "   if (nwDiff >= threshold && neDiff >= threshold && swDiff >= threshold && seDiff >= threshold)" +
-        "   {return vec4(thisPixel, 1.0);}" +
-        
-        "   if(nwDiff < neDiff && nwDiff < swDiff && nwDiff < seDiff) " +
-        "   { return vec4 (nwAccumulator, 1.0 ); }" +
-        
-        "   if(neDiff < nwDiff && neDiff < swDiff && neDiff < seDiff) " +
-        "   { return vec4 (neAccumulator, 1.0 ); }" +
-        
-        "   if(swDiff < nwDiff && swDiff < neDiff && swDiff < seDiff) " +
-        "   { return vec4 (swAccumulator, 1.0 ); }" +
-        
-        "   if(seDiff < nwDiff && seDiff < neDiff && seDiff < swDiff) " +
-        "   { return vec4 (seAccumulator, 1.0 ); }" +
-        
-        "   return vec4(thisPixel, 1.0); " +
+            "{" +
+            
+            "   int r = int(radius);" +
+            "   float n = 0.0;" +
+            "   vec2 d = destCoord();" +
+            "   vec3 thisPixel = sample(image, samplerCoord(image)).rgb;" +
+            
+            "   vec3 nwAccumulator = vec3(0.0, 0.0, 0.0);" +
+            "   vec3 neAccumulator = vec3(0.0, 0.0, 0.0);" +
+            "   vec3 swAccumulator = vec3(0.0, 0.0, 0.0);" +
+            "   vec3 seAccumulator = vec3(0.0, 0.0, 0.0);" +
+            
+            "   for (int x = 0; x <= r; x++) " +
+            "   { " +
+            "       for (int y = 0; y <= r; y++) " +
+            "       { " +
+            "        nwAccumulator += sample(image, samplerTransform(image, d + vec2(-x ,-y))).rgb; " +
+            "        neAccumulator += sample(image, samplerTransform(image, d + vec2(x ,-y))).rgb; " +
+            "        swAccumulator += sample(image, samplerTransform(image, d + vec2(-x ,y))).rgb; " +
+            "        seAccumulator += sample(image, samplerTransform(image, d + vec2(x ,y))).rgb; " +
+            "        n = n + 1.0; " +
+            "       } " +
+            "   } " +
+            
+            "   nwAccumulator /= n;" +
+            "   neAccumulator /= n;" +
+            "   swAccumulator /= n;" +
+            "   seAccumulator /= n;" +
+            
+            "   float nwDiff = distance(thisPixel, nwAccumulator); " +
+            "   float neDiff = distance(thisPixel, neAccumulator); " +
+            "   float swDiff = distance(thisPixel, swAccumulator); " +
+            "   float seDiff = distance(thisPixel, seAccumulator); " +
+            
+            "   if (nwDiff >= threshold && neDiff >= threshold && swDiff >= threshold && seDiff >= threshold)" +
+            "   {return vec4(thisPixel, 1.0);}" +
+            
+            "   if(nwDiff < neDiff && nwDiff < swDiff && nwDiff < seDiff) " +
+            "   { return vec4 (nwAccumulator, 1.0 ); }" +
+            
+            "   if(neDiff < nwDiff && neDiff < swDiff && neDiff < seDiff) " +
+            "   { return vec4 (neAccumulator, 1.0 ); }" +
+            
+            "   if(swDiff < nwDiff && swDiff < neDiff && swDiff < seDiff) " +
+            "   { return vec4 (swAccumulator, 1.0 ); }" +
+            
+            "   if(seDiff < nwDiff && seDiff < neDiff && seDiff < swDiff) " +
+            "   { return vec4 (seAccumulator, 1.0 ); }" +
+            
+            "   return vec4(thisPixel, 1.0); " +
         "}"
     )
     
     override var outputImage: CIImage?
     {
-        guard let inputImage = inputImage, kernel = kernel else
+        guard let inputImage = inputImage, let kernel = kernel else
         {
             return nil
         }
         
-        let accumulator = CIImageAccumulator(extent: inputImage.extent, format: kCIFormatARGB8)
+        let accumulator = CIImageAccumulator(extent: inputImage.extent, format: CIFormat.ARGB8)
         
-        accumulator.setImage(inputImage)
+        accumulator?.setImage(inputImage)
         
         for _ in 0 ... Int(inputIterations)
         {
-            let final = kernel.applyWithExtent(inputImage.extent,
-                                               roiCallback:
+            let final = kernel.apply(extent: inputImage.extent,
+                                     roiCallback:
                 {
                     (index, rect) in
                     return rect
-                },
-                                               arguments: [accumulator.image(), inputRadius, 1 - inputThreshold])
+            },
+                                     arguments: [accumulator!.image(), inputRadius, 1 - inputThreshold])
             
-            accumulator.setImage(final!)
+            accumulator?.setImage(final!)
         }
         
-        return accumulator.image()
+        return accumulator?.image()
     }
 }
