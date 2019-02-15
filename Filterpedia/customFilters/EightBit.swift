@@ -22,9 +22,9 @@ import CoreImage
 
 class EightBit: CIFilter
 {
-    var inputImage: CIImage?
-    var inputPaletteIndex: CGFloat = 4
-    var inputScale: CGFloat = 8
+    @objc var inputImage: CIImage?
+    @objc var inputPaletteIndex: CGFloat = 4
+    @objc var inputScale: CGFloat = 8
     
     override func setDefaults()
     {
@@ -32,10 +32,10 @@ class EightBit: CIFilter
         inputScale = 8
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Eight Bit",
+            kCIAttributeFilterDisplayName: "Eight Bit" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -92,7 +92,7 @@ class EightBit: CIFilter
         kernelString += "   return vec4(returnColor, 1.0) ; \n"
         kernelString += "} \n"
         
-        guard let kernel = CIColorKernel(string: kernelString) else
+        guard let kernel = CIColorKernel(source: kernelString) else
         {
             return nil
         }
@@ -100,8 +100,8 @@ class EightBit: CIFilter
         let extent = inputImage.extent
         
         
-        let final = kernel.applyWithExtent(extent,
-            arguments: [inputImage.imageByApplyingFilter("CIPixellate", withInputParameters: [kCIInputScaleKey: inputScale])])
+        let final = kernel.apply(extent: extent,
+            arguments: [inputImage.applyingFilter("CIPixellate", parameters: [kCIInputScaleKey: inputScale])])
         
         return final
     }

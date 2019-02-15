@@ -26,13 +26,13 @@ import CoreImage
 
 class BleachBypassFilter: CIFilter
 {
-    var inputImage : CIImage?
-    var inputAmount = CGFloat(1)
+    @objc var inputImage : CIImage?
+    @objc var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Bleach Bypass Filter",
+            kCIAttributeFilterDisplayName: "Bleach Bypass Filter" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -55,7 +55,7 @@ class BleachBypassFilter: CIFilter
         inputAmount = 1
     }
     
-    let bleachBypassKernel = CIColorKernel(string:
+    let bleachBypassKernel = CIColorKernel(source:
         "kernel vec4 bleachBypassFilter(__sample image, float amount) \n" +
         "{ \n" +
         "   float luma = dot(image.rgb, vec3(0.2126, 0.7152, 0.0722));" +
@@ -72,15 +72,15 @@ class BleachBypassFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            bleachBypassKernel = bleachBypassKernel else
+            let bleachBypassKernel = bleachBypassKernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputAmount]
+        let arguments = [inputImage, inputAmount] as [Any]
         
-        return bleachBypassKernel.applyWithExtent(extent, arguments: arguments)
+        return bleachBypassKernel.apply(extent: extent, arguments: arguments)
     }
 }
 
@@ -89,13 +89,13 @@ class BleachBypassFilter: CIFilter
 
 class TechnicolorFilter: CIFilter
 {
-    var inputImage : CIImage?
-    var inputAmount = CGFloat(1)
+    @objc var inputImage : CIImage?
+    @objc var inputAmount = CGFloat(1)
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Technicolor Filter",
+            kCIAttributeFilterDisplayName: "Technicolor Filter" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -118,7 +118,7 @@ class TechnicolorFilter: CIFilter
         inputAmount = 1
     }
 
-    let technicolorKernel = CIColorKernel(string:
+    let technicolorKernel = CIColorKernel(source:
         "kernel vec4 technicolorFilter(__sample image, float amount)" +
         "{" +
         "   vec3 redmatte = 1.0 - vec3(image.r - ((image.g + image.b)/2.0));" +
@@ -136,14 +136,14 @@ class TechnicolorFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            technicolorKernel = technicolorKernel else
+            let technicolorKernel = technicolorKernel else
         {
             return nil
         }
         
         let extent = inputImage.extent
-        let arguments = [inputImage, inputAmount]
+        let arguments = [inputImage, inputAmount] as [Any]
         
-        return technicolorKernel.applyWithExtent(extent, arguments: arguments)
+        return technicolorKernel.apply(extent: extent, arguments: arguments)
     }
 }

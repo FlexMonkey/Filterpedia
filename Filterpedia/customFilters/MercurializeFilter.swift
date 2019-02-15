@@ -25,15 +25,15 @@ class MercurializeFilter: CIFilter
 {
     // MARK: Filter parameters
     
-    var inputImage: CIImage?
+    @objc var inputImage: CIImage?
     
-    var inputEdgeThickness: CGFloat = 5
+    @objc var inputEdgeThickness: CGFloat = 5
     
-    var inputScale: CGFloat = 10
+    @objc var inputScale: CGFloat = 10
 
     // MARK: Shading image attributes
 
-    var inputLightColor = CIColor(red: 1, green: 1, blue: 0.75)
+    @objc var inputLightColor = CIColor(red: 1, green: 1, blue: 0.75)
     {
         didSet
         {
@@ -41,7 +41,7 @@ class MercurializeFilter: CIFilter
         }
     }
     
-    var inputLightPosition = CIVector(x: 0, y: 1)
+    @objc var inputLightPosition = CIVector(x: 0, y: 1)
     {
         didSet
         {
@@ -49,7 +49,7 @@ class MercurializeFilter: CIFilter
         }
     }
     
-    var inputAmbientLightColor = CIColor(red: 0.5, green: 0.5, blue: 0.75)
+    @objc var inputAmbientLightColor = CIColor(red: 0.5, green: 0.5, blue: 0.75)
     {
         didSet
         {
@@ -57,7 +57,7 @@ class MercurializeFilter: CIFilter
         }
     }
     
-    var inputShininess: CGFloat = 0.05
+    @objc var inputShininess: CGFloat = 0.05
     {
         didSet
         {
@@ -88,10 +88,10 @@ class MercurializeFilter: CIFilter
         inputScale = 10
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Mercurialize Filter",
+            kCIAttributeFilterDisplayName: "Mercurialize Filter" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -174,27 +174,27 @@ class MercurializeFilter: CIFilter
             material.shininess = inputShininess
             
             omniLightNode.color = inputLightColor
-            omniLightNode.position.x = Float(-50 + (inputLightPosition.X * 100))
-            omniLightNode.position.y = Float(-50 + (inputLightPosition.Y * 100))
+            omniLightNode.position.x = Float(-50 + (inputLightPosition.x * 100))
+            omniLightNode.position.y = Float(-50 + (inputLightPosition.y * 100))
             
             ambientLightNode.color = inputAmbientLightColor
             
-            sceneKitView.prepareObject(sceneKitView.scene!, shouldAbortBlock: {false})
+            sceneKitView.prepare(sceneKitView.scene!, shouldAbortBlock: {false})
             
             sphereImage = CIImage(image: sceneKitView.snapshot())
         }
         
         let edgeWork = CIFilter(name: "CIEdgeWork",
-            withInputParameters: [kCIInputImageKey: inputImage,
+            parameters: [kCIInputImageKey: inputImage,
             kCIInputRadiusKey: inputEdgeThickness])!
         
         let heightField = CIFilter(name: "CIHeightFieldFromMask",
-                withInputParameters: [
+                parameters: [
                 kCIInputRadiusKey: inputScale,
                 kCIInputImageKey: edgeWork.outputImage!])!
         
         let shadedMaterial = CIFilter(name: "CIShadedMaterial",
-                withInputParameters: [
+                parameters: [
                 kCIInputScaleKey: inputScale,
                 kCIInputImageKey: heightField.outputImage!,
                 kCIInputShadingImageKey: sphereImage!])!
@@ -208,7 +208,7 @@ class MercurializeFilter: CIFilter
     {
         sceneKitView.frame = CGRect(x: 0, y: 0, width: 320, height: 320)
         
-        sceneKitView.backgroundColor = UIColor.blackColor()
+        sceneKitView.backgroundColor = UIColor.black
         
         let scene = SCNScene()
         
@@ -241,9 +241,9 @@ class MercurializeFilter: CIFilter
         
         // Material
         
-        material.lightingModelName = SCNLightingModelPhong
-        material.specular.contents = UIColor.whiteColor()
-        material.diffuse.contents = UIColor.darkGrayColor()
+        material.lightingModel = SCNMaterial.LightingModel.phong
+        material.specular.contents = UIColor.white
+        material.diffuse.contents = UIColor.darkGray
         material.shininess = 0.15
         
         sphere.materials = [material]
@@ -259,7 +259,7 @@ class LightNode: SCNNode
         super.init()
         
         light = SCNLight()
-        light!.type = type.rawValue
+        light!.type = SCNLight.LightType(rawValue: type.rawValue)
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -271,7 +271,7 @@ class LightNode: SCNNode
     {
         didSet
         {
-            light?.color = UIColor(CIColor: color)
+            light?.color = UIColor(ciColor: color)
         }
     }
 }

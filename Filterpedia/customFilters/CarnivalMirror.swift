@@ -22,13 +22,13 @@ import CoreImage
 
 class CarnivalMirror: CIFilter
 {
-    var inputImage : CIImage?
+    @objc var inputImage : CIImage?
     
-    var inputHorizontalWavelength: CGFloat = 10
-    var inputHorizontalAmount: CGFloat = 20
+    @objc var inputHorizontalWavelength: CGFloat = 10
+    @objc var inputHorizontalAmount: CGFloat = 20
     
-    var inputVerticalWavelength: CGFloat = 10
-    var inputVerticalAmount: CGFloat = 20
+    @objc var inputVerticalWavelength: CGFloat = 10
+    @objc var inputVerticalAmount: CGFloat = 20
     
     override func setDefaults()
     {
@@ -39,10 +39,10 @@ class CarnivalMirror: CIFilter
         inputVerticalAmount = 20
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Carnival Mirror",
+            kCIAttributeFilterDisplayName: "Carnival Mirror" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -89,7 +89,7 @@ class CarnivalMirror: CIFilter
         
     }
     
-    let carnivalMirrorKernel = CIWarpKernel(string:
+    let carnivalMirrorKernel = CIWarpKernel(source:
         "kernel vec2 carnivalMirror(float xWavelength, float xAmount, float yWavelength, float yAmount)" +
         "{" +
         "   float y = destCoord().y + sin(destCoord().y / yWavelength) * yAmount; " +
@@ -101,7 +101,7 @@ class CarnivalMirror: CIFilter
     override var outputImage : CIImage!
     {
         if let inputImage = inputImage,
-            kernel = carnivalMirrorKernel
+            let kernel = carnivalMirrorKernel
         {
             let arguments = [
                 inputHorizontalWavelength, inputHorizontalAmount,
@@ -109,13 +109,13 @@ class CarnivalMirror: CIFilter
             
             let extent = inputImage.extent
             
-            return kernel.applyWithExtent(extent,
+            return kernel.apply(extent: extent,
                 roiCallback:
                 {
                     (index, rect) in
                     return rect
                 },
-                inputImage: inputImage,
+                image: inputImage,
                 arguments: arguments)
         }
         return nil

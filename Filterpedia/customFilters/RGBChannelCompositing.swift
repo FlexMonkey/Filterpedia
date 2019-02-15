@@ -27,21 +27,21 @@ let tau = CGFloat(M_PI * 2)
 
 class RGBChannelCompositing: CIFilter
 {
-    var inputRedImage : CIImage?
-    var inputGreenImage : CIImage?
-    var inputBlueImage : CIImage?
+    @objc var inputRedImage : CIImage?
+    @objc var inputGreenImage : CIImage?
+    @objc var inputBlueImage : CIImage?
     
-    let rgbChannelCompositingKernel = CIColorKernel(string:
+    let rgbChannelCompositingKernel = CIColorKernel(source:
         "kernel vec4 rgbChannelCompositing(__sample red, __sample green, __sample blue)" +
         "{" +
         "   return vec4(red.r, green.g, blue.b, 1.0);" +
         "}"
     )
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "RGB Compositing",
+            kCIAttributeFilterDisplayName: "RGB Compositing" as AnyObject,
             
             "inputRedImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -63,9 +63,9 @@ class RGBChannelCompositing: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputRedImage = inputRedImage,
-            inputGreenImage = inputGreenImage,
-            inputBlueImage = inputBlueImage,
-            rgbChannelCompositingKernel = rgbChannelCompositingKernel else
+            let inputGreenImage = inputGreenImage,
+            let inputBlueImage = inputBlueImage,
+            let rgbChannelCompositingKernel = rgbChannelCompositingKernel else
         {
             return nil
         }
@@ -73,7 +73,7 @@ class RGBChannelCompositing: CIFilter
         let extent = inputRedImage.extent.union(inputGreenImage.extent.union(inputBlueImage.extent))
         let arguments = [inputRedImage, inputGreenImage, inputBlueImage]
         
-        return rgbChannelCompositingKernel.applyWithExtent(extent, arguments: arguments)
+        return rgbChannelCompositingKernel.apply(extent: extent, arguments: arguments)
     }
 }
 
@@ -88,11 +88,11 @@ class RGBChannelCompositing: CIFilter
 /// ```
 class RGBChannelToneCurve: CIFilter
 {
-    var inputImage: CIImage?
+    @objc var inputImage: CIImage?
     
-    var inputRedValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
-    var inputGreenValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
-    var inputBlueValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
+    @objc var inputRedValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
+    @objc var inputGreenValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
+    @objc var inputBlueValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
     
     let rgbChannelCompositing = RGBChannelCompositing()
     
@@ -103,10 +103,10 @@ class RGBChannelToneCurve: CIFilter
         inputBlueValues = CIVector(values: [0.0, 0.25, 0.5, 0.75, 1.0], count: 5)
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "RGB Tone Curve",
+            kCIAttributeFilterDisplayName: "RGB Tone Curve" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -143,31 +143,31 @@ class RGBChannelToneCurve: CIFilter
             return nil
         }
 
-        let red = inputImage.imageByApplyingFilter("CIToneCurve",
-            withInputParameters: [
-                "inputPoint0": CIVector(x: 0.0, y: inputRedValues.valueAtIndex(0)),
-                "inputPoint1": CIVector(x: 0.25, y: inputRedValues.valueAtIndex(1)),
-                "inputPoint2": CIVector(x: 0.5, y: inputRedValues.valueAtIndex(2)),
-                "inputPoint3": CIVector(x: 0.75, y: inputRedValues.valueAtIndex(3)),
-                "inputPoint4": CIVector(x: 1.0, y: inputRedValues.valueAtIndex(4))
+        let red = inputImage.applyingFilter("CIToneCurve",
+            parameters: [
+                "inputPoint0": CIVector(x: 0.0, y: inputRedValues.value(at: 0)),
+                "inputPoint1": CIVector(x: 0.25, y: inputRedValues.value(at: 1)),
+                "inputPoint2": CIVector(x: 0.5, y: inputRedValues.value(at: 2)),
+                "inputPoint3": CIVector(x: 0.75, y: inputRedValues.value(at: 3)),
+                "inputPoint4": CIVector(x: 1.0, y: inputRedValues.value(at: 4))
             ])
         
-        let green = inputImage.imageByApplyingFilter("CIToneCurve",
-            withInputParameters: [
-                "inputPoint0": CIVector(x: 0.0, y: inputGreenValues.valueAtIndex(0)),
-                "inputPoint1": CIVector(x: 0.25, y: inputGreenValues.valueAtIndex(1)),
-                "inputPoint2": CIVector(x: 0.5, y: inputGreenValues.valueAtIndex(2)),
-                "inputPoint3": CIVector(x: 0.75, y: inputGreenValues.valueAtIndex(3)),
-                "inputPoint4": CIVector(x: 1.0, y: inputGreenValues.valueAtIndex(4))
+        let green = inputImage.applyingFilter("CIToneCurve",
+            parameters: [
+                "inputPoint0": CIVector(x: 0.0, y: inputGreenValues.value(at: 0)),
+                "inputPoint1": CIVector(x: 0.25, y: inputGreenValues.value(at: 1)),
+                "inputPoint2": CIVector(x: 0.5, y: inputGreenValues.value(at: 2)),
+                "inputPoint3": CIVector(x: 0.75, y: inputGreenValues.value(at: 3)),
+                "inputPoint4": CIVector(x: 1.0, y: inputGreenValues.value(at: 4))
             ])
         
-        let blue = inputImage.imageByApplyingFilter("CIToneCurve",
-            withInputParameters: [
-                "inputPoint0": CIVector(x: 0.0, y: inputBlueValues.valueAtIndex(0)),
-                "inputPoint1": CIVector(x: 0.25, y: inputBlueValues.valueAtIndex(1)),
-                "inputPoint2": CIVector(x: 0.5, y: inputBlueValues.valueAtIndex(2)),
-                "inputPoint3": CIVector(x: 0.75, y: inputBlueValues.valueAtIndex(3)),
-                "inputPoint4": CIVector(x: 1.0, y: inputBlueValues.valueAtIndex(4))
+        let blue = inputImage.applyingFilter("CIToneCurve",
+            parameters: [
+                "inputPoint0": CIVector(x: 0.0, y: inputBlueValues.value(at: 0)),
+                "inputPoint1": CIVector(x: 0.25, y: inputBlueValues.value(at: 1)),
+                "inputPoint2": CIVector(x: 0.5, y: inputBlueValues.value(at: 2)),
+                "inputPoint3": CIVector(x: 0.75, y: inputBlueValues.value(at: 3)),
+                "inputPoint4": CIVector(x: 1.0, y: inputBlueValues.value(at: 4))
             ])
         
         rgbChannelCompositing.inputRedImage = red
@@ -182,16 +182,16 @@ class RGBChannelToneCurve: CIFilter
 
 class RGBChannelBrightnessAndContrast: CIFilter
 {
-    var inputImage: CIImage?
+    @objc var inputImage: CIImage?
     
-    var inputRedBrightness: CGFloat = 0
-    var inputRedContrast: CGFloat = 1
+    @objc var inputRedBrightness: CGFloat = 0
+    @objc var inputRedContrast: CGFloat = 1
     
-    var inputGreenBrightness: CGFloat = 0
-    var inputGreenContrast: CGFloat = 1
+    @objc var inputGreenBrightness: CGFloat = 0
+    @objc var inputGreenContrast: CGFloat = 1
     
-    var inputBlueBrightness: CGFloat = 0
-    var inputBlueContrast: CGFloat = 1
+    @objc var inputBlueBrightness: CGFloat = 0
+    @objc var inputBlueContrast: CGFloat = 1
     
     let rgbChannelCompositing = RGBChannelCompositing()
     
@@ -207,10 +207,10 @@ class RGBChannelBrightnessAndContrast: CIFilter
         inputBlueContrast = 1
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "RGB Brightness And Contrast",
+            kCIAttributeFilterDisplayName: "RGB Brightness And Contrast" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -280,18 +280,18 @@ class RGBChannelBrightnessAndContrast: CIFilter
             return nil
         }
         
-        let red = inputImage.imageByApplyingFilter("CIColorControls",
-            withInputParameters: [
+        let red = inputImage.applyingFilter("CIColorControls",
+            parameters: [
                 kCIInputBrightnessKey: inputRedBrightness,
                 kCIInputContrastKey: inputRedContrast])
         
-        let green = inputImage.imageByApplyingFilter("CIColorControls",
-            withInputParameters: [
+        let green = inputImage.applyingFilter("CIColorControls",
+            parameters: [
                 kCIInputBrightnessKey: inputGreenBrightness,
                 kCIInputContrastKey: inputGreenContrast])
         
-        let blue = inputImage.imageByApplyingFilter("CIColorControls",
-            withInputParameters: [
+        let blue = inputImage.applyingFilter("CIColorControls",
+            parameters: [
                 kCIInputBrightnessKey: inputBlueBrightness,
                 kCIInputContrastKey: inputBlueContrast])
         
@@ -309,10 +309,10 @@ class RGBChannelBrightnessAndContrast: CIFilter
 
 class ChromaticAberration: CIFilter
 {
-    var inputImage: CIImage?
+    @objc var inputImage: CIImage?
     
-    var inputAngle: CGFloat = 0
-    var inputRadius: CGFloat = 2
+    @objc var inputAngle: CGFloat = 0
+    @objc var inputRadius: CGFloat = 2
     
     let rgbChannelCompositing = RGBChannelCompositing()
     
@@ -322,10 +322,10 @@ class ChromaticAberration: CIFilter
         inputRadius = 2
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Chromatic Abberation",
+            kCIAttributeFilterDisplayName: "Chromatic Abberation" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -363,21 +363,21 @@ class ChromaticAberration: CIFilter
         let greenAngle = inputAngle + tau * 0.333
         let blueAngle = inputAngle + tau * 0.666
         
-        let redTransform = CGAffineTransformMakeTranslation(sin(redAngle) * inputRadius, cos(redAngle) * inputRadius)
-        let greenTransform = CGAffineTransformMakeTranslation(sin(greenAngle) * inputRadius, cos(greenAngle) * inputRadius)
-        let blueTransform = CGAffineTransformMakeTranslation(sin(blueAngle) * inputRadius, cos(blueAngle) * inputRadius)
+        let redTransform = CGAffineTransform(translationX: sin(redAngle) * inputRadius, y: cos(redAngle) * inputRadius)
+        let greenTransform = CGAffineTransform(translationX: sin(greenAngle) * inputRadius, y: cos(greenAngle) * inputRadius)
+        let blueTransform = CGAffineTransform(translationX: sin(blueAngle) * inputRadius, y: cos(blueAngle) * inputRadius)
         
-        let red = inputImage.imageByApplyingFilter("CIAffineTransform",
-            withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: redTransform)])
-            .imageByCroppingToRect(inputImage.extent)
+        let red = inputImage.applyingFilter("CIAffineTransform",
+            parameters: [kCIInputTransformKey: NSValue(cgAffineTransform: redTransform)])
+            .cropped(to: inputImage.extent)
         
-        let green = inputImage.imageByApplyingFilter("CIAffineTransform",
-            withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: greenTransform)])
-            .imageByCroppingToRect(inputImage.extent)
+        let green = inputImage.applyingFilter("CIAffineTransform",
+            parameters: [kCIInputTransformKey: NSValue(cgAffineTransform: greenTransform)])
+            .cropped(to: inputImage.extent)
         
-        let blue = inputImage.imageByApplyingFilter("CIAffineTransform",
-            withInputParameters: [kCIInputTransformKey: NSValue(CGAffineTransform: blueTransform)])
-            .imageByCroppingToRect(inputImage.extent)
+        let blue = inputImage.applyingFilter("CIAffineTransform",
+            parameters: [kCIInputTransformKey: NSValue(cgAffineTransform: blueTransform)])
+            .cropped(to: inputImage.extent)
 
         rgbChannelCompositing.inputRedImage = red
         rgbChannelCompositing.inputGreenImage = green
@@ -393,11 +393,11 @@ class ChromaticAberration: CIFilter
 
 class RGBChannelGaussianBlur: CIFilter
 {
-    var inputImage: CIImage?
+    @objc var inputImage: CIImage?
     
-    var inputRedRadius: CGFloat = 2
-    var inputGreenRadius: CGFloat = 4
-    var inputBlueRadius: CGFloat = 8
+    @objc var inputRedRadius: CGFloat = 2
+    @objc var inputGreenRadius: CGFloat = 4
+    @objc var inputBlueRadius: CGFloat = 8
     
     let rgbChannelCompositing = RGBChannelCompositing()
     
@@ -408,10 +408,10 @@ class RGBChannelGaussianBlur: CIFilter
         inputBlueRadius = 8
     }
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "RGB Channel Gaussian Blur",
+            kCIAttributeFilterDisplayName: "RGB Channel Gaussian Blur" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -455,16 +455,16 @@ class RGBChannelGaussianBlur: CIFilter
         }
         
         let red = inputImage
-            .imageByApplyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputRedRadius])
-            .imageByClampingToExtent()
+            .applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: inputRedRadius])
+            .clampedToExtent()
         
         let green = inputImage
-            .imageByApplyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputGreenRadius])
-            .imageByClampingToExtent()
+            .applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: inputGreenRadius])
+            .clampedToExtent()
         
         let blue = inputImage
-            .imageByApplyingFilter("CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: inputBlueRadius])
-            .imageByClampingToExtent()
+            .applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: inputBlueRadius])
+            .clampedToExtent()
         
         rgbChannelCompositing.inputRedImage = red
         rgbChannelCompositing.inputGreenImage = green

@@ -11,7 +11,7 @@ import UIKit
 
 extension UIBezierPath
 {
-    func interpolatePointsWithHermite(interpolationPoints : [CGPoint])
+    func interpolatePointsWithHermite(_ interpolationPoints : [CGPoint])
     {
         let n = interpolationPoints.count - 1
         
@@ -21,7 +21,7 @@ extension UIBezierPath
             
             if ii == 0
             {
-                self.moveToPoint(interpolationPoints[0])
+                self.move(to: interpolationPoints[0])
             }
             
             var nextii = (ii + 1) % interpolationPoints.count
@@ -64,7 +64,7 @@ extension UIBezierPath
             
             let controlPoint2 = CGPoint(x: currentPoint.x - mx / 3.0, y: currentPoint.y - my / 3.0)
             
-            self.addCurveToPoint(endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+            self.addCurve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
         }
     }
 }
@@ -86,7 +86,7 @@ extension CIVector
         
         for i in 0 ..< self.count
         {
-            returnArray.append(self.valueAtIndex(i))
+            returnArray.append(self.value(at: i))
         }
         
         return returnArray
@@ -98,7 +98,7 @@ extension CIVector
         
         for i in 0 ..< self.count
         {
-            sum += self.valueAtIndex(i)
+            sum += self.value(at: i)
         }
         
         if sum == 0
@@ -110,31 +110,31 @@ extension CIVector
         
         for i in 0 ..< self.count
         {
-            normalizedValues.append(self.valueAtIndex(i) / sum)
+            normalizedValues.append(self.value(at: i) / sum)
         }
         
         return CIVector(values: normalizedValues,
                         count: normalizedValues.count)
     }
     
-    func multiply(value: CGFloat) -> CIVector
+    func multiply(_ value: CGFloat) -> CIVector
     {
         let n = self.count
         var targetArray = [CGFloat]()
         
         for i in 0 ..< n
         {
-            targetArray.append(self.valueAtIndex(i) * value)
+            targetArray.append(self.value(at: i) * value)
         }
         
         return CIVector(values: targetArray, count: n)
     }
     
-    func interpolateTo(target: CIVector, value: CGFloat) -> CIVector
+    func interpolateTo(_ target: CIVector, value: CGFloat) -> CIVector
     {
         return CIVector(
-            x: self.X + ((target.X - self.X) * value),
-            y: self.Y + ((target.Y - self.Y) * value))
+            x: self.x + ((target.x - self.x) * value),
+            y: self.y + ((target.y - self.y) * value))
     }
 }
 
