@@ -490,7 +490,7 @@ float orderedDither8x8(float colorin, float bx, float by, float errorIntensity)
     return colorin * (error * 2.0 * errorIntensity + (1.0 - errorIntensity));
 }
 
-kernel vec4 ditherBayer(__sample image, float intensity, float matrix, float palette)
+kernel vec4 ditherBayer(sampler image, float intensity, float matrix, float palette)
 {
     vec4 pixel = sample(image, samplerCoord(image));
     int msize = int(matrix);

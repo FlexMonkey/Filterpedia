@@ -76,7 +76,6 @@ class EightBit: CIFilter
         
         var kernelString = "kernel vec4 thresholdFilter(__sample image)"
         kernelString += "{ \n"
-        kernelString += "   vec2 uv = samplerCoord(image); \n"
         kernelString += "   float dist = distance(image.rgb, \(palette.first!.toVectorString())); \n"
         kernelString += "   vec3 returnColor = \(palette.first!.toVectorString());\n "
         
