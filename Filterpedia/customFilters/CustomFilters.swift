@@ -930,7 +930,7 @@ class DifferenceOfGaussians: CIFilter
     {
         let variance = max(sigma * sigma, 0.00001)
         
-        return (1.0 / sqrt(CGFloat(M_PI) * 2 * variance)) * pow(CGFloat(M_E), -pow(x, 2) / (2 * variance))
+        return (1.0 / sqrt(CGFloat.pi * 2 * variance)) * pow(CGFloat(M_E), -pow(x, 2) / (2 * variance))
     }
 }
 
@@ -980,7 +980,7 @@ class StarBurstFilter: CIFilter
                 kCIAttributeDisplayName: "Angle",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: M_PI,
+                kCIAttributeSliderMax: Double.pi,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
             "inputStarburstBrightness": [kCIAttributeIdentity: 0,
@@ -1020,7 +1020,7 @@ class StarBurstFilter: CIFilter
         
         for i in 0 ..< inputBeamCount
         {
-            let angle = CGFloat((M_PI / Double(inputBeamCount)) * Double(i))
+            let angle = CGFloat(Double.pi / Double(inputBeamCount) * Double(i))
             
             let starburst = thresholdImage.applyingFilter("CIMotionBlur",
                     parameters: [
@@ -1029,7 +1029,7 @@ class StarBurstFilter: CIFilter
                 .cropped(to: thresholdImage.extent)
                 .applyingFilter("CIAdditionCompositing",
                     parameters: [
-                        kCIInputBackgroundImageKey: starBurstAccumulator?.image()])
+                        kCIInputBackgroundImageKey: starBurstAccumulator!.image()])
             
             starBurstAccumulator?.setImage(starburst)
         }
@@ -1039,7 +1039,7 @@ class StarBurstFilter: CIFilter
                 parameters: [kCIInputBrightnessKey: inputStarburstBrightness])
 
         let final = inputImage.applyingFilter("CIAdditionCompositing",
-            parameters: [kCIInputBackgroundImageKey: adjustedStarBurst])
+            parameters: [kCIInputBackgroundImageKey: adjustedStarBurst!])
         
         return final
     }
@@ -1302,7 +1302,7 @@ class PolarPixellate: CIFilter
     @objc var inputImage : CIImage?
     @objc var inputCenter = CIVector(x: 320, y: 320)
     
-    @objc var inputPixelArc = CGFloat(M_PI / 15)
+    @objc var inputPixelArc = CGFloat.pi / 15
     @objc var inputPixelLength = CGFloat(50)
     
     override var attributes: [String : Any]
@@ -1316,11 +1316,11 @@ class PolarPixellate: CIFilter
             
             "inputPixelArc": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: CGFloat(M_PI / 15),
+                kCIAttributeDefault: CGFloat.pi / 15,
                 kCIAttributeDisplayName: "Pixel Arc",
                 kCIAttributeMin: 0,
                 kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: CGFloat(M_PI),
+                kCIAttributeSliderMax: CGFloat.pi,
                 kCIAttributeType: kCIAttributeTypeScalar],
             
             "inputPixelLength": [kCIAttributeIdentity: 0,
@@ -1342,7 +1342,7 @@ class PolarPixellate: CIFilter
     
     override func setDefaults()
     {
-        inputPixelArc = CGFloat(M_PI / 15)
+        inputPixelArc = CGFloat.pi / 15
         inputPixelLength = 50
         inputCenter = CIVector(x: 320, y: 320)
     }

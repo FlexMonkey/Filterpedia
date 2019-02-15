@@ -260,9 +260,7 @@ class FilterDetail: UIView
             .filter({ $0 is FilterAttributesDisplayable})
             .forEach({ ($0 as? FilterAttributesDisplayable)?.setFilter(currentFilter) })
         
-        let queue = currentFilter is VImageFilter ?
-            DispatchQueue.main :
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
+        let queue = currentFilter is VImageFilter ? DispatchQueue.main : DispatchQueue.global()
  
         queue.async
         {
