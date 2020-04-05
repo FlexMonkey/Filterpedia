@@ -47,24 +47,28 @@ class HistogramDisplay: UIView
             imageRef,
             UInt32(kvImageNoFlags))
 
-        let red = [UInt](repeating: 0, count: 256)
-        let green = [UInt](repeating: 0, count: 256)
-        let blue = [UInt](repeating: 0, count: 256)
-        let alpha = [UInt](repeating: 0, count: 256)
-        
-        let redPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: red)
-        let greenPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: green)
-        let bluePtr = UnsafeMutablePointer<vImagePixelCount>(mutating: blue)
-        let alphaPtr = UnsafeMutablePointer<vImagePixelCount>(mutating: alpha)
-        
-        let rgba: [UnsafeMutablePointer<vImagePixelCount>?] = [redPtr, greenPtr, bluePtr, alphaPtr]
+        let redPtr = UnsafeMutablePointer<vImagePixelCount>.allocate(capacity: 256)
+        let greenPtr = UnsafeMutablePointer<vImagePixelCount>.allocate(capacity: 256)
+        let bluePtr = UnsafeMutablePointer<vImagePixelCount>.allocate(capacity: 256)
+        let alphaPtr = UnsafeMutablePointer<vImagePixelCount>.allocate(capacity: 256)
+        [redPtr, greenPtr, bluePtr, alphaPtr].forEach { $0.initialize(repeating: 0, count: 256) }
 
-        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>(mutating: rgba)
-        
+        let histogram = UnsafeMutablePointer<UnsafeMutablePointer<vImagePixelCount>?>.allocate(capacity: 4)
+        histogram.initialize(repeating: nil, count: 4)
+        histogram[0] = redPtr
+        histogram[1] = greenPtr
+        histogram[2] = bluePtr
+        histogram[3] = alphaPtr
+
         vImageHistogramCalculation_ARGB8888(&inBuffer, histogram, UInt32(kvImageNoFlags))
 
         free(inBuffer.data)
-        
+
+        let red = (0..<256).map { redPtr[$0] }
+        let green = (0..<256).map { greenPtr[$0] }
+        let blue = (0..<256).map { bluePtr[$0] }
+//        let alpha = (0..<256).map { alphaPtr[$0] }
+
         return (red, green, blue)
     }
     
@@ -159,7 +163,7 @@ class HistogramDisplay: UIView
         {
             return
         }
-      
+
         let direction = touch.location(in: self).y - touch.previousLocation(in: self).y
         
         scale -= direction / 20
