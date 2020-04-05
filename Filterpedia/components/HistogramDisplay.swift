@@ -67,7 +67,12 @@ class HistogramDisplay: UIView
         let red = (0..<256).map { redPtr[$0] }
         let green = (0..<256).map { greenPtr[$0] }
         let blue = (0..<256).map { bluePtr[$0] }
-//        let alpha = (0..<256).map { alphaPtr[$0] }
+//        let alpha = (0..<256).map { alphaPtr[$0] } // alpha is unused, so save some cpu cycles
+
+        [redPtr, greenPtr, bluePtr, alphaPtr].forEach {
+            $0.deinitialize(count: 256)
+            $0.deallocate()
+        }
 
         return (red, green, blue)
     }
