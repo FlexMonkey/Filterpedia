@@ -205,7 +205,7 @@
 		3E9A72141C325E5600CAD516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E9A72161C325E5600CAD516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E9A721D1C32662B00CAD516 /* FilterNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterNavigator.swift; path = components/FilterNavigator.swift; sourceTree = "<group>"; };
-		3E9A721F1C329CFE00CAD516 /* FilterDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterDetail.swift; path = components/FilterDetail.swift; sourceTree = "<group>"; };
+		3E9A721F1C329CFE00CAD516 /* FilterDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterDetail.swift; path = components/FilterDetail.swift; sourceTree = "<group>"; usesTabs = 0; };
 		3E9A72211C32FCF000CAD516 /* LabelledSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LabelledSlider.swift; path = components/LabelledSlider.swift; sourceTree = "<group>"; };
 		3E9A72231C33146000CAD516 /* VectorSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VectorSlider.swift; path = components/VectorSlider.swift; sourceTree = "<group>"; };
 		3E9A72261C33A8AB00CAD516 /* monalisa.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = monalisa.jpg; path = assets/monalisa.jpg; sourceTree = "<group>"; };

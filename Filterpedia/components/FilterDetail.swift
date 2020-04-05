@@ -271,7 +271,14 @@ class FilterDetail: UIView
                 currentFilter.setValue(value, forKey: key)
             }
             
-            let outputImage = currentFilter.outputImage!
+            guard let outputImage = currentFilter.outputImage else {
+                print("No output image when applying filter.")
+                DispatchQueue.main.async {
+                    self.busy = false
+                }
+                return
+            }
+
             let finalImage: CGImage
   
             let context = (currentFilter is MetalRenderable) ? self.ciMetalContext : self.ciOpenGLESContext
