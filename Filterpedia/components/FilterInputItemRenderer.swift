@@ -247,7 +247,7 @@ class FilterInputItemRenderer: UITableViewCell
             vectorSlider.isHidden = true
             textEditButton.isHidden = true
             
-            imagesSegmentedControl.selectedSegmentIndex = assets.index(where: { $0.ciImage == filterParameterValues[inputKey] as? CIImage}) ?? 0
+            imagesSegmentedControl.selectedSegmentIndex = assets.firstIndex(where: { $0.ciImage == filterParameterValues[inputKey] as? CIImage}) ?? 0
             
             imagesSegmentedControlChangeHandler()
             

@@ -468,7 +468,7 @@
 					3E9A72061C325E5600CAD516 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 6CFA54MQCP;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -478,6 +478,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -756,7 +757,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.flexmonkey.Filterpedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "(dan jan 16) Dev Any App";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -772,7 +773,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.flexmonkey.Filterpedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
