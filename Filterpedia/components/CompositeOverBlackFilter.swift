@@ -14,15 +14,15 @@ class CompositeOverBlackFilter: CIFilter
     let black: CIFilter
     let composite: CIFilter
     
-    var inputImage : CIImage?
+    @objc var inputImage : CIImage?
     
     override init()
     {
         black = CIFilter(name: "CIConstantColorGenerator",
-            withInputParameters: [kCIInputColorKey: CIColor(color: UIColor.blackColor())])!
+            parameters: [kCIInputColorKey: CIColor(color: UIColor.black)])!
         
         composite = CIFilter(name: "CISourceAtopCompositing",
-            withInputParameters: [kCIInputBackgroundImageKey: black.outputImage!])!
+            parameters: [kCIInputBackgroundImageKey: black.outputImage!])!
         
         super.init()
     }

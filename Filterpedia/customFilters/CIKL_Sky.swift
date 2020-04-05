@@ -10,19 +10,19 @@ import CoreImage
 
 class SimpleSky: CIFilter
 {
-    var inputSunDiameter: CGFloat = 0.01
-    var inputAlbedo: CGFloat = 0.2
-    var inputSunAzimuth: CGFloat = 0.0
-    var inputSunAlitude: CGFloat = 1.0
-    var inputSkyDarkness: CGFloat = 1.25
-    var inputScattering: CGFloat = 10.0
-    var inputWidth: CGFloat = 640
-    var inputHeight: CGFloat = 640
+    @objc var inputSunDiameter: CGFloat = 0.01
+    @objc var inputAlbedo: CGFloat = 0.2
+    @objc var inputSunAzimuth: CGFloat = 0.0
+    @objc var inputSunAlitude: CGFloat = 1.0
+    @objc var inputSkyDarkness: CGFloat = 1.25
+    @objc var inputScattering: CGFloat = 10.0
+    @objc var inputWidth: CGFloat = 640
+    @objc var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Simple Sky",
+            kCIAttributeFilterDisplayName: "Simple Sky" as AnyObject,
             
             "inputSunDiameter": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
@@ -100,11 +100,11 @@ class SimpleSky: CIFilter
     
     let skyKernel: CIColorKernel =
     {
-        let shaderPath = NSBundle.mainBundle().pathForResource("cikl_sky", ofType: "cikernel")
+        let shaderPath = Bundle.main.path(forResource: "cikl_sky", ofType: "cikernel")
         
         guard let path = shaderPath,
-            code = try? String(contentsOfFile: path),
-            kernel = CIColorKernel(string: code) else
+            let code = try? String(contentsOfFile: path),
+            let kernel = CIColorKernel(source: code) else
         {
             fatalError("Unable to build Sky shader")
         }
@@ -118,7 +118,7 @@ class SimpleSky: CIFilter
         
         let arguments = [inputWidth, inputHeight, inputSunDiameter, inputAlbedo, inputSunAzimuth, inputSunAlitude, inputSkyDarkness, inputScattering]
         
-        let final = skyKernel.applyWithExtent(extent, arguments: arguments)?.imageByCroppingToRect(extent)
+        let final = skyKernel.apply(extent: extent, arguments: arguments)?.cropped(to: extent)
         
         return final
     }

@@ -23,7 +23,7 @@ import CoreImage
 
 class RefractedTextFilter: CIFilter
 {
-    var inputImage: CIImage?
+    @objc var inputImage: CIImage?
     {
         didSet
         {
@@ -34,7 +34,7 @@ class RefractedTextFilter: CIFilter
         }
     }
     
-    var inputText: NSString = "Filterpedia"
+    @objc var inputText: NSString = "Filterpedia"
     {
         didSet
         {
@@ -42,14 +42,14 @@ class RefractedTextFilter: CIFilter
         }
     }
     
-    var inputRefractiveIndex: CGFloat = 4.0
-    var inputLensScale: CGFloat = 50
-    var inputLightingAmount: CGFloat = 1.5
+    @objc var inputRefractiveIndex: CGFloat = 4.0
+    @objc var inputLensScale: CGFloat = 50
+    @objc var inputLightingAmount: CGFloat = 1.5
     
-    var inputLensBlur: CGFloat = 0
-    var inputBackgroundBlur: CGFloat = 2
+    @objc var inputLensBlur: CGFloat = 0
+    @objc var inputBackgroundBlur: CGFloat = 2
     
-    var inputRadius: CGFloat = 15
+    @objc var inputRadius: CGFloat = 15
     {
         didSet
         {
@@ -60,13 +60,13 @@ class RefractedTextFilter: CIFilter
         }
     }
     
-    private var refractingImage: CIImage?
-    private var rawTextImage: CIImage?
+    fileprivate var refractingImage: CIImage?
+    fileprivate var rawTextImage: CIImage?
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Refracted Text",
+            kCIAttributeFilterDisplayName: "Refracted Text" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "CIImage",
@@ -150,7 +150,7 @@ class RefractedTextFilter: CIFilter
     override var outputImage: CIImage!
     {
         guard let inputImage = inputImage,
-            refractingKernel = refractingKernel else
+            let refractingKernel = refractingKernel else
         {
             return nil
         }
@@ -165,21 +165,21 @@ class RefractedTextFilter: CIFilter
             refractingImage!,
             inputRefractiveIndex,
             inputLensScale,
-            inputLightingAmount]
+            inputLightingAmount] as [Any]
         
-        let blurMask = rawTextImage?.imageByApplyingFilter("CIColorInvert", withInputParameters: nil)
+        let blurMask = rawTextImage?.applyingFilter("CIColorInvert", parameters: [:])
         
-        return refractingKernel.applyWithExtent(extent,
+        return refractingKernel.apply(extent: extent,
                 roiCallback:
                 {
                     (index, rect) in
                     return rect
                 },
                 arguments: arguments)!
-            .imageByApplyingFilter("CIMaskedVariableBlur", withInputParameters: [
+            .applyingFilter("CIMaskedVariableBlur", parameters: [
                 kCIInputRadiusKey: inputBackgroundBlur,
                 "inputMask": blurMask!])
-            .imageByApplyingFilter("CIMaskedVariableBlur", withInputParameters: [
+            .applyingFilter("CIMaskedVariableBlur", parameters: [
                 kCIInputRadiusKey: inputLensBlur,
                 "inputMask": rawTextImage!])
     }
@@ -189,32 +189,32 @@ class RefractedTextFilter: CIFilter
         let label = UILabel(frame: inputImage!.extent)
         
         label.text = String(inputText)
-        label.textAlignment = .Center
-        label.font = UIFont.boldSystemFontOfSize(300)
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 300)
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.textColor = UIColor.whiteColor()
+        label.textColor = UIColor.white
         
         UIGraphicsBeginImageContextWithOptions(
             CGSize(width: label.frame.width,
                 height: label.frame.height), true, 1)
         
-        label.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        label.layer.render(in: UIGraphicsGetCurrentContext()!)
         
         let textImage = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
         
-        rawTextImage = CIImage(image: textImage)!
+        rawTextImage = CIImage(image: textImage!)!
 
         refractingImage = CIFilter(name: "CIHeightFieldFromMask",
-            withInputParameters: [
+            parameters: [
                 kCIInputRadiusKey: inputRadius,
                 kCIInputImageKey: rawTextImage!])?.outputImage?
-            .imageByCroppingToRect(inputImage!.extent)
+            .cropped(to: inputImage!.extent)
     }
     
-    let refractingKernel = CIKernel(string:
+    let refractingKernel = CIKernel(source:
         "float lumaAtOffset(sampler source, vec2 origin, vec2 offset)" +
         "{" +
         " vec3 pixel = sample(source, samplerTransform(source, origin + offset)).rgb;" +

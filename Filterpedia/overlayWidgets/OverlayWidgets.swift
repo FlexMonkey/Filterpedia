@@ -10,12 +10,12 @@ import UIKit
 
 protocol FilterAttributesDisplayable
 {
-    func setFilter(filter: CIFilter)
+    func setFilter(_ filter: CIFilter)
 }
 
 class OverlayWidgets
 {
-    static func getOverlayWidgetForFilter(filterName: String) -> FilterAttributesDisplayable?
+    static func getOverlayWidgetForFilter(_ filterName: String) -> FilterAttributesDisplayable?
     {
         switch filterName
         {
@@ -38,25 +38,25 @@ class OverlayWidgets
 
 class ToneCurveWidget: UIView, FilterAttributesDisplayable
 {
-    let toneCurveLayer = curveLayer(strokeColor: UIColor.whiteColor().CGColor)
+    let toneCurveLayer = curveLayer(strokeColor: UIColor.white.cgColor)
     
-    func setFilter(filter: CIFilter)
+    func setFilter(_ filter: CIFilter)
     {
-        if let inputPoint0 = filter.valueForKey("inputPoint0") as? CIVector,
-            inputPoint1 = filter.valueForKey("inputPoint1") as? CIVector,
-            inputPoint2 = filter.valueForKey("inputPoint2") as? CIVector,
-            inputPoint3 = filter.valueForKey("inputPoint3") as? CIVector,
-            inputPoint4 = filter.valueForKey("inputPoint4") as? CIVector
+        if let inputPoint0 = filter.value(forKey: "inputPoint0") as? CIVector,
+            let inputPoint1 = filter.value(forKey: "inputPoint1") as? CIVector,
+            let inputPoint2 = filter.value(forKey: "inputPoint2") as? CIVector,
+            let inputPoint3 = filter.value(forKey: "inputPoint3") as? CIVector,
+            let inputPoint4 = filter.value(forKey: "inputPoint4") as? CIVector
         {
             let points =  [inputPoint0, inputPoint1, inputPoint2, inputPoint3, inputPoint4].map
             {
-                CGPoint(x: $0.X * frame.width, y: (1 - $0.Y) * frame.height)
+                CGPoint(x: $0.x * frame.width, y: (1 - $0.y) * frame.height)
             }
             
             let path = UIBezierPath()
             path.interpolatePointsWithHermite(points)
          
-            toneCurveLayer.path = path.CGPath
+            toneCurveLayer.path = path.cgPath
         }
         else
         {
@@ -90,7 +90,7 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     let greenLayer: CAShapeLayer
     let blueLayer: CAShapeLayer
     
-    private var rgbChannelToneCurve: RGBChannelToneCurve?
+    fileprivate var rgbChannelToneCurve: RGBChannelToneCurve?
     {
         didSet
         {
@@ -105,7 +105,7 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         }
     }
     
-    static func pathForValues(values: CIVector, frame: CGRect) -> CGPathRef
+    static func pathForValues(_ values: CIVector, frame: CGRect) -> CGPath
     {
         let xValues: [CGFloat] = [0, 0.25, 0.5, 0.75, 1.0]
         
@@ -117,10 +117,10 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         let path = UIBezierPath()
         path.interpolatePointsWithHermite(points)
         
-        return path.CGPath
+        return path.cgPath
     }
     
-    func setFilter(filter: CIFilter)
+    func setFilter(_ filter: CIFilter)
     {
         if let rgbChannelToneCurve =  filter as? RGBChannelToneCurve
         {
@@ -130,9 +130,9 @@ class RGBChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     
     override init(frame: CGRect)
     {
-        redLayer = curveLayer(strokeColor: UIColor.redColor().CGColor)
-        greenLayer = curveLayer(strokeColor: UIColor.greenColor().CGColor)
-        blueLayer = curveLayer(strokeColor: UIColor.blueColor().CGColor)
+        redLayer = curveLayer(strokeColor: UIColor.red.cgColor)
+        greenLayer = curveLayer(strokeColor: UIColor.green.cgColor)
+        blueLayer = curveLayer(strokeColor: UIColor.blue.cgColor)
         
         super.init(frame: frame)
     
@@ -163,7 +163,7 @@ class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     let yellowLayer: CAShapeLayer
     let blackLayer: CAShapeLayer
     
-    private var cmykToneCurves: CMYKToneCurves?
+    fileprivate var cmykToneCurves: CMYKToneCurves?
     {
         didSet
         {
@@ -179,7 +179,7 @@ class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         }
     }
     
-    static func pathForValues(values: CIVector, frame: CGRect) -> CGPathRef
+    static func pathForValues(_ values: CIVector, frame: CGRect) -> CGPath
     {
         let xValues: [CGFloat] = [0, 0.25, 0.5, 0.75, 1.0]
         
@@ -191,10 +191,10 @@ class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
         let path = UIBezierPath()
         path.interpolatePointsWithHermite(points)
         
-        return path.CGPath
+        return path.cgPath
     }
     
-    func setFilter(filter: CIFilter)
+    func setFilter(_ filter: CIFilter)
     {
         if let cmykToneCurves = filter as? CMYKToneCurves
         {
@@ -204,10 +204,10 @@ class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
     
     override init(frame: CGRect)
     {
-        cyanLayer = curveLayer(strokeColor: UIColor.cyanColor().CGColor)
-        magentaLayer = curveLayer(strokeColor: UIColor.magentaColor().CGColor)
-        yellowLayer = curveLayer(strokeColor: UIColor.yellowColor().CGColor)
-        blackLayer = curveLayer(strokeColor: UIColor.blackColor().CGColor)
+        cyanLayer = curveLayer(strokeColor: UIColor.cyan.cgColor)
+        magentaLayer = curveLayer(strokeColor: UIColor.magenta.cgColor)
+        yellowLayer = curveLayer(strokeColor: UIColor.yellow.cgColor)
+        blackLayer = curveLayer(strokeColor: UIColor.black.cgColor)
         
         super.init(frame: frame)
     
@@ -233,7 +233,7 @@ class CMYKChannelToneCurveWidget: UIView, FilterAttributesDisplayable
 
 // MARK: Helper functions
 
-func curveLayer(strokeColor color: CGColorRef) -> CAShapeLayer
+func curveLayer(strokeColor color: CGColor) -> CAShapeLayer
 {
     let layer = CAShapeLayer()
     
@@ -243,7 +243,7 @@ func curveLayer(strokeColor color: CGColorRef) -> CAShapeLayer
     layer.fillColor = nil
     layer.lineWidth = 3
     
-    layer.shadowColor = UIColor.grayColor().CGColor
+    layer.shadowColor = UIColor.gray.cgColor
     layer.shadowOffset = CGSize(width: 0, height: 0)
     layer.shadowOpacity = 1
     layer.shadowRadius = 3

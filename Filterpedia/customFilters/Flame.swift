@@ -11,29 +11,29 @@ import CoreImage
 
 class Flame: CIFilter
 {
-    var inputTime: CGFloat = 1
+    @objc var inputTime: CGFloat = 1
     
-    var inputIterations: CGFloat = 5
-    var inputAnisotropy: CGFloat = 4 // 1.0 = fat, default = 5, 10.0 = thin
-    var inputEdgeDefinition: CGFloat = 20.0; // 5.0 = soft, 16.0 = default, 100 = sharp
-    var inputHotspotExponent: CGFloat = 4.0; // 1.0 - cold, 4.0 - default, 10 = hotspots!
-    var inputDensity: CGFloat = 1.0; // 0.5 -> 2.0 default 1.0
-    var inputStrength: CGFloat = 2.0; // 1.0 -> 5.0 default 2.0
+    @objc var inputIterations: CGFloat = 5
+    @objc var inputAnisotropy: CGFloat = 4 // 1.0 = fat, default = 5, 10.0 = thin
+    @objc var inputEdgeDefinition: CGFloat = 20.0; // 5.0 = soft, 16.0 = default, 100 = sharp
+    @objc var inputHotspotExponent: CGFloat = 4.0; // 1.0 - cold, 4.0 - default, 10 = hotspots!
+    @objc var inputDensity: CGFloat = 1.0; // 0.5 -> 2.0 default 1.0
+    @objc var inputStrength: CGFloat = 2.0; // 1.0 -> 5.0 default 2.0
     
-    var inputRedMultiplier: CGFloat = 1.5;
-    var inputRedExponent: CGFloat = 1.0;
-    var inputGreenMultiplier: CGFloat = 1.5;
-    var inputGreenExponent: CGFloat = 3.0;
-    var inputBlueMultiplier: CGFloat = 0.5;
-    var inputBlueExponent: CGFloat = 2.0;
+    @objc var inputRedMultiplier: CGFloat = 1.5;
+    @objc var inputRedExponent: CGFloat = 1.0;
+    @objc var inputGreenMultiplier: CGFloat = 1.5;
+    @objc var inputGreenExponent: CGFloat = 3.0;
+    @objc var inputBlueMultiplier: CGFloat = 0.5;
+    @objc var inputBlueExponent: CGFloat = 2.0;
     
-    var inputWidth: CGFloat = 640
-    var inputHeight: CGFloat = 640
+    @objc var inputWidth: CGFloat = 640
+    @objc var inputHeight: CGFloat = 640
     
-    override var attributes: [String : AnyObject]
+    override var attributes: [String : Any]
     {
         return [
-            kCIAttributeFilterDisplayName: "Flame",
+            kCIAttributeFilterDisplayName: "Flame" as AnyObject,
             
             "inputTime": [kCIAttributeIdentity: 0,
                 kCIAttributeClass: "NSNumber",
@@ -157,11 +157,11 @@ class Flame: CIFilter
     
     let flameKernel: CIColorKernel =
     {
-        let shaderPath = NSBundle.mainBundle().pathForResource("flame", ofType: "cikernel")
+        let shaderPath = Bundle.main.path(forResource: "flame", ofType: "cikernel")
         
         guard let path = shaderPath,
-            code = try? String(contentsOfFile: path),
-            kernel = CIColorKernel(string: code) else
+            let code = try? String(contentsOfFile: path),
+            let kernel = CIColorKernel(source: code) else
         {
             fatalError("Unable to build Flame shader")
         }
@@ -177,10 +177,10 @@ class Flame: CIFilter
                          inputRedMultiplier, inputRedExponent,
                          inputGreenMultiplier, inputGreenExponent,
                          inputBlueMultiplier, inputBlueExponent,
-                         inputStrength]
+                         inputStrength] as [Any]
         
-        return flameKernel.applyWithExtent(
-            CGRect(origin: CGPointZero, size: CGSize(width: inputWidth, height: inputHeight)),
+        return flameKernel.apply(
+            extent: CGRect(origin: CGPoint.zero, size: CGSize(width: inputWidth, height: inputHeight)),
             arguments: arguments)
     }
     
